@@ -118,10 +118,10 @@ export const schemes: IScheme[] = [
 export const logStyles = () => {
 	const html = document.querySelector('html') as HTMLElement;
 	const background =
-		html.style.getPropertyValue('--md-sys-color-primary-light') ??
+		html.style.getPropertyValue('--md-sys-color-primary-light') ||
 		'#4c5c92';
 	const color =
-		html.style.getPropertyValue('--md-sys-color-on-primary-light') ??
+		html.style.getPropertyValue('--md-sys-color-on-primary-light') ||
 		'#ffffff';
 	return `color: ${color}; background: ${background}; font-weight: bold; border-radius: 32px; padding: 0 8px;`;
 };
