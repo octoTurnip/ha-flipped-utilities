@@ -199,6 +199,7 @@ export async function applyUserStyles(target: HTMLElement) {
 		} else {
 			const styleTag = target.querySelector('#user-styles');
 			if (styleTag) {
+				target.removeChild(styleTag);
 				const message = `Custom styles removed from ${target.tagName.toLowerCase()}.`;
 				console.info(`%c ${message} `, logStyles());
 				debugToast(message);
