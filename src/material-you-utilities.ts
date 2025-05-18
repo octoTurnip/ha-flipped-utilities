@@ -2,16 +2,12 @@ import packageInfo from '../package.json';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
 import { logStyles } from './models/constants/colors';
-import {
-	DEFAULT_BASE_COLOR_INPUT,
-	DEFAULT_CONTRAST_LEVEL_INPUT,
-	DEFAULT_SCHEME_NAME_INPUT,
-} from './models/constants/inputs';
+import { inputs } from './models/constants/inputs';
 import { RenderTemplateError, RenderTemplateResult } from './models/interfaces';
 import { getAsync, querySelectorAsync } from './utils/async';
 import { setTheme, setThemeAll } from './utils/colors';
 import { debugToast, getHomeAssistantMainAsync } from './utils/common';
-import { setStyles } from './utils/styles';
+import { applyUserStyles, applyUserStylesAll, setStyles } from './utils/styles';
 
 async function main() {
 	if (window.MaterialYouInit) {
@@ -59,42 +55,58 @@ async function main() {
 	// Define Material You Panel custom element
 	customElements.define('material-you-panel', MaterialYouPanel);
 
-	// Set user theme colors
+	// Set user theme colors and styles
 	const html = await querySelectorAsync(document, 'html');
 	setTheme(html);
+	applyUserStyles(html);
 
-	// Inputs for user theme color triggers
+	// User inputs
 	const userId = haMain.hass.user?.id;
-	const inputs = [
-		DEFAULT_BASE_COLOR_INPUT,
-		DEFAULT_SCHEME_NAME_INPUT,
-		DEFAULT_CONTRAST_LEVEL_INPUT,
-		`${DEFAULT_BASE_COLOR_INPUT}_${userId}`,
-		`${DEFAULT_SCHEME_NAME_INPUT}_${userId}`,
-		`${DEFAULT_CONTRAST_LEVEL_INPUT}_${userId}`,
+	const colorInputs = [
+		inputs.base_color.input,
+		inputs.scheme.input,
+		inputs.contrast.input,
+		`${inputs.base_color.input}_${userId}`,
+		`${inputs.scheme.input}_${userId}`,
+		`${inputs.contrast.input}_${userId}`,
+	].filter((entityId) => haMain.hass.states[entityId]);
+	const styleInputs = [
+		inputs.user_styles.input,
+		`${inputs.user_styles.input}_${userId}`,
 	].filter((entityId) => haMain.hass.states[entityId]);
 
 	if (haMain.hass.user?.is_admin) {
-		// Trigger user theme color on input change
+		// Trigger on input change
 		haMain.hass.connection.subscribeMessage(
 			() => setThemeAll(),
 			{
 				type: 'subscribe_trigger',
 				trigger: {
 					platform: 'state',
-					entity_id: inputs,
+					entity_id: colorInputs,
+				},
+			},
+			{ resubscribe: true },
+		);
+		haMain.hass.connection.subscribeMessage(
+			() => applyUserStylesAll(),
+			{
+				type: 'subscribe_trigger',
+				trigger: {
+					platform: 'state',
+					entity_id: styleInputs,
 				},
 			},
 			{ resubscribe: true },
 		);
 
-		// Trigger user theme color on theme changed event
+		// Trigger on theme changed event
 		haMain.hass.connection.subscribeEvents(
 			() => setThemeAll(),
 			'themes_updated',
 		);
 
-		// Trigger user theme color on set theme service call
+		// Trigger on set theme service call
 		haMain.hass.connection.subscribeEvents((e: Record<string, any>) => {
 			if (e?.data?.service == 'set_theme') {
 				setTimeout(() => setThemeAll(), 1000);
@@ -102,7 +114,7 @@ async function main() {
 		}, 'call_service');
 	} else {
 		// Trigger on template change for sensors
-		for (const entityId of inputs) {
+		for (const entityId of colorInputs) {
 			haMain.hass.connection.subscribeMessage(
 				(msg: RenderTemplateResult | RenderTemplateError) => {
 					if ('error' in msg) {
@@ -110,6 +122,23 @@ async function main() {
 						debugToast(msg.error);
 					}
 					setThemeAll();
+				},
+				{
+					type: 'render_template',
+					template: `{{ states("${entityId}") }}`,
+					entity_ids: entityId,
+					report_errors: true,
+				},
+			);
+		}
+		for (const entityId of styleInputs) {
+			haMain.hass.connection.subscribeMessage(
+				(msg: RenderTemplateResult | RenderTemplateError) => {
+					if ('error' in msg) {
+						console.error(msg.error);
+						debugToast(msg.error);
+					}
+					applyUserStylesAll();
 				},
 				{
 					type: 'render_template',

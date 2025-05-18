@@ -1,15 +1,24 @@
 import { HassEntity } from 'home-assistant-js-websocket';
 
 export interface IUserPanelSettings {
-	settings: {
-		base_color: string;
-		scheme: string;
-		contrast: number;
-		styles: string;
-	};
+	settings: Record<InputField, string | number | undefined>;
 	stateObj?: HassEntity;
 }
 
 export type InputType = 'text' | 'select' | 'number' | 'boolean';
 
-export type InputField = 'base_color' | 'scheme' | 'contrast' | 'styles';
+export type InputField =
+	| 'base_color'
+	| 'scheme'
+	| 'contrast'
+	| 'styles'
+	| 'user_styles';
+
+export interface InputInfo {
+	type: InputType;
+	default: string | number;
+	name: string;
+	input: string;
+	action: string;
+	icon: string;
+}

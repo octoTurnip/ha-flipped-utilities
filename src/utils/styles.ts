@@ -1,9 +1,9 @@
 import { elements } from '../css';
-import {
-	DEFAULT_STYLES,
-	DEFAULT_STYLES_INPUT,
-} from '../models/constants/inputs';
+import { logStyles } from '../models/constants/colors';
+import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { getTargets } from './colors';
+import { debugToast } from './common';
 
 // Theme check variables
 let theme = '';
@@ -19,10 +19,10 @@ function checkTheme() {
 		if (theme) {
 			shouldSetStyles =
 				theme.includes('Material You') &&
-				(ha?.hass.states[`${DEFAULT_STYLES_INPUT}_${ha?.hass.user?.id}`]
+				(ha?.hass.states[`${inputs.styles.input}_${ha?.hass.user?.id}`]
 					?.state ??
-					ha?.hass.states[DEFAULT_STYLES_INPUT]?.state ??
-					DEFAULT_STYLES) == 'on';
+					ha?.hass.states[inputs.styles.input]?.state ??
+					inputs.styles.default) == 'on';
 		}
 	}
 }
@@ -39,12 +39,32 @@ function hasStyles(element: HTMLElement): HTMLStyleElement {
 }
 
 /**
- * Convert imported styles to string and add !important to all styles
+ * Convert styles to string and add !important to all styles
  * @param {string} styles CSS styles imported from file
  * @returns {string} styles converted to string and all set to !important
  */
 function loadStyles(styles: string): string {
-	return styles.toString().replace(/;/g, ' !important;');
+	// Ensure user styles override default styles
+	let importantStyles = styles
+		.toString()
+		.replace(/ !important/g, '')
+		.replace(/;/g, ' !important;');
+
+	// Remove !important from keyframes
+	// Initial check to avoid expensive regex for most user styles
+	if (importantStyles.includes('@keyframes')) {
+		const keyframeses = importantStyles.match(
+			/@keyframes .*?\s{(.|\s)*?}\s}/g,
+		);
+		for (const keyframes of keyframeses ?? []) {
+			importantStyles = importantStyles.replace(
+				keyframes,
+				keyframes.replace(/ !important/g, ''),
+			);
+		}
+	}
+
+	return importantStyles;
 }
 
 /**
@@ -147,4 +167,53 @@ export async function setStyles(target: typeof globalThis) {
 
 		return define.call(this, name, constructor, options);
 	};
+}
+
+/**
+ * Apply styles from user input
+ * @param {HTMLElement} target
+ */
+export async function applyUserStyles(target: HTMLElement) {
+	const hass = (document.querySelector('home-assistant') as HassElement).hass;
+
+	// Setup inputs
+	const userId = hass.user?.id;
+	const stylesInputUserId = `${inputs.user_styles.input}_${userId}`;
+
+	try {
+		const styles =
+			hass.states[stylesInputUserId]?.state ??
+			hass.states[inputs.user_styles.input]?.state;
+		if (styles) {
+			let styleTag = target.querySelector('#user-styles');
+			if (!styleTag) {
+				styleTag = document.createElement('style');
+				styleTag.id = 'user-styles';
+				target.appendChild(styleTag);
+			}
+			styleTag.textContent = loadStyles(styles);
+
+			const message = `Custom styles applied to ${target.tagName.toLowerCase()}.`;
+			console.info(`%c ${message} `, logStyles());
+			debugToast(message);
+		} else {
+			const styleTag = target.querySelector('#user-styles');
+			if (styleTag) {
+				const message = `Custom styles removed from ${target.tagName.toLowerCase()}.`;
+				console.info(`%c ${message} `, logStyles());
+				debugToast(message);
+			}
+		}
+	} catch (e) {
+		console.error(e);
+		debugToast(String(e));
+	}
+}
+
+/** Call applyUserStyles on all valid available targets */
+export async function applyUserStylesAll() {
+	const targets = await getTargets();
+	for (const target of targets) {
+		applyUserStyles(target);
+	}
 }

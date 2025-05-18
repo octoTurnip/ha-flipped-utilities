@@ -4,7 +4,7 @@ import { InputType } from '../models/interfaces/Panel';
 /**
  * Create an input entity
  * @param {HomeAssistant} hass Home Assistant HASS object
- * @param {"text" | "select" | "number" | "boolean"} type Input element type to create
+ * @param {InputType} type Input element type to create
  * @param {Record<string, any>} config Input helper init config
  * @returns {Promise<Record<string, any>>}  Input helper init config, with default values for fields not provided
  */

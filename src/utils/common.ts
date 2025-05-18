@@ -1,8 +1,5 @@
 import { schemes } from '../models/constants/colors';
-import {
-	DEFAULT_SCHEME_NAME,
-	INPUT_BOOLEAN_PREFIX,
-} from '../models/constants/inputs';
+import { INPUT_BOOLEAN_PREFIX, inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { IScheme } from '../models/interfaces/Scheme';
 import { getAsync, querySelectorAsync } from './async';
@@ -12,11 +9,13 @@ import { getAsync, querySelectorAsync } from './async';
  * @param {string} name user provided scheme name
  * @returns {IScheme} Scheme name and class
  */
-export function getSchemeInfo(name: string = DEFAULT_SCHEME_NAME): IScheme {
+export function getSchemeInfo(
+	name: string = inputs.scheme.default as string,
+): IScheme {
 	name = name?.toLowerCase()?.replace(/ |-|_/g, '')?.trim();
 	return (
 		schemes.filter((scheme) => scheme.value == name)[0] ??
-		schemes.filter((scheme) => scheme.value == DEFAULT_SCHEME_NAME)[0]
+		schemes.filter((scheme) => scheme.value == inputs.scheme.default)[0]
 	);
 }
 
