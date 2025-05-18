@@ -198,6 +198,7 @@ export class MaterialYouPanel extends LitElement {
 			const id = entityId.split('.')[1];
 			const config = {
 				icon: inputs.user_styles.icon,
+				max: 255,
 			};
 			await createInput(this.hass, 'text', {
 				name: id,
