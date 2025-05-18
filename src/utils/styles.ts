@@ -184,8 +184,8 @@ export async function applyUserStyles(target: HTMLElement) {
 		const styles =
 			hass.states[stylesInputUserId]?.state ??
 			hass.states[inputs.user_styles.input]?.state;
+		let styleTag = target.querySelector('#user-styles');
 		if (styles) {
-			let styleTag = target.querySelector('#user-styles');
 			if (!styleTag) {
 				styleTag = document.createElement('style');
 				styleTag.id = 'user-styles';
@@ -197,7 +197,6 @@ export async function applyUserStyles(target: HTMLElement) {
 			console.info(`%c ${message} `, logStyles());
 			debugToast(message);
 		} else {
-			const styleTag = target.querySelector('#user-styles');
 			if (styleTag) {
 				target.removeChild(styleTag);
 				const message = `Custom styles removed from ${target.tagName.toLowerCase()}.`;
