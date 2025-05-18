@@ -291,6 +291,9 @@ export class MaterialYouPanel extends LitElement {
 		selector: object,
 		placeholder?: string | number | boolean | object,
 	) {
+		// https://github.com/home-assistant/frontend/tree/dev/src/components/ha-selector
+		// https://github.com/home-assistant/frontend/blob/dev/src/data/selector.ts
+
 		const config = this.getConfig(userId);
 		let value: string | number | number[] | boolean;
 		switch (field) {
@@ -613,6 +616,29 @@ export class MaterialYouPanel extends LitElement {
 			: '';
 	}
 
+	buildUserStylesRow(settings: IUserPanelSettings) {
+		const userId = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.user_styles.input}${userId ? `_${userId}` : ''}`;
+
+		return this.hass.states[input]
+			? html`
+					${this.buildMoreInfoButton('user_styles', userId)}
+					${this.buildSelector(
+						'CSS Styles',
+						'user_styles',
+						userId,
+						{
+							text: {
+								multiline: true,
+							},
+						},
+						settings.settings.user_styles ??
+							inputs.user_styles.default,
+					)}
+				`
+			: '';
+	}
+
 	buildSettingsCard(settings: IUserPanelSettings) {
 		const userId = settings.stateObj?.attributes.user_id;
 
@@ -626,6 +652,7 @@ export class MaterialYouPanel extends LitElement {
 			this.buildSchemeRow(settings),
 			this.buildContrastRow(settings),
 			this.buildStylesRow(settings),
+			this.buildUserStylesRow(settings),
 		];
 		const n = rows.length;
 		rows = rows.filter((row) => row != '');
