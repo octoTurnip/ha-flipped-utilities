@@ -7,12 +7,7 @@ export interface IUserPanelSettings {
 
 export type InputType = 'text' | 'select' | 'number' | 'boolean';
 
-export type InputField =
-	| 'base_color'
-	| 'scheme'
-	| 'contrast'
-	| 'styles'
-	| 'user_styles';
+export type InputField = 'base_color' | 'scheme' | 'contrast' | 'styles';
 
 export interface InputInfo {
 	type: InputType;

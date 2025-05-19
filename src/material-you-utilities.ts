@@ -7,7 +7,7 @@ import { RenderTemplateError, RenderTemplateResult } from './models/interfaces';
 import { getAsync, querySelectorAsync } from './utils/async';
 import { setTheme, setThemeAll } from './utils/colors';
 import { debugToast, getHomeAssistantMainAsync } from './utils/common';
-import { applyUserStyles, applyUserStylesAll, setStyles } from './utils/styles';
+import { setStyles } from './utils/styles';
 
 async function main() {
 	if (window.MaterialYouInit) {
@@ -55,10 +55,9 @@ async function main() {
 	// Define Material You Panel custom element
 	customElements.define('material-you-panel', MaterialYouPanel);
 
-	// Set user theme colors and styles
+	// Set user theme colors
 	const html = await querySelectorAsync(document, 'html');
 	setTheme(html);
-	applyUserStyles(html);
 
 	// User inputs
 	const userId = haMain.hass.user?.id;
@@ -70,10 +69,6 @@ async function main() {
 		`${inputs.scheme.input}_${userId}`,
 		`${inputs.contrast.input}_${userId}`,
 	].filter((entityId) => haMain.hass.states[entityId]);
-	const styleInputs = [
-		inputs.user_styles.input,
-		`${inputs.user_styles.input}_${userId}`,
-	].filter((entityId) => haMain.hass.states[entityId]);
 
 	if (haMain.hass.user?.is_admin) {
 		// Trigger on input change
@@ -84,17 +79,6 @@ async function main() {
 				trigger: {
 					platform: 'state',
 					entity_id: colorInputs,
-				},
-			},
-			{ resubscribe: true },
-		);
-		haMain.hass.connection.subscribeMessage(
-			() => applyUserStylesAll(),
-			{
-				type: 'subscribe_trigger',
-				trigger: {
-					platform: 'state',
-					entity_id: styleInputs,
 				},
 			},
 			{ resubscribe: true },
@@ -122,23 +106,6 @@ async function main() {
 						debugToast(msg.error);
 					}
 					setThemeAll();
-				},
-				{
-					type: 'render_template',
-					template: `{{ states("${entityId}") }}`,
-					entity_ids: entityId,
-					report_errors: true,
-				},
-			);
-		}
-		for (const entityId of styleInputs) {
-			haMain.hass.connection.subscribeMessage(
-				(msg: RenderTemplateResult | RenderTemplateError) => {
-					if ('error' in msg) {
-						console.error(msg.error);
-						debugToast(msg.error);
-					}
-					applyUserStylesAll();
 				},
 				{
 					type: 'render_template',

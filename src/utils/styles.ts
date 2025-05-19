@@ -1,9 +1,6 @@
 import { elements } from '../css';
-import { logStyles } from '../models/constants/colors';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
-import { getTargets } from './colors';
-import { debugToast } from './common';
 
 // Theme check variables
 let theme = '';
@@ -44,7 +41,7 @@ function hasStyles(element: HTMLElement): HTMLStyleElement {
  * @returns {string} styles converted to string and all set to !important
  */
 function loadStyles(styles: string): string {
-	// Ensure user styles override default styles
+	// Ensure new styles override default styles
 	let importantStyles = styles
 		.toString()
 		.replace(/ !important/g, '')
@@ -167,53 +164,4 @@ export async function setStyles(target: typeof globalThis) {
 
 		return define.call(this, name, constructor, options);
 	};
-}
-
-/**
- * Apply styles from user input
- * @param {HTMLElement} target
- */
-export async function applyUserStyles(target: HTMLElement) {
-	const hass = (document.querySelector('home-assistant') as HassElement).hass;
-
-	// Setup inputs
-	const userId = hass.user?.id;
-	const stylesInputUserId = `${inputs.user_styles.input}_${userId}`;
-
-	try {
-		const styles =
-			hass.states[stylesInputUserId]?.state ??
-			hass.states[inputs.user_styles.input]?.state;
-		let styleTag = target.querySelector('#user-styles');
-		if (styles) {
-			if (!styleTag) {
-				styleTag = document.createElement('style');
-				styleTag.id = 'user-styles';
-				target.appendChild(styleTag);
-			}
-			styleTag.textContent = loadStyles(styles);
-
-			const message = `Custom styles applied to ${target.tagName.toLowerCase()}.`;
-			console.info(`%c ${message} `, logStyles());
-			debugToast(message);
-		} else {
-			if (styleTag) {
-				target.removeChild(styleTag);
-				const message = `Custom styles removed from ${target.tagName.toLowerCase()}.`;
-				console.info(`%c ${message} `, logStyles());
-				debugToast(message);
-			}
-		}
-	} catch (e) {
-		console.error(e);
-		debugToast(String(e));
-	}
-}
-
-/** Call applyUserStyles on all valid available targets */
-export async function applyUserStylesAll() {
-	const targets = await getTargets();
-	for (const target of targets) {
-		applyUserStyles(target);
-	}
 }

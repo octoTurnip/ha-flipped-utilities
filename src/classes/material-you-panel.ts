@@ -192,28 +192,6 @@ export class MaterialYouPanel extends LitElement {
 			});
 		}
 
-		// User Styles
-		entityId = `${inputs.user_styles.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.user_styles.icon,
-				max: 255,
-			};
-			await createInput(this.hass, 'text', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'text', id, {
-				name: `${inputs.user_styles.name}${userName}`,
-				...config,
-			});
-			await this.hass.callService('input_text', 'set_value', {
-				value: '',
-				entity_id: entityId,
-			});
-		}
-
 		let message = 'Global input entities created';
 		if (userName) {
 			message = `Input entities created for${userName}`;
@@ -273,9 +251,6 @@ export class MaterialYouPanel extends LitElement {
 			case 'styles':
 				value ??= true;
 				service = `turn_${value ? 'on' : 'off'}`;
-				break;
-			case 'user_styles':
-				data.value = value || '';
 				break;
 			default:
 				break;
@@ -376,7 +351,6 @@ export class MaterialYouPanel extends LitElement {
 		};
 		switch (field) {
 			case 'base_color':
-			case 'user_styles':
 				data.value = '';
 				break;
 			case 'scheme':
@@ -617,29 +591,6 @@ export class MaterialYouPanel extends LitElement {
 			: '';
 	}
 
-	buildUserStylesRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.user_styles.input}${userId ? `_${userId}` : ''}`;
-
-		return this.hass.states[input]
-			? html`
-					${this.buildMoreInfoButton('user_styles', userId)}
-					${this.buildSelector(
-						'CSS Styles',
-						'user_styles',
-						userId,
-						{
-							text: {
-								multiline: true,
-							},
-						},
-						settings.settings.user_styles ??
-							inputs.user_styles.default,
-					)}
-				`
-			: '';
-	}
-
 	buildSettingsCard(settings: IUserPanelSettings) {
 		const userId = settings.stateObj?.attributes.user_id;
 
@@ -653,7 +604,6 @@ export class MaterialYouPanel extends LitElement {
 			this.buildSchemeRow(settings),
 			this.buildContrastRow(settings),
 			this.buildStylesRow(settings),
-			this.buildUserStylesRow(settings),
 		];
 		const n = rows.length;
 		rows = rows.filter((row) => row != '');

@@ -41,12 +41,4 @@ export const inputs: Record<InputField, InputInfo> = {
 		action: 'input_boolean.turn_on',
 		icon: 'mdi:material-design',
 	},
-	user_styles: {
-		type: 'text',
-		default: '',
-		name: `${THEME_NAME} Custom Styles`,
-		input: `${INPUT_TEXT_PREFIX}_user_styles`,
-		action: 'input_text.set_value',
-		icon: 'mdi:language-css3',
-	},
 };
