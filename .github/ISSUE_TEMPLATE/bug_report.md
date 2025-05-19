@@ -1,16 +1,18 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report an issue with this project
 title: ''
 labels: bug
 assignees: ''
 ---
 
 <!-- READ THIS FIRST:
+- DO NOT DELETE THIS TEMPLATE. If you do not follow it or otherwise do not provide enough information your issue will be marked invalid and closed.
 - If you need additional help with this template please refer to https://www.home-assistant.io/help/reporting_issues/
 - Make sure you are running the latest version of Home Assistant before reporting an issue: https://github.com/home-assistant/home-assistant/releases
 - Provide as many details as possible. Do not delete any text from this template!
 - Please check the README first to make sure that something isn't misconfigured.
+- If you have a question instead of a bug report, use the discussions section or the community forum thread.
 -->
 
 **Checklist:**
