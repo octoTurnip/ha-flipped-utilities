@@ -139,6 +139,7 @@ sl-tab {
 	min-width: 72px;
 	max-width: 156px;
 	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
 }
 
 /* Remove tab padding, icon justify center, and remove tap highlight color */
