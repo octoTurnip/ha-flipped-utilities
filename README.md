@@ -22,11 +22,8 @@ This module generates color themes using [Material Color Utilities](https://gith
 ## Install the Module From HACS
 
 1. Navigate to HACS (install from [here](https://hacs.xyz/) if you do not have it yet).
-2. Click the kebab menu `⋮` in the top right, and then `Custom Repositories`.
-3. Paste this repositories URL into `Repository`, set `Type` to `Dashboard`, and then click `Add`.
-   - https://github.com/Nerwyn/material-you-utilities
-4. Search for `Material You Utilities`.
-5. Open this repository in HACS and click `Download`.
+2. Search for `Material You Utilities`.
+3. Open this repository in HACS and click `Download`.
 
 ## Add the Module as a Frontend Module and Custom Panel
 
