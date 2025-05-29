@@ -17,8 +17,7 @@
 
 /* Modify sidebar item size and animate background when expanding/retracting */
 ha-md-list-item {
-	transition: width var(--md-sys-motion-duration-short4)
-		var(--md-sys-motion-easing-standard);
+	transition: width var(--md-sys-motion-expressive-spatial-fast);
 	height: 48px;
 	margin: 0 4px;
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
@@ -41,8 +40,7 @@ ha-md-list-item.selected .item-text {
 ha-md-list-item::before {
 	content: '';
 	border-radius: var(--sidebar-item-state-layer-shape);
-	transition: transform var(--md-sys-motion-duration-short4)
-		var(--md-sys-motion-easing-standard);
+	transition: transform var(--md-sys-motion-expressive-spatial-fast);
 	transform: scaleX(0);
 }
 ha-md-list-item.selected::before {

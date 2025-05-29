@@ -17,8 +17,7 @@
 	box-shadow: 0 0 1px 0 var(--md-slider-handle-color);
 	width: 16px;
 	border-radius: 0;
-	transition: scale var(--md-sys-motion-duration-short4)
-		var(--md-sys-motion-easing-standard);
+	transition: scale var(--md-sys-motion-expressive-spatial-fast);
 }
 .hover .handleNub,
 input:focus-visible ~ .handleContainerPadded .handleNub,

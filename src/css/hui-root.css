@@ -2,8 +2,7 @@
 .header {
 	background-color: transparent;
 	pointer-events: none;
-	--scroll-transition: transform var(--md-sys-motion-duration-short1)
-		var(--md-sys-motion-easing-standard);
+	--scroll-transition: transform var(--md-sys-motion-expressive-spatial-fast);
 }
 
 /* Put current view label in header title */
@@ -157,8 +156,7 @@ sl-tab ha-icon::before {
 	width: 64px;
 	border-radius: var(--md-sys-shape-corner-full);
 	background: var(--md-sys-color-secondary-container);
-	transition: transform var(--md-sys-motion-duration-short4)
-		var(--md-sys-motion-easing-standard);
+	transition: transform var(--md-sys-motion-expressive-spatial-fast);
 	transform: scaleX(0);
 }
 sl-tab[active] ha-icon::before {
@@ -199,8 +197,7 @@ ha-icon::after {
 	z-index: 0;
 	background: var(--md-sys-color-on-surface);
 	opacity: 0;
-	transition: opacity var(--md-sys-motion-duration-short2)
-		var(--md-sys-motion-easing-legacy-accelerate) 0s;
+	transition: opacity var(--md-sys-motion-expressive-effects-fast) 0s;
 }
 @media (hover: hover) {
 	sl-tab:hover ha-icon::after {

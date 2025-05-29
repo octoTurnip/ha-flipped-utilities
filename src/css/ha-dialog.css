@@ -8,8 +8,7 @@
 /* Add elevation and color transition */
 .mdc-dialog__surface {
 	box-shadow: var(--md-sys-elevation-level3);
-	transition: background var(--md-sys-motion-duration-medium3)
-		var(--md-sys-motion-easing-standard);
+	transition: background var(--md-sys-motion-expressive-effects-slow);
 }
 
 /* Apply full-screen dialog styles */

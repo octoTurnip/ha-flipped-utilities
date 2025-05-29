@@ -2,10 +2,8 @@
 .handle {
 	background: var(--ha-dialog-surface-background);
 	transition:
-		scale var(--md-sys-motion-duration-short4)
-			var(--md-sys-motion-easing-standard),
-		translate var(--md-sys-motion-duration-short4)
-			var(--md-sys-motion-easing-standard);
+		scale var(--md-sys-motion-expressive-spatial-fast),
+		translate var(--md-sys-motion-expressive-spatial-fast);
 }
 :host(#columns:focus-visible) .handle,
 :host(#columns:active) .handle {
