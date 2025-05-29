@@ -2,7 +2,8 @@
 .header {
 	background-color: transparent;
 	pointer-events: none;
-	--scroll-transition: transform var(--md-sys-motion-expressive-spatial-fast);
+	--scroll-transition: transform var(--md-sys-motion-duration-short1)
+		var(--md-sys-motion-easing-standard);
 }
 
 /* Put current view label in header title */
