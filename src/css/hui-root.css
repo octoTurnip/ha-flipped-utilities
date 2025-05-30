@@ -88,16 +88,6 @@ sl-tab-group::part(tabs) {
 	justify-content: space-evenly;
 }
 
-/* On large displays center view icons and adjust single view tab dashboard title */
-@media (width > 870px) {
-	sl-tab-group::part(tabs) {
-		justify-content: center;
-	}
-	ha-menu-button + .main-title {
-		width: calc(100vw - 16px - var(--mdc-drawer-width, 0px));
-	}
-}
-
 /* Display view tab contents vertically and calculate width to fill entire toolbar */
 sl-tab {
 	display: flex;
@@ -105,12 +95,14 @@ sl-tab {
 	flex-direction: column;
 	flex: 1;
 	gap: 4px;
-	height: 100%;
+	height: var(--footer-height);
 	box-sizing: border-box;
 	min-width: 72px;
 	max-width: 156px;
 	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
+
+	--label: attr(aria-label);
 }
 
 /* Remove tab padding, icon justify center, and remove tap highlight color */
@@ -161,7 +153,7 @@ ha-icon {
 }
 
 /* View icon state layers */
-ha-icon::after {
+sl-tab ha-icon::after {
 	content: '';
 	position: absolute;
 	height: 32px;
@@ -190,7 +182,7 @@ sl-tab:not(:has(ha-icon))::part(base) {
 
 /* View label */
 sl-tab::after {
-	content: attr(aria-label);
+	content: var(--label);
 	text-transform: none;
 	text-wrap: wrap;
 	text-align: center;
@@ -202,6 +194,9 @@ sl-tab::after {
 	overflow: hidden;
 	height: 100%;
 	color: var(--md-sys-color-on-surface-variant);
+	display: flex;
+	align-items: center;
+	z-index: 1;
 }
 
 /* Current view label color */
@@ -270,4 +265,37 @@ sl-tab[active]::after {
 /* Header Cards pointer events fix */
 #headerCards {
 	pointer-events: all;
+}
+
+/* Large displays alternate navigation bar */
+@media (width > 870px) {
+	/* Center view tabs */
+	sl-tab-group::part(tabs) {
+		justify-content: center;
+	}
+
+	/* Move label to right of icon */
+	sl-tab {
+		flex-direction: row;
+	}
+	sl-tab::after {
+		position: absolute;
+		translate: 48px -6px;
+	}
+
+	/* Position icon to left of indicator */
+	sl-tab ha-icon {
+		justify-content: flex-start;
+		padding-left: 20px;
+	}
+	sl-tab ha-icon::before,
+	sl-tab ha-icon::after {
+		content: var(--label);
+		color: transparent;
+		height: 40px;
+		width: fit-content;
+		padding-left: 48px;
+		padding-right: 20px;
+		translate: -20px 0;
+	}
 }
