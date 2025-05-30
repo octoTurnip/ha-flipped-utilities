@@ -102,6 +102,7 @@ sl-tab-group {
 	top: unset;
 	bottom: 0;
 	height: var(--footer-height);
+	width: 100%;
 	background: var(--navbar-background);
 	box-shadow: var(--md-sys-elevation-level2);
 	padding-bottom: env(safe-area-inset-bottom);
@@ -257,23 +258,23 @@ sl-tab[active]::after {
 /* Style add view button to look like view buttons */
 #add-view {
 	position: relative;
-	right: 4px;
-	padding: 5px 0 0;
+	padding: 2px 0 0;
 	width: 56px;
 	flex-direction: column;
+
+	--mdc-icon-button-size: 40px;
 }
 #add-view::after {
 	content: 'Add View';
 	text-transform: none;
-	text-wrap: wrap;
+	text-wrap: nowrap;
 	text-align: center;
 	font-weight: var(--md-ref-typeface-weight-medium);
 	font-size: var(--md-sys-typescale-label-medium-size);
 	line-height: var(--md-sys-typescale-label-medium-line-height);
 	letter-spacing: var(--md-sys-typescale-label-small-tracking);
 	overflow: hidden;
-	height: 100%;
-	margin-top: -5px;
+	color: var(--md-sys-color-on-surface-variant);
 }
 
 /* Fix edit mode menu link color */
