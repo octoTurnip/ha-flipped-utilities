@@ -130,7 +130,7 @@ sl-tab-group::part(tabs) {
 /* Display view tab contents vertically and calculate width to fill entire toolbar */
 sl-tab {
 	display: flex;
-	padding: 12px 0 16px;
+	padding: 6px 0;
 	flex-direction: column;
 	flex: 1;
 	gap: 4px;
@@ -154,7 +154,7 @@ sl-tab ha-icon::before {
 	content: '';
 	position: absolute;
 	height: 32px;
-	width: 64px;
+	width: 56px;
 	border-radius: var(--md-sys-shape-corner-full);
 	background: var(--md-sys-color-secondary-container);
 	transition: transform var(--md-sys-motion-expressive-spatial-fast);
@@ -178,14 +178,15 @@ sl-tab[active] .edit-icon.view {
 	height: 32px;
 }
 
-/* View icon display centering */
+/* View icon display centering and inactive color */
 ha-icon {
 	height: 32px;
-	width: 64px;
+	width: 56px;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
 	z-index: 1;
+	color: var(--md-sys-color-on-surface-variant);
 }
 
 /* View icon state layers */
@@ -193,10 +194,10 @@ ha-icon::after {
 	content: '';
 	position: absolute;
 	height: 32px;
-	width: 64px;
+	width: 56px;
 	border-radius: var(--md-sys-shape-corner-full);
 	z-index: 0;
-	background: var(--md-sys-color-on-surface);
+	background: var(--md-sys-color-on-secondary-container);
 	opacity: 0;
 	transition: opacity var(--md-sys-motion-expressive-effects-fast) 0s;
 }
@@ -234,7 +235,7 @@ sl-tab::after {
 
 /* Current view label color */
 sl-tab[active]::after {
-	color: var(--md-sys-color-on-surface);
+	color: var(--md-sys-color-secondary);
 	font-weight: var(--md-sys-typescale-label-large-weight-prominent);
 }
 
@@ -258,7 +259,7 @@ sl-tab[active]::after {
 	position: relative;
 	right: 4px;
 	padding: 5px 0 0;
-	width: 64px;
+	width: 56px;
 	flex-direction: column;
 }
 #add-view::after {
