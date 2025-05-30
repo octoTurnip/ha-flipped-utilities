@@ -6,38 +6,12 @@
 		var(--md-sys-motion-easing-standard);
 }
 
-/* Put current view label in header title */
-sl-tab[active]::before {
-	content: attr(aria-label);
-	text-transform: none;
-	position: fixed;
-	top: calc(var(--header-height) / 2);
-	left: calc(50% + (var(--mdc-drawer-width, 0px) / 2));
-	transform: translate(-50%, -50%);
-	max-width: calc(100vw - 112px);
-	overflow: hidden;
-	font-size: var(--md-sys-typescale-title-large-size);
-	font-weight: var(--md-sys-typescale-title-large-weight);
-	line-height: var(--md-sys-typescale-title-large-line-height);
-	letter-spacing: var(--md-sys-typescale-title-large-tracking);
-	color: var(--md-sys-color-on-surface);
-	transition: var(--scroll-transition);
-}
-:host([scrolled]) sl-tab[active]::before {
-	transform: translate(-50%, calc(-50% - var(--header-height)));
-}
-sl-tab[active]:dir(rtl)::before {
-	left: calc(50% - (var(--mdc-drawer-width, 0px) / 2));
-}
-
-/* Center single tab view dashboard title */
+/* Hide single tab view dashboard title */
 ha-menu-button + .main-title {
-	flex-grow: 0;
-	text-align: center;
-	width: calc(100vw - 112px);
+	display: none;
 }
 
-/* View title font */
+/* Subview title font */
 .main-title {
 	font-size: var(--md-sys-typescale-title-large-size);
 	font-weight: var(--md-sys-typescale-title-large-weight);
