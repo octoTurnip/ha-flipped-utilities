@@ -274,6 +274,11 @@ sl-tab[active]::after {
 		justify-content: center;
 	}
 
+	/* Show original label of view tab with no icon */
+	sl-tab:not(:has(ha-icon))::part(base) {
+		color: unset;
+	}
+
 	/* Move label to right of icon */
 	sl-tab::part(base) {
 		justify-content: flex-start;
@@ -292,9 +297,12 @@ sl-tab[active]::after {
 		content: unset;
 	}
 
-	/* Fix position of edit view icon */
+	/* Position and size of edit view icons */
+	.edit-icon.view {
+		padding: 0;
+	}
 	ha-icon-button.edit-icon.view {
-		translate: 0 -20px;
+		translate: -6px 0;
 	}
 
 	/* Position icon on left of indicator */
@@ -320,6 +328,10 @@ sl-tab[active]::after {
 		padding-left: 44px;
 		padding-right: 16px;
 		z-index: 0;
+	}
+	sl-tab:not([aria-label]) ha-icon::before,
+	sl-tab:not([aria-label]) ha-icon::after {
+		margin-left: -19px;
 	}
 	sl-tab ha-icon::before {
 		color: transparent;
