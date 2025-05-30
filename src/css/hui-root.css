@@ -292,10 +292,13 @@ sl-tab[active]::after {
 	sl-tab ha-icon::after {
 		content: var(--label);
 		color: transparent;
+		font-weight: var(--md-ref-typeface-weight-medium);
+		font-size: var(--md-sys-typescale-label-medium-size);
+		line-height: var(--md-sys-typescale-label-medium-line-height);
+		letter-spacing: var(--md-sys-typescale-label-small-tracking);
 		height: 40px;
 		width: fit-content;
-		padding-left: 48px;
-		padding-right: 20px;
-		translate: -20px 0;
+		translate: -16px 0;
+		padding: 0 32px;
 	}
 }
