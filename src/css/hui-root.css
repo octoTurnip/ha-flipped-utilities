@@ -98,7 +98,7 @@ sl-tab {
 	height: var(--footer-height);
 	box-sizing: border-box;
 	min-width: 72px;
-	max-width: 156px;
+	max-width: 163px;
 	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
 
@@ -139,6 +139,7 @@ ha-svg-icon {
 sl-tab[active] .edit-icon.view {
 	align-items: center;
 	height: 32px;
+	z-index: 1;
 }
 
 /* View icon display centering and inactive color */
@@ -202,7 +203,6 @@ sl-tab::after {
 /* Current view label color */
 sl-tab[active]::after {
 	color: var(--md-sys-color-secondary);
-	font-weight: var(--md-sys-typescale-label-large-weight-prominent);
 }
 
 /* Make edit mode current view tab fit all buttons */
@@ -275,30 +275,80 @@ sl-tab[active]::after {
 	}
 
 	/* Move label to right of icon */
-	sl-tab {
-		flex-direction: row;
+	sl-tab::part(base) {
+		justify-content: flex-start;
+		align-self: center;
+		width: fit-content;
 	}
-	sl-tab::after {
-		position: absolute;
-		translate: 48px -6px;
+	sl-tab {
+		justify-content: center;
+	}
+	.edit-mode sl-tab[active]::after {
+		translate: -120px 0;
 	}
 
-	/* Position icon to left of indicator */
+	/* Remove vertical label */
+	sl-tab::after {
+		content: unset;
+	}
+
+	/* Fix position of edit view icon */
+	ha-icon-button.edit-icon.view {
+		translate: 0 -20px;
+	}
+
+	/* Position icon on left of indicator */
 	sl-tab ha-icon {
 		justify-content: flex-start;
-		padding-left: 20px;
+		padding-left: 16px;
+		width: 100%;
 	}
+
+	/* Horizontal label, indicator, and state layers */
 	sl-tab ha-icon::before,
 	sl-tab ha-icon::after {
 		content: var(--label);
-		color: transparent;
+		display: flex;
+		align-items: center;
 		font-weight: var(--md-ref-typeface-weight-medium);
 		font-size: var(--md-sys-typescale-label-medium-size);
 		line-height: var(--md-sys-typescale-label-medium-line-height);
 		letter-spacing: var(--md-sys-typescale-label-small-tracking);
 		height: 40px;
 		width: fit-content;
-		translate: -16px 0;
-		padding: 0 32px;
+		margin-left: -16px;
+		padding-left: 44px;
+		padding-right: 16px;
+		z-index: 0;
+	}
+	sl-tab ha-icon::before {
+		color: transparent;
+	}
+	sl-tab ha-icon::after {
+		position: relative;
+		left: -24px;
+		color: var(--md-sys-color-on-surface-variant);
+		background: rgba(
+			from var(--md-sys-color-on-secondary-container) r g b /
+				var(--state-layer-opacity)
+		);
+		opacity: 1;
+		transition: background var(--md-sys-motion-expressive-effects-fast) 0s;
+
+		--state-layer-opacity: 0;
+	}
+	sl-tab[active] ha-icon::after {
+		color: var(--md-sys-color-secondary);
+	}
+	@media (hover: hover) {
+		sl-tab:hover ha-icon::after {
+			--state-layer-opacity: 0.08;
+			opacity: 1;
+		}
+	}
+	sl-tab:focus-visible ha-icon::after,
+	sl-tab:active ha-icon::after {
+		--state-layer-opacity: 0.1;
+		opacity: 1;
 	}
 }
