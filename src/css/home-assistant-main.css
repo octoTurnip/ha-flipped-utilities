@@ -1,6 +1,6 @@
 /* Change drawer width */
 :host {
-	--mdc-drawer-width: 80px;
+	--mdc-drawer-width: 96px;
 }
 :host([expanded]) {
 	--mdc-drawer-width: 220px;

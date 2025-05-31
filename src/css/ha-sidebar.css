@@ -10,7 +10,7 @@
 .menu {
 	width: min-content;
 	padding: 0;
-	margin: 0 16px;
+	margin: 0 24px;
 }
 
 /* Fix list heights*/
@@ -35,22 +35,18 @@ ha-md-list {
 
 /* Modify sidebar item size and animate background when expanding/retracting */
 ha-md-list-item {
-	height: 32px;
-	width: 56px;
+	/* height: 32px; */
+	height: 56px;
+	width: var(--mdc-drawer-width);
 	transition: all var(--md-sys-motion-expressive-spatial-default);
-	margin: 12px;
+	margin: 0;
 	flex-direction: column;
 	justify-content: center;
-	border-radius: var(--md-sys-shape-corner-full);
+	/* overflow: hidden; */
 
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
 	--md-list-item-leading-space: 16px;
 	--md-list-item-trailing-space: 16px;
-
-	/* Enabling overflow displays the labels but causes other issues */
-	overflow: hidden;
-	/* --md-item-overflow: visible; */
-	/* margin: 4px 12px 20px; */
 }
 
 /* Expanded rail indicator should fit content width */
@@ -59,6 +55,7 @@ ha-md-list-item {
 	width: calc(var(--mdc-drawer-width) - env(safe-area-inset-left));
 	max-width: fit-content;
 	margin: 0 12px;
+	border-radius: var(--md-sys-shape-corner-full);
 }
 
 /* Prevent text jumpiness on opening sidebar */
@@ -70,11 +67,16 @@ ha-md-list-item {
 	letter-spacing: var(--md-sys-typescale-label-large-tracking);
 }
 
+/* Make collapsed navigation rail items vertical */
+:host(:not([expanded])) ha-md-list-item {
+	border-radius: 0;
+	--md-list-item-flex-direction: column;
+}
+
 /* Display label when not expanded */
 :host(:not([expanded])) ha-md-list-item .item-text {
-	position: absolute;
-	bottom: -16px;
-	left: -12px;
+	position: relative;
+	top: -3px;
 	width: var(--mdc-drawer-width);
 	text-align: center;
 	white-space: initial;
@@ -87,14 +89,49 @@ ha-md-list-item {
 	letter-spacing: var(--md-sys-typescale-label-small-tracking);
 }
 
+:host(:not([expanded])) ha-md-list-item ha-svg-icon,
+:host(:not([expanded])) ha-md-list-item ha-icon {
+	position: relative;
+	top: 4px;
+}
+
 /* Change background of current destination icon and add scale transition */
-ha-md-list-item::before {
+:host([expanded]) ha-md-list-item::before,
+:host(:not([expanded])) .user::before {
 	content: '';
 	border-radius: var(--sidebar-item-state-layer-shape);
 	transition: transform var(--md-sys-motion-expressive-spatial-fast);
 	transform: scaleX(0);
 }
-ha-md-list-item.selected::before {
+:host([expanded]) ha-md-list-item.selected::before,
+:host(:not([expanded])) .user.selected::before {
+	border-radius: var(--sidebar-item-state-layer-shape);
+	background-color: var(--sidebar-selected-background);
+	opacity: 1;
+	transform: scaleX(1);
+}
+:host(:not([expanded])) .user.selected::before {
+	width: 56px;
+	left: 20px;
+}
+:host(:not([expanded])) ha-md-list-item:not(.user)::before {
+	display: none;
+}
+:host(:not([expanded])) ha-svg-icon::before,
+:host(:not([expanded])) ha-icon::before {
+	content: '';
+	position: absolute;
+	top: -3px;
+	left: -15px;
+	display: block;
+	height: 32px;
+	width: 56px;
+	border-radius: var(--sidebar-item-state-layer-shape);
+	transition: transform var(--md-sys-motion-expressive-spatial-fast);
+	transform: scaleX(0);
+}
+:host(:not([expanded])) ha-md-list-item.selected ha-svg-icon::before,
+:host(:not([expanded])) ha-md-list-item.selected ha-icon::before {
 	border-radius: var(--sidebar-item-state-layer-shape);
 	background-color: var(--sidebar-selected-background);
 	opacity: 1;
@@ -139,11 +176,14 @@ ha-user-badge {
 	margin-left: -8px;
 }
 
-/* Use round indicator for bottom section */
-.notifications,
-.user {
-	height: 56px;
-	margin: 0 12px;
+/* Fix notifications and user badge position */
+:host(:not([expanded])) .notifications ha-svg-icon {
+	position: relative;
+	top: 12px;
+}
+:host(:not([expanded])) .user ha-user-badge {
+	position: relative;
+	top: 8px;
 }
 
 /* Do not use label for bottom section*/

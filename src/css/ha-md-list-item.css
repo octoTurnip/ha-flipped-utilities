@@ -1,4 +1,4 @@
-/* Fix sidebar item border radius */
-#item {
-	border-radius: var(--sidebar-item-state-layer-shape, inherit);
+/* Add flex-direction option to set on parent */
+md-item {
+	flex-direction: var(--md-list-item-flex-direction, row);
 }
