@@ -18,9 +18,14 @@
 /* Modify sidebar item size and animate background when expanding/retracting */
 ha-md-list-item {
 	transition: width var(--md-sys-motion-expressive-spatial-fast);
-	height: 48px;
+	height: 56px;
 	margin: 0 4px;
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
+}
+
+/* Expanded rail indicator should fit content width */
+:host([expanded]) ha-md-list-item {
+	max-width: fit-content;
 }
 
 /* Prevent text jumpiness on opening sidebar */
