@@ -4,11 +4,6 @@
 	--mdc-ripple-color: var(--mdc-theme-primary);
 }
 
-/* Increase horizontal padding for outline buttons */
-:host([outlined]) {
-	--mdc-button-horizontal-padding: 24px;
-}
-
 /* Use box-shadow hack to make outlined buttons look better on desktop */
 :host([outlined]:not([disabled])) #button {
 	box-shadow:
