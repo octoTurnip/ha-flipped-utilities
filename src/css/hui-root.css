@@ -2,8 +2,6 @@
 .header {
 	background-color: transparent;
 	pointer-events: none;
-	--scroll-transition: transform var(--md-sys-motion-duration-short1)
-		var(--md-sys-motion-easing-standard);
 }
 
 /* Hide single tab view dashboard title */
@@ -24,33 +22,46 @@ ha-menu-button + .main-title {
  * Add scroll transition to header buttons
  * User different color for header trailing icons
  */
+.main-title,
+.action-items,
+ha-menu-button,
+ha-icon-button-arrow-prev[slot='navigationIcon'] {
+	pointer-events: all;
+}
+
 .action-items {
 	position: absolute;
 	right: 0px;
+	gap: 4px;
 	color: var(--app-header-edit-text-color);
 }
-.action-items,
-ha-menu-button {
-	padding: 0 4px;
-}
-.action-items,
-.main-title,
 ha-menu-button,
+ha-button-menu,
+ha-tooltip ha-icon-button,
 ha-icon-button-arrow-prev[slot='navigationIcon'] {
-	transition: var(--scroll-transition);
-	pointer-events: all;
+	margin: 0 4px;
+	border-radius: var(--md-sys-shape-corner-full);
+	transition:
+		background var(--md-sys-motion-expressive-effects-default),
+		color var(--md-sys-motion-expressive-effects-default);
+
+	--mdc-icon-button-size: 40px;
 }
 .action-items:dir(rtl) {
 	right: unset;
 	left: 0px;
 }
 
-/* Hide header buttons and title if not scrolled to top  */
-:host([scrolled]) .action-items,
-:host([scrolled]) .main-title,
+/* Add background to header buttons on scroll */
 :host([scrolled]) ha-menu-button,
 :host([scrolled]) ha-icon-button-arrow-prev[slot='navigationIcon'] {
-	transform: translateY(calc(-1 * var(--header-height)));
+	background: var(--md-sys-color-surface-variant);
+	color: var(--md-sys-color-on-surface-variant);
+}
+:host([scrolled]) ha-button-menu,
+:host([scrolled]) ha-tooltip ha-icon-button {
+	background: var(--md-sys-color-secondary-container);
+	color: var(--md-sys-color-on-secondary-container);
 }
 
 /* Remove toolbar padding */
@@ -237,9 +248,17 @@ sl-tab[active]::after {
 	--mdc-icon-button-size: 64px;
 }
 
+/* Restore main title margin in edit mode */
+.edit-mode .main-title {
+	display: flex;
+	align-items: center;
+	margin: 0 24px;
+}
+
 /* Fix edit mode menu link color */
 .menu-link {
 	color: var(--app-header-edit-text-color);
+	-webkit-tap-highlight-color: transparent;
 }
 
 /* Fix horizontal overflow */
