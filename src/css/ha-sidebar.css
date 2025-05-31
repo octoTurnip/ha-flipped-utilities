@@ -41,8 +41,14 @@ ha-md-list-item {
 	margin: 12px;
 	flex-direction: column;
 	justify-content: center;
+	border-radius: var(--md-sys-shape-corner-full);
 
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
+	--md-list-item-leading-space: 16px;
+	--md-list-item-trailing-space: 16px;
+
+	/* Enabling overflow displays the labels but causes other issues */
+	overflow: hidden;
 	/* --md-item-overflow: visible; */
 }
 
@@ -52,13 +58,6 @@ ha-md-list-item {
 	width: calc(var(--mdc-drawer-width) - env(safe-area-inset-left));
 	max-width: fit-content;
 	margin: 0 12px;
-}
-
-/* Fix icon position */
-ha-md-list-item ha-icon,
-ha-md-list-item ha-svg-icon {
-	position: relative;
-	left: 4px;
 }
 
 /* Prevent text jumpiness on opening sidebar */
@@ -138,5 +137,5 @@ ha-md-list-item.selected::before {
 	margin: 0 12px;
 }
 ha-user-badge {
-	margin-left: 4px;
+	margin-left: -8px;
 }
