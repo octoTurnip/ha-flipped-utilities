@@ -1,7 +1,16 @@
-/* Make header transparent and define scroll transition */
-.header {
+/* Make non subview headers transparent */
+.header:not(:has(ha-icon-button-arrow-prev ~ .main-title)) {
 	background-color: transparent;
 	pointer-events: none;
+}
+
+/* Make subview headers match background until scrolled */
+.header:has(ha-icon-button-arrow-prev ~ .main-title) {
+	background-color: var(--md-sys-color-surface);
+	transition: background-color var(--md-sys-motion-expressive-effects-fast);
+}
+:host([scrolled]) .header:has(ha-icon-button-arrow-prev ~ .main-title) {
+	background-color: var(--md-sys-color-surface-container);
 }
 
 /* Hide single tab view dashboard title */
@@ -46,8 +55,7 @@ ha-menu-button,
 /* Add background to header buttons on scroll */
 ha-menu-button,
 ha-button-menu,
-ha-tooltip ha-icon-button,
-ha-icon-button-arrow-prev[slot='navigationIcon'] {
+ha-tooltip ha-icon-button {
 	border-radius: var(--md-sys-shape-corner-full);
 	transition:
 		background var(--md-sys-motion-expressive-effects-default),
@@ -55,15 +63,27 @@ ha-icon-button-arrow-prev[slot='navigationIcon'] {
 
 	--mdc-icon-button-size: 40px;
 }
-:host([scrolled]) ha-menu-button,
-:host([scrolled]) ha-icon-button-arrow-prev[slot='navigationIcon'] {
-	background: var(--md-sys-color-surface-variant);
-	color: var(--md-sys-color-on-surface-variant);
+:host([scrolled]) ha-menu-button {
+	background: var(--md-sys-color-surface-container);
 }
 :host([scrolled]) ha-button-menu,
 :host([scrolled]) ha-tooltip ha-icon-button {
 	background: var(--md-sys-color-secondary-container);
 	color: var(--md-sys-color-on-secondary-container);
+}
+:host([scrolled])
+	ha-icon-button-arrow-prev
+	~ .main-title
+	~ .action-items
+	ha-button-menu,
+:host([scrolled])
+	ha-icon-button-arrow-prev
+	~ .main-title
+	~ .action-items
+	ha-tooltip
+	ha-icon-button {
+	background: unset;
+	color: var(--md-sys-color-on-surface-variant);
 }
 
 /* Remove toolbar padding */
