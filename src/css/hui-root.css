@@ -101,8 +101,6 @@ sl-tab {
 	max-width: 163px;
 	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
-
-	--label: attr(aria-label);
 }
 
 /* Remove tab padding, icon justify center, and remove tap highlight color */
@@ -183,7 +181,7 @@ sl-tab:not(:has(ha-icon))::part(base) {
 
 /* View label */
 sl-tab::after {
-	content: var(--label);
+	content: attr(aria-label);
 	text-transform: none;
 	text-wrap: wrap;
 	text-align: center;
@@ -315,7 +313,7 @@ sl-tab[active]::after {
 	/* Horizontal label, indicator, and state layers */
 	sl-tab ha-icon::before,
 	sl-tab ha-icon::after {
-		content: var(--label);
+		content: attr(title);
 		display: flex;
 		align-items: center;
 		font-weight: var(--md-ref-typeface-weight-medium);
