@@ -2,6 +2,7 @@ import haAssistChip from './ha-assist-chip.css';
 import haButton from './ha-button.css';
 import haCard from './ha-card.css';
 import haDialog from './ha-dialog.css';
+import haDrawer from './ha-drawer.css';
 import haEntityToggle from './ha-entity-toggle.css';
 import haFab from './ha-fab.css';
 import haGridLayoutSlider from './ha-grid-layout-slider.css';
@@ -19,6 +20,7 @@ import haTextfield from './ha-textfield.css';
 import haToast from './ha-toast.css';
 import haUserBadge from './ha-user-badge.css';
 import hassSubpage from './hass-subpage.css';
+import homeAssistantMain from './home-assistant-main.css';
 import hueLikeLightCard from './hue-like-light-card.css';
 import huiEntitiesCardEditor from './hui-entities-card-editor.css';
 import huiEntitiesCard from './hui-entities-card.css';
@@ -46,6 +48,7 @@ export const elements: Record<string, string> = {
 	'ha-md-menu-item': haMdMenuItem,
 	'ha-menu-button': haMenuButton,
 	'ha-more-info-info': haMoreInfoInfo,
+	'ha-drawer': haDrawer,
 	'ha-sidebar': haSidebar,
 	'ha-slider': haSlider,
 	'md-slider': haSlider,
@@ -63,4 +66,5 @@ export const elements: Record<string, string> = {
 	'hui-grid-card-editor': huiStackCardEditor,
 	'hui-view-visibility-editor': huiViewVisibilityEditor,
 	'hue-like-light-card': hueLikeLightCard,
+	'home-assistant-main': homeAssistantMain,
 };

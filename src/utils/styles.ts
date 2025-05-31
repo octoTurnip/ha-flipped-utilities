@@ -1,6 +1,8 @@
 import { elements } from '../css';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { querySelectorAsync } from './async';
+import { getHomeAssistantMainAsync } from './common';
 
 // Theme check variables
 let theme = '';
@@ -140,6 +142,7 @@ function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
  * @param {typeof globalThis} target
  */
 export async function setStyles(target: typeof globalThis) {
+	// Patch custom elements registry define function to inject styles
 	const define = target.CustomElementRegistry.prototype.define;
 	target.CustomElementRegistry.prototype.define = function (
 		name,
@@ -164,4 +167,14 @@ export async function setStyles(target: typeof globalThis) {
 
 		return define.call(this, name, constructor, options);
 	};
+
+	// Explictly set home-assistant-main and drawer styles
+	const haMain = await getHomeAssistantMainAsync();
+	applyStyles(haMain);
+
+	const haDrawer = await querySelectorAsync(
+		haMain.shadowRoot as ShadowRoot,
+		'ha-drawer',
+	);
+	applyStyles(haDrawer);
 }

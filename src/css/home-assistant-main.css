@@ -1,0 +1,10 @@
+/* Change drawer width */
+:host {
+	--mdc-drawer-width: 80px;
+}
+:host([expanded]) {
+	--mdc-drawer-width: 220px;
+}
+:host([modal]) {
+	--mdc-drawer-width: unset;
+}

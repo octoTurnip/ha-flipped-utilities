@@ -1,0 +1,16 @@
+/* Remove border and fix border radius and make width dynamic */
+.mdc-drawer {
+	border-width: 0;
+	min-width: var(--mdc-drawer-width);
+	max-width: 360px;
+	width: fit-content;
+}
+
+/* Fix non-modal border radius */
+.mdc-drawer {
+	border-radius: 0;
+}
+.mdc-drawer--modal {
+	border-top-right-radius: var(--mdc-shape-large);
+	border-bottom-right-radius: var(--mdc-shape-large);
+}

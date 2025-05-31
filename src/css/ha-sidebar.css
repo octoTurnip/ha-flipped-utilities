@@ -6,6 +6,11 @@
 	height: 12px;
 }
 
+/* Fix menu width */
+.menu {
+	width: 100%;
+}
+
 /* Fix bottom list height when title is hidden */
 :host([narrow]) ha-md-list {
 	height: calc(
@@ -89,30 +94,4 @@ ha-md-list-item.selected::before {
 }
 .selected .badge[slot='end'] {
 	color: var(--sidebar-selected-text-color);
-}
-
-/* Fix corners being cut off */
-:host::before,
-:host::after {
-	content: '';
-	background: var(--sidebar-background-color);
-	position: fixed;
-	left: 44px;
-	height: 12px;
-	width: 12px;
-}
-:host::before {
-	top: 0;
-}
-:host:after {
-	bottom: 0;
-}
-:host([expanded])::before,
-:host([expanded])::after {
-	left: 244px;
-}
-:host([narrow])::before,
-:host([narrow])::after {
-	left: 0;
-	width: 0;
 }
