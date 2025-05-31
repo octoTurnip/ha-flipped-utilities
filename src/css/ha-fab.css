@@ -15,4 +15,6 @@ button[aria-label='Add card'] {
 }
 .ripple {
 	border-radius: var(--md-sys-shape-corner-large);
+
+	--mdc-ripple-color: var(--md-sys-color-on-primary-container);
 }
