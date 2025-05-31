@@ -1,10 +1,16 @@
-/* Menu title font */
-.menu {
-	height: 56px;
-	font-size: var(--md-sys-typescale-title-small-size);
-	font-weight: var(--md-sys-typescale-title-small-weight);
-	line-height: var(--md-sys-typescale-title-small-line-height);
-	letter-spacing: var(--md-sys-typescale-title-small-tracking);
+/* Hide title */
+.title {
+	display: none;
+}
+:host([narrow]) .menu {
+	height: 12px;
+}
+
+/* Fix bottom list height when title is hidden */
+:host([narrow]) ha-md-list {
+	height: calc(
+		100% - var(--header-height) - 80px - env(safe-area-inset-bottom)
+	);
 }
 
 /* Remove scrollbar */
@@ -17,14 +23,17 @@
 
 /* Modify sidebar item size and animate background when expanding/retracting */
 ha-md-list-item {
-	transition: width var(--md-sys-motion-expressive-spatial-fast);
-	height: 56px;
+	transition: width var(--md-sys-motion-expressive-spatial-default);
+	height: 48px;
+	width: 48px;
 	margin: 0 4px;
+
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
 }
 
 /* Expanded rail indicator should fit content width */
 :host([expanded]) ha-md-list-item {
+	width: calc(248px - env(safe-area-inset-left));
 	max-width: fit-content;
 }
 
