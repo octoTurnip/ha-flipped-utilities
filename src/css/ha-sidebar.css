@@ -129,6 +129,7 @@ ha-md-list-item {
 	border-radius: var(--sidebar-item-state-layer-shape);
 	transition: transform var(--md-sys-motion-expressive-spatial-fast);
 	transform: scaleX(0);
+	z-index: -1;
 }
 :host(:not([expanded])) ha-md-list-item.selected ha-svg-icon::before,
 :host(:not([expanded])) ha-md-list-item.selected ha-icon::before {
@@ -136,6 +137,12 @@ ha-md-list-item {
 	background-color: var(--sidebar-selected-background);
 	opacity: 1;
 	transform: scaleX(1);
+}
+
+/* Fix navigation rail item icon z-index */
+ha-md-list-item ha-svg-icon,
+ha-md-list-item ha-icon {
+	z-index: 0;
 }
 
 /* Fix bottom divider color */
