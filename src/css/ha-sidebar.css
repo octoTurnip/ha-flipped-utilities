@@ -43,7 +43,7 @@ ha-md-list-item {
 	justify-content: center;
 
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
-	--md-item-overflow: visible;
+	/* --md-item-overflow: visible; */
 }
 
 /* Expanded rail indicator should fit content width */
@@ -130,4 +130,13 @@ ha-md-list-item.selected::before {
 .tooltip {
 	display: none;
 	pointer-events: none;
+}
+
+/* Use round indicator for profile */
+.user {
+	height: 56px;
+	margin: 0 12px;
+}
+ha-user-badge {
+	margin-left: 4px;
 }
