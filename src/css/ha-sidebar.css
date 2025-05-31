@@ -92,3 +92,9 @@ ha-md-list-item.selected::before {
 .selected .badge[slot='end'] {
 	color: var(--sidebar-selected-text-color);
 }
+
+/* Disable tooltip */
+.tooltip {
+	display: none;
+	pointer-events: none;
+}
