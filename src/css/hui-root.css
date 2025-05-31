@@ -19,8 +19,8 @@ ha-menu-button + .main-title {
 
 /*
  * Move menu and action items buttons to header
- * Add scroll transition to header buttons
  * User different color for header trailing icons
+ * Reduce size of header buttons but increase margin and gap to keep same placement
  */
 .main-title,
 .action-items,
@@ -28,24 +28,15 @@ ha-menu-button,
 ha-icon-button-arrow-prev[slot='navigationIcon'] {
 	pointer-events: all;
 }
-
+ha-menu-button,
+.action-items {
+	margin: 0 12px;
+}
 .action-items {
 	position: absolute;
 	right: 0px;
 	gap: 4px;
 	color: var(--app-header-edit-text-color);
-}
-ha-menu-button,
-ha-button-menu,
-ha-tooltip ha-icon-button,
-ha-icon-button-arrow-prev[slot='navigationIcon'] {
-	margin: 0 4px;
-	border-radius: var(--md-sys-shape-corner-full);
-	transition:
-		background var(--md-sys-motion-expressive-effects-default),
-		color var(--md-sys-motion-expressive-effects-default);
-
-	--mdc-icon-button-size: 40px;
 }
 .action-items:dir(rtl) {
 	right: unset;
@@ -53,6 +44,17 @@ ha-icon-button-arrow-prev[slot='navigationIcon'] {
 }
 
 /* Add background to header buttons on scroll */
+ha-menu-button,
+ha-button-menu,
+ha-tooltip ha-icon-button,
+ha-icon-button-arrow-prev[slot='navigationIcon'] {
+	border-radius: var(--md-sys-shape-corner-full);
+	transition:
+		background var(--md-sys-motion-expressive-effects-default),
+		color var(--md-sys-motion-expressive-effects-default);
+
+	--mdc-icon-button-size: 40px;
+}
 :host([scrolled]) ha-menu-button,
 :host([scrolled]) ha-icon-button-arrow-prev[slot='navigationIcon'] {
 	background: var(--md-sys-color-surface-variant);
