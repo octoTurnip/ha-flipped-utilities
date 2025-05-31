@@ -50,6 +50,7 @@ ha-md-list-item {
 	/* Enabling overflow displays the labels but causes other issues */
 	overflow: hidden;
 	/* --md-item-overflow: visible; */
+	/* margin: 4px 12px 20px; */
 }
 
 /* Expanded rail indicator should fit content width */
@@ -77,6 +78,8 @@ ha-md-list-item {
 	width: var(--mdc-drawer-width);
 	text-align: center;
 	white-space: initial;
+	box-sizing: border-box;
+	padding: 0 2px;
 	height: var(--md-sys-typescale-label-medium-line-height);
 	font-weight: var(--md-ref-typeface-weight-medium);
 	font-size: var(--md-sys-typescale-label-medium-size);
@@ -131,11 +134,20 @@ ha-md-list-item.selected::before {
 	pointer-events: none;
 }
 
-/* Use round indicator for profile */
+/* Fix user badge position */
+ha-user-badge {
+	margin-left: -8px;
+}
+
+/* Use round indicator for bottom section */
+.notifications,
 .user {
 	height: 56px;
 	margin: 0 12px;
 }
-ha-user-badge {
-	margin-left: -8px;
+
+/* Do not use label for bottom section*/
+:host(:not([expanded])) .notifications .item-text,
+:host(:not([expanded])) .user .item-text {
+	display: none;
 }
