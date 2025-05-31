@@ -33,7 +33,6 @@ import huiViewVisibilityEditor from './hui-view-visibility-editor.css';
 export const elements: Record<string, string> = {
 	'ha-assist-chip': haAssistChip,
 	'ha-button': haButton,
-	'mwc-button': haButton,
 	'ha-card': haCard,
 	'ha-dialog': haDialog,
 	'ha-md-dialog': haMdDialog,
