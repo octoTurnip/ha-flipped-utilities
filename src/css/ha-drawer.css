@@ -1,9 +1,12 @@
-/* Remove border and fix border radius and make width dynamic */
+/* Remove border, fix border radius, make width dynamic, add transition */
 .mdc-drawer {
 	border-width: 0;
 	min-width: var(--mdc-drawer-width);
 	max-width: 360px;
 	width: fit-content;
+	transition: all var(--md-sys-motion-expressive-spatial-fast);
+	padding-left: 64px;
+	translate: -64px 0;
 }
 
 /* Fix non-modal border radius */

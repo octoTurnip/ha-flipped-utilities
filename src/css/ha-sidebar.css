@@ -6,9 +6,11 @@
 	height: 12px;
 }
 
-/* Fix menu width */
+/* Fix menu button size */
 .menu {
-	width: 100%;
+	width: min-content;
+	padding: 0;
+	margin: 0 16px;
 }
 
 /* Fix bottom list height when title is hidden */
@@ -29,16 +31,16 @@
 /* Modify sidebar item size and animate background when expanding/retracting */
 ha-md-list-item {
 	transition: width var(--md-sys-motion-expressive-spatial-default);
-	height: 48px;
-	width: 48px;
-	margin: 0 4px;
+	height: 56px;
+	width: 56px;
+	margin: 0 12px;
 
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
 }
 
 /* Expanded rail indicator should fit content width */
 :host([expanded]) ha-md-list-item {
-	width: calc(248px - env(safe-area-inset-left));
+	width: calc(var(--mdc-drawer-width) - env(safe-area-inset-left));
 	max-width: fit-content;
 }
 
@@ -48,11 +50,6 @@ ha-md-list-item {
 	white-space: nowrap;
 	line-height: var(--md-sys-typescale-label-large-line-height);
 	letter-spacing: var(--md-sys-typescale-label-large-tracking);
-}
-
-/* Current destination font weight */
-ha-md-list-item.selected .item-text {
-	font-weight: var(--md-sys-typescale-label-medium-weight-prominent);
 }
 
 /* Change background of current destination icon and add scale transition */
