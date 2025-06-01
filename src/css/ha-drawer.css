@@ -3,12 +3,10 @@
 	border-width: 0;
 	width: calc(var(--mdc-drawer-width) + 64px);
 	transition: var(--drawer-transition);
-	padding-left: 64px;
+	padding-inline-start: 64px;
 	translate: -64px 0;
 }
 .mdc-drawer:dir(rtl) {
-	padding-left: unset;
-	padding-right: 64px;
 	translate: 64px 0;
 }
 

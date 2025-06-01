@@ -43,13 +43,13 @@ ha-menu-button,
 }
 .action-items {
 	position: absolute;
-	right: 0px;
+	right: 0;
 	gap: 4px;
 	color: var(--app-header-edit-text-color);
 }
 .action-items:dir(rtl) {
 	right: unset;
-	left: 0px;
+	left: 0;
 }
 
 /* Add background to header buttons on scroll */
@@ -111,8 +111,11 @@ sl-tab-group {
 	margin: 0;
 	margin-inline: 0;
 	pointer-events: all;
-	padding-left: 128px;
+	padding-inline-start: 128px;
 	translate: -128px 0;
+}
+sl-tab-group:dir(rtl) {
+	translate: 128px 0;
 }
 .edit-tab-bar,
 .toolbar > sl-tab-group {
@@ -124,11 +127,6 @@ sl-tab-group {
 	box-shadow: var(--md-sys-elevation-level2);
 	padding-bottom: env(safe-area-inset-bottom);
 	pointer-events: all;
-}
-sl-tab-group:dir(rtl) {
-	padding-left: unset;
-	padding-right: 128px;
-	translate: 128px 0;
 }
 
 /* Make tabs full width*/
@@ -378,33 +376,21 @@ sl-tab[active]::after {
 		letter-spacing: var(--md-sys-typescale-label-small-tracking);
 		height: 40px;
 		width: fit-content;
-		margin-left: -16px;
-		padding-left: 44px;
-		padding-right: 16px;
+		margin-inline-start: -16px;
+		padding-inline-start: 44px;
+		padding-inline-end: 16px;
 		z-index: 0;
-	}
-	sl-tab ha-icon:dir(rtl)::before,
-	sl-tab ha-icon:dir(rtl)::after {
-		margin-left: unset;
-		margin-right: -16px;
-		padding-right: 44px;
-		padding-left: 16px;
 	}
 	sl-tab:not([aria-label]) ha-icon::before,
 	sl-tab:not([aria-label]) ha-icon::after {
-		margin-left: -19px;
-	}
-	sl-tab:not([aria-label]) ha-icon:dir(rtl)::before,
-	sl-tab:not([aria-label]) ha-icon:dir(rtl)::after {
-		margin-left: unset;
-		margin-right: -19px;
+		margin-inline-start: -18px;
 	}
 	sl-tab ha-icon::before {
 		color: transparent;
 	}
 	sl-tab ha-icon::after {
 		position: relative;
-		left: -24px;
+		inset-inline-start: -24px;
 		color: var(--md-sys-color-on-surface-variant);
 		background: rgba(
 			from var(--md-sys-color-on-secondary-container) r g b /
@@ -414,10 +400,6 @@ sl-tab[active]::after {
 		transition: background var(--md-sys-motion-expressive-effects-default);
 
 		--state-layer-opacity: 0;
-	}
-	sl-tab ha-icon:dir(rtl)::after {
-		left: unset;
-		right: -24px;
 	}
 	sl-tab[active] ha-icon::after {
 		color: var(--md-sys-color-secondary);

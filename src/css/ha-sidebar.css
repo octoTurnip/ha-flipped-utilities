@@ -121,7 +121,7 @@ ha-md-list-item.selected {
 }
 :host(:not([expanded])) .user.selected::before {
 	width: 56px;
-	left: 20px;
+	margin-inline-start: 20px;
 }
 :host(:not([expanded])) ha-md-list-item:not(.user)::before {
 	display: none;

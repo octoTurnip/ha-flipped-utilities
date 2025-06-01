@@ -1,11 +1,9 @@
 /* Add left padding and translate to header to help hide rail transition */
 .mdc-top-app-bar {
 	width: calc(var(--mdc-top-app-bar-width) + 128px);
-	padding-left: 128px;
+	padding-inline-start: 128px;
 	translate: -128px 0;
 }
 .mdc-top-app-bar:dir(rtl) {
-	padding-left: unset;
-	padding-right: 128px;
 	translate: 128px 0;
 }

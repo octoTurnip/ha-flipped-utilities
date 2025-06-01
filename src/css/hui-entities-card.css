@@ -1,9 +1,6 @@
 /* Fix header ha-switch position */
 hui-entities-toggle {
 	position: relative;
-	left: -6px;
+	padding-inline-end: 6px;
 	top: 8px;
-}
-hui-entities-toggle:dir(rtl) {
-	left: 6px;
 }

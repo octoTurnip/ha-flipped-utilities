@@ -4,10 +4,5 @@
 	position: absolute;
 	z-index: 2;
 	margin: 4px 0;
-	left: 4px;
-}
-:host([slot='item-icon']) .initials:dir(rtl),
-:host([slot='item-icon']) .picture:dir(rtl) {
-	left: unset;
-	right: 4px;
+	padding-inline-start: 4px;
 }

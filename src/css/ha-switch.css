@@ -121,6 +121,9 @@ mwc-ripple {
 	scale: 1;
 	transition: scale var(--md-sys-motion-expressive-spatial-fast);
 }
+.mdc-switch__native-control:dir(rtl) {
+	left: 34px;
+}
 .mdc-switch--checked .mdc-switch__native-control {
 	transform: translateX(-20px);
 	scale: 0.7;
@@ -135,7 +138,4 @@ mwc-ripple {
 .mdc-switch__thumb:has(input:focus-visible) .mdc-switch__native-control,
 .mdc-switch__thumb:active .mdc-switch__native-control {
 	scale: 0.6;
-}
-.mdc-switch__native-control:dir(rtl) {
-	left: 34px;
 }
