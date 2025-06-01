@@ -3,7 +3,7 @@
 	--mdc-drawer-width: 96px;
 }
 :host([expanded]) {
-	--mdc-drawer-width: 220px;
+	--mdc-drawer-width: 256px;
 }
 :host([modal]) {
 	--mdc-drawer-width: unset;
