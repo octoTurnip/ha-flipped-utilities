@@ -141,6 +141,10 @@ ha-md-list-item.selected {
 	border-radius: var(--sidebar-item-state-layer-shape);
 	z-index: -1;
 }
+:host(:not([expanded])) .notifications ha-svg-icon::after {
+	height: 56px;
+	top: -16px;
+}
 :host(:not([expanded])) ha-user-badge::after {
 	height: 56px;
 	top: -8px;
