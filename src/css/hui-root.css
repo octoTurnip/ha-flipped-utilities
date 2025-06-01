@@ -209,7 +209,7 @@ sl-tab ha-icon::after {
 	z-index: 0;
 	background: var(--md-sys-color-on-secondary-container);
 	opacity: 0;
-	transition: opacity var(--md-sys-motion-expressive-effects-fast) 0s;
+	transition: opacity var(--md-sys-motion-expressive-effects-slow);
 }
 @media (hover: hover) {
 	sl-tab:hover ha-icon::after {
@@ -218,7 +218,7 @@ sl-tab ha-icon::after {
 }
 sl-tab:focus-visible ha-icon::after,
 sl-tab:active ha-icon::after {
-	opacity: 0.1;
+	opacity: 0.18;
 }
 
 /* Tabs with no icon */
@@ -411,7 +411,7 @@ sl-tab[active]::after {
 				var(--state-layer-opacity)
 		);
 		opacity: 1;
-		transition: background var(--md-sys-motion-expressive-effects-fast) 0s;
+		transition: background var(--md-sys-motion-expressive-effects-fast);
 
 		--state-layer-opacity: 0;
 	}
@@ -430,7 +430,7 @@ sl-tab[active]::after {
 	}
 	sl-tab:focus-visible ha-icon::after,
 	sl-tab:active ha-icon::after {
-		--state-layer-opacity: 0.1;
+		--state-layer-opacity: 0.18;
 		opacity: 1;
 	}
 }

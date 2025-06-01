@@ -78,7 +78,7 @@ mwc-ripple {
 	z-index: 1;
 	background: var(--switch-unchecked-track-state-layer);
 	opacity: 0;
-	transition: opacity var(--md-sys-motion-expressive-effects-fast) 0s;
+	transition: opacity var(--md-sys-motion-expressive-effects-fast);
 }
 .mdc-switch--checked .mdc-switch__track::after {
 	background: var(--switch-checked-track-color);
@@ -90,7 +90,7 @@ mwc-ripple {
 }
 .mdc-switch:has(input:focus-visible) .mdc-switch__track::after,
 .mdc-switch:active .mdc-switch__track::after {
-	opacity: 0.1;
+	opacity: 0.18;
 }
 
 /* Thumb state layers */

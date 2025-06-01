@@ -71,7 +71,7 @@ ha-md-list-item.selected {
 	letter-spacing: var(--md-sys-typescale-label-large-tracking);
 }
 
-/* Make collapsed navigation rail items vertical */
+/* Make collapsed navigation rail items vertical and hide default ripple */
 :host(:not([expanded])) ha-md-list-item {
 	border-radius: 0;
 	padding-top: 4px;
@@ -79,6 +79,8 @@ ha-md-list-item.selected {
 
 	--md-list-item-flex-direction: column;
 	--ha-md-list-item-gap: 10px;
+	--md-ripple-hover-color: transparent;
+	--md-ripple-pressed-color: transparent;
 }
 
 /* Display label when not expanded */
