@@ -75,13 +75,13 @@ ha-md-list-item.selected {
 /* Make collapsed navigation rail items vertical */
 :host(:not([expanded])) ha-md-list-item {
 	border-radius: 0;
+
 	--md-list-item-flex-direction: column;
+	--ha-md-list-item-gap: 10px;
 }
 
 /* Display label when not expanded */
 :host(:not([expanded])) ha-md-list-item .item-text {
-	position: relative;
-	top: -3px;
 	width: var(--mdc-drawer-width);
 	text-align: center;
 	white-space: initial;
