@@ -130,8 +130,8 @@ ha-md-list-item.selected {
 :host(:not([expanded])) ha-icon::before {
 	content: '';
 	position: absolute;
-	top: -3px;
-	left: -15px;
+	top: -4px;
+	left: -16px;
 	display: block;
 	height: 32px;
 	width: 56px;
