@@ -54,8 +54,13 @@ ha-md-list-item {
 	height: 56px;
 	width: calc(var(--mdc-drawer-width) - env(safe-area-inset-left));
 	max-width: fit-content;
-	margin: 0 12px;
+	margin: 0 20px;
 	border-radius: var(--md-sys-shape-corner-full);
+}
+
+/* Fix collapsed rail selected text color */
+ha-md-list-item.selected {
+	--md-list-item-label-text-color: var(--sidebar-selected-text-color);
 }
 
 /* Prevent text jumpiness on opening sidebar */
