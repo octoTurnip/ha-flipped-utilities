@@ -1,6 +1,5 @@
-/* Restore divider color, make sliders use card background color for handle */
+/* Make sliders use card background color for handle */
 :host {
-	--divider-color: var(--md-sys-color-outline-variant);
 	--md-slider-handle-color: var(--ha-card-background);
 }
 

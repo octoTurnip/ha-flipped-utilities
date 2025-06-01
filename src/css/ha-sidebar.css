@@ -151,11 +151,6 @@ ha-md-list-item ha-icon {
 	z-index: 0;
 }
 
-/* Fix bottom divider color */
-.divider {
-	--divider-color: var(--md-sys-color-outline-variant);
-}
-
 /* Rail notification badge */
 .badge {
 	color: var(--on-error-color);
