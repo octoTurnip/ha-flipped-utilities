@@ -10,6 +10,11 @@
 	transition: background var(--md-sys-motion-expressive-effects-slow);
 }
 
+/* Expressive transition on dialog open */
+.mdc-dialog__container {
+	transition: all var(--md-sys-motion-expressive-spatial-fast);
+}
+
 /* Apply full-screen dialog styles */
 @media (max-width: 450px), (max-height: 500px) {
 	:host {
