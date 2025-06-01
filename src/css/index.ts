@@ -18,6 +18,7 @@ import haSlider from './ha-slider.css';
 import haSwitch from './ha-switch.css';
 import haTextfield from './ha-textfield.css';
 import haToast from './ha-toast.css';
+import haTopAppBarFixed from './ha-top-app-bar-fixed.css';
 import haUserBadge from './ha-user-badge.css';
 import hassSubpage from './hass-subpage.css';
 import homeAssistantMain from './home-assistant-main.css';
@@ -53,6 +54,7 @@ export const elements: Record<string, string> = {
 	'ha-slider': haSlider,
 	'md-slider': haSlider,
 	'ha-switch': haSwitch,
+	'ha-top-app-bar-fixed': haTopAppBarFixed,
 	'ha-textfield': haTextfield,
 	'ha-toast': haToast,
 	'ha-user-badge': haUserBadge,
