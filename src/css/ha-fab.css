@@ -18,3 +18,11 @@ button[aria-label='Add card'] {
 
 	--mdc-ripple-color: var(--md-sys-color-on-primary-container);
 }
+
+/* Expressive extended FAB font */
+.mdc-fab--extended {
+	font-size: 16px;
+	font-weight: var(--md-ref-typeface-weight-medium);
+	line-height: 24px;
+	letter-spacing: 0.15px;
+}
