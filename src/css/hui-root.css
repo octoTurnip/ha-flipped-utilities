@@ -209,7 +209,7 @@ sl-tab ha-icon::after {
 	z-index: 0;
 	background: var(--md-sys-color-on-secondary-container);
 	opacity: 0;
-	transition: opacity var(--md-sys-motion-expressive-effects-slow);
+	transition: opacity var(--md-sys-motion-expressive-effects-default);
 }
 @media (hover: hover) {
 	sl-tab:hover ha-icon::after {
@@ -411,7 +411,7 @@ sl-tab[active]::after {
 				var(--state-layer-opacity)
 		);
 		opacity: 1;
-		transition: background var(--md-sys-motion-expressive-effects-fast);
+		transition: background var(--md-sys-motion-expressive-effects-default);
 
 		--state-layer-opacity: 0;
 	}

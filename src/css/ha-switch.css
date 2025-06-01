@@ -78,7 +78,7 @@ mwc-ripple {
 	z-index: 1;
 	background: var(--switch-unchecked-track-state-layer);
 	opacity: 0;
-	transition: opacity var(--md-sys-motion-expressive-effects-fast);
+	transition: opacity var(--md-sys-motion-expressive-effects-default);
 }
 .mdc-switch--checked .mdc-switch__track::after {
 	background: var(--switch-checked-track-color);

@@ -127,7 +127,10 @@ ha-md-list-item.selected {
 	display: none;
 }
 :host(:not([expanded])) ha-svg-icon::before,
-:host(:not([expanded])) ha-icon::before {
+:host(:not([expanded])) ha-icon::before,
+:host(:not([expanded])) ha-svg-icon::after,
+:host(:not([expanded])) ha-icon::after,
+:host(:not([expanded])) ha-user-badge::after {
 	content: '';
 	position: absolute;
 	top: -4px;
@@ -136,16 +139,52 @@ ha-md-list-item.selected {
 	height: 32px;
 	width: 56px;
 	border-radius: var(--sidebar-item-state-layer-shape);
-	transition: transform var(--md-sys-motion-expressive-spatial-fast);
-	transform: scaleX(0);
 	z-index: -1;
+}
+:host(:not([expanded])) ha-user-badge::after {
+	height: 56px;
+	top: -8px;
+	left: -8px;
+	z-index: 0;
+}
+:host(:not([expanded])) ha-svg-icon::before,
+:host(:not([expanded])) ha-icon::before {
+	background-color: var(--sidebar-selected-background);
+	opacity: 1;
+	transform: scaleX(0);
+	transition: transform var(--md-sys-motion-expressive-spatial-fast);
 }
 :host(:not([expanded])) ha-md-list-item.selected ha-svg-icon::before,
 :host(:not([expanded])) ha-md-list-item.selected ha-icon::before {
-	border-radius: var(--sidebar-item-state-layer-shape);
-	background-color: var(--sidebar-selected-background);
-	opacity: 1;
 	transform: scaleX(1);
+}
+
+/* Collapsed navigation rail icon state layers */
+:host(:not([expanded])) ha-svg-icon::after,
+:host(:not([expanded])) ha-icon::after,
+:host(:not([expanded])) ha-user-badge::after {
+	background-color: var(--md-sys-color-on-secondary-container);
+	opacity: 0;
+	transition: opacity var(--md-sys-motion-expressive-effects-default);
+}
+@media (hover: hover) {
+	:host(:not([expanded])) ha-md-list-item:hover ha-svg-icon::after,
+	:host(:not([expanded])) ha-md-list-item:hover ha-icon::after,
+	:host(:not([expanded])) ha-md-list-item:hover ha-user-badge::after {
+		opacity: 0.08;
+	}
+}
+:host(:not([expanded]))
+	ha-md-list-item:has(input:focus-visible)
+	ha-svg-icon::after,
+:host(:not([expanded])) ha-md-list-item:has(input:focus-visible) ha-icon::after,
+:host(:not([expanded]))
+	ha-md-list-item:has(input:focus-visible)
+	ha-user-badge::after,
+:host(:not([expanded])) ha-md-list-item:active ha-svg-icon::after,
+:host(:not([expanded])) ha-md-list-item:active ha-icon::after,
+:host(:not([expanded])) ha-md-list-item:active ha-user-badge::after {
+	opacity: 0.18;
 }
 
 /* Fix navigation rail item icon z-index */
@@ -195,6 +234,8 @@ ha-user-badge {
 :host(:not([expanded])) .notifications,
 :host(:not([expanded])) .user {
 	height: 56px;
+
+	--md-item-overflow: visible;
 }
 :host(:not([expanded])) .notifications ha-svg-icon {
 	position: relative;
@@ -202,7 +243,7 @@ ha-user-badge {
 }
 :host(:not([expanded])) .user ha-user-badge {
 	position: relative;
-	top: 8px;
+	top: 6px;
 }
 
 /* Do not use label for bottom section*/
