@@ -2,7 +2,7 @@
 .mdc-drawer {
 	border-width: 0;
 	width: calc(var(--mdc-drawer-width) + 64px);
-	transition: all var(--md-sys-motion-expressive-spatial-fast);
+	transition: var(--drawer-transition);
 	padding-left: 64px;
 	translate: -64px 0;
 }
