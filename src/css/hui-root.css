@@ -282,6 +282,10 @@ sl-tab[active]::after {
 
 	--mdc-icon-button-size: 64px;
 }
+#add-view:dir(rtl) {
+	right: unset;
+	left: calc(16px + env(safe-area-inset-right));
+}
 
 /* Restore main title margin in edit mode */
 .edit-mode .main-title {
@@ -302,11 +306,14 @@ sl-tab[active]::after {
 }
 
 /* Add bottom footer padding when present */
-.header:has(sl-tab-group) + #view {
-	padding-bottom: calc(
+div:has(sl-tab-group) {
+	--footer-offset: calc(
 		var(--kiosk-header-height, var(--footer-height)) +
 			env(safe-area-inset-bottom)
 	);
+}
+.header:has(sl-tab-group) + #view {
+	padding-bottom: var(--footer-offset);
 }
 
 /* Fix edit mode view top padding */
