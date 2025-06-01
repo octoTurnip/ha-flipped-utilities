@@ -29,6 +29,7 @@ import huiGridSection from './hui-grid-section.css';
 import huiRoot from './hui-root.css';
 import huiStackCardEditor from './hui-stack-card-editor.css';
 import huiViewVisibilityEditor from './hui-view-visibility-editor.css';
+import notificationDrawer from './notification-drawer.css';
 
 /**
  * Home Assistant (and other) custom elements to patch and their corresponding styles
@@ -69,4 +70,5 @@ export const elements: Record<string, string> = {
 	'hui-view-visibility-editor': huiViewVisibilityEditor,
 	'hue-like-light-card': hueLikeLightCard,
 	'home-assistant-main': homeAssistantMain,
+	'notification-drawer': notificationDrawer,
 };
