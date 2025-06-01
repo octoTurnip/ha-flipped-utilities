@@ -117,7 +117,6 @@ sl-tab-group {
 
 /* Make tabs full width*/
 sl-tab-group::part(tabs) {
-	width: 100%;
 	justify-content: space-evenly;
 }
 
