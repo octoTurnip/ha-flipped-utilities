@@ -105,12 +105,14 @@ ha-tooltip ha-icon-button {
 	display: none;
 }
 
-/* Turn view tabs into a separate footer */
+/* Turn view tabs into a separate footer, fix rail transition gap */
 sl-tab-group {
 	width: calc(100vw - var(--mdc-drawer-width, 0px));
 	margin: 0;
 	margin-inline: 0;
 	pointer-events: all;
+	padding-left: 128px;
+	translate: -128px 0;
 }
 .edit-tab-bar,
 .toolbar > sl-tab-group {

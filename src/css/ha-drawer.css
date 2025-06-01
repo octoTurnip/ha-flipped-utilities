@@ -3,10 +3,8 @@
 	border-width: 0;
 	width: calc(var(--mdc-drawer-width) + var(--transition-buffer));
 	transition: all var(--md-sys-motion-expressive-spatial-fast);
-	padding-left: var(--transition-buffer);
-	translate: calc(-1 * var(--transition-buffer)) 0;
-
-	--transition-buffer: 64px;
+	padding-left: 64px;
+	translate: -64px 0;
 }
 
 /* Fix non-modal border radius */
