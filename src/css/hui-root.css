@@ -63,6 +63,13 @@ ha-tooltip ha-icon-button {
 
 	--mdc-icon-button-size: 40px;
 }
+ha-button-menu,
+ha-tooltip ha-icon-button {
+	display: flex;
+	justify-content: center;
+	width: 32px;
+	margin: 0 4px;
+}
 :host([scrolled]) ha-menu-button {
 	background: var(--md-sys-color-surface-container);
 }
@@ -71,6 +78,8 @@ ha-tooltip ha-icon-button {
 	background: var(--md-sys-color-secondary-container);
 	color: var(--md-sys-color-on-secondary-container);
 }
+
+/* Remove background from subview header buttons on scroll */
 :host([scrolled])
 	ha-icon-button-arrow-prev
 	~ .main-title
