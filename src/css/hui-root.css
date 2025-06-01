@@ -125,6 +125,11 @@ sl-tab-group {
 	padding-bottom: env(safe-area-inset-bottom);
 	pointer-events: all;
 }
+sl-tab-group:dir(rtl) {
+	padding-left: unset;
+	padding-right: 128px;
+	translate: 128px 0;
+}
 
 /* Make tabs full width*/
 sl-tab-group::part(tabs) {
@@ -378,9 +383,21 @@ sl-tab[active]::after {
 		padding-right: 16px;
 		z-index: 0;
 	}
+	sl-tab ha-icon:dir(rtl)::before,
+	sl-tab ha-icon:dir(rtl)::after {
+		margin-left: unset;
+		margin-right: -16px;
+		padding-right: 44px;
+		padding-left: 16px;
+	}
 	sl-tab:not([aria-label]) ha-icon::before,
 	sl-tab:not([aria-label]) ha-icon::after {
 		margin-left: -19px;
+	}
+	sl-tab:not([aria-label]) ha-icon:dir(rtl)::before,
+	sl-tab:not([aria-label]) ha-icon:dir(rtl)::after {
+		margin-left: unset;
+		margin-right: -19px;
 	}
 	sl-tab ha-icon::before {
 		color: transparent;
@@ -397,6 +414,10 @@ sl-tab[active]::after {
 		transition: background var(--md-sys-motion-expressive-effects-fast) 0s;
 
 		--state-layer-opacity: 0;
+	}
+	sl-tab ha-icon:dir(rtl)::after {
+		left: unset;
+		right: -24px;
 	}
 	sl-tab[active] ha-icon::after {
 		color: var(--md-sys-color-secondary);

@@ -1,10 +1,15 @@
 /* Remove border, fix border radius, make width dynamic, add transition */
 .mdc-drawer {
 	border-width: 0;
-	width: calc(var(--mdc-drawer-width) + var(--transition-buffer));
+	width: calc(var(--mdc-drawer-width) + 64px);
 	transition: all var(--md-sys-motion-expressive-spatial-fast);
 	padding-left: 64px;
 	translate: -64px 0;
+}
+.mdc-drawer:dir(rtl) {
+	padding-left: unset;
+	padding-right: 64px;
+	translate: 64px 0;
 }
 
 /* Fix non-modal border radius */
