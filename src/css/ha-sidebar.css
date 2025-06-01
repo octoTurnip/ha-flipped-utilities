@@ -155,26 +155,27 @@ ha-md-list-item ha-icon {
 	--divider-color: var(--md-sys-color-outline-variant);
 }
 
-/* Fix rail sidebar badge color, size, and position */
-.badge[slot='start'] {
+/* Rail notification badge */
+.badge {
 	color: var(--on-error-color);
 	background-color: var(--error-color);
-	font-weight: var(--md-sys-typescale-label-large-weight);
+	font-size: var(--md-sys-typescale-label-small-size);
+	font-weight: var(--md-sys-typescale-label-small-weight);
+	line-height: var(--md-sys-typescale-label-small-line-height);
+	letter-spacing: var(--md-sys-typescale-label-small-tracking);
 	height: 8px;
 	min-width: 8px;
 	padding: 4px;
+}
+.badge[slot='start'] {
 	top: 8px;
 	left: 50%;
 	z-index: 2;
 }
-
-/* Use sidebar text color with no background on drawer badges */
 .badge[slot='end'] {
-	color: var(--sidebar-text-color);
-	background-color: transparent;
-}
-.selected .badge[slot='end'] {
-	color: var(--sidebar-selected-text-color);
+	position: absolute;
+	top: 12px;
+	left: 28px;
 }
 
 /* Disable tooltip */
