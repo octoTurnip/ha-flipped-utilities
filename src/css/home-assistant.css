@@ -1,0 +1,4 @@
+/* Hide border on notifications drawer */
+notification-drawer {
+	--divider-color: transparent;
+}

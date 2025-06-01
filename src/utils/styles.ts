@@ -7,7 +7,11 @@ import { getHomeAssistantMainAsync } from './common';
 // Theme check variables
 let theme = '';
 let shouldSetStyles = true;
-const explicitlyStyledElements = ['home-assistant-main', 'ha-drawer'];
+const explicitlyStyledElements = [
+	'home-assistant',
+	'home-assistant-main',
+	'ha-drawer',
+];
 
 /**
  * Check if theme is a "Material You" variant and set should set styles flag
@@ -169,13 +173,15 @@ export async function setStyles(target: typeof globalThis) {
 		return define.call(this, name, constructor, options);
 	};
 
-	// Explictly set home-assistant-main and drawer styles
+	// Explictly set styles for some elements that load too early
 	const haMain = await getHomeAssistantMainAsync();
-	applyStyles(haMain);
-
+	const ha = await querySelectorAsync(document, 'home-assistant');
 	const haDrawer = await querySelectorAsync(
 		haMain.shadowRoot as ShadowRoot,
 		'ha-drawer',
 	);
+
+	applyStyles(ha);
+	applyStyles(haMain);
 	applyStyles(haDrawer);
 }
