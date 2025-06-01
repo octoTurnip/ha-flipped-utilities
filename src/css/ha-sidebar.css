@@ -172,6 +172,9 @@ ha-md-list-item ha-icon {
 	left: 50%;
 	z-index: 2;
 }
+.configuration .badge[slot='start'] {
+	top: 0;
+}
 .badge[slot='end'] {
 	position: absolute;
 	top: 12px;
