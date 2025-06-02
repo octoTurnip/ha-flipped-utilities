@@ -20,7 +20,6 @@ import haTextfield from './ha-textfield.css';
 import haToast from './ha-toast.css';
 import haTopAppBarFixed from './ha-top-app-bar-fixed.css';
 import haUserBadge from './ha-user-badge.css';
-import hassSubpage from './hass-subpage.css';
 import homeAssistantMain from './home-assistant-main.css';
 import homeAssistant from './home-assistant.css';
 import hueLikeLightCard from './hue-like-light-card.css';
@@ -28,7 +27,6 @@ import huiEntitiesCardEditor from './hui-entities-card-editor.css';
 import huiEntitiesCard from './hui-entities-card.css';
 import huiGridSection from './hui-grid-section.css';
 import huiRoot from './hui-root.css';
-import huiStackCardEditor from './hui-stack-card-editor.css';
 import huiViewVisibilityEditor from './hui-view-visibility-editor.css';
 
 /**
@@ -59,14 +57,10 @@ export const elements: Record<string, string> = {
 	'ha-textfield': haTextfield,
 	'ha-toast': haToast,
 	'ha-user-badge': haUserBadge,
-	'hass-subpage': hassSubpage,
-	'hass-tabs-subpage': hassSubpage,
 	'hui-entities-card': huiEntitiesCard,
 	'hui-entities-card-editor': huiEntitiesCardEditor,
 	'hui-grid-section': huiGridSection,
 	'hui-root': huiRoot,
-	'hui-stack-card-editor': huiStackCardEditor,
-	'hui-grid-card-editor': huiStackCardEditor,
 	'hui-view-visibility-editor': huiViewVisibilityEditor,
 	'hue-like-light-card': hueLikeLightCard,
 	'home-assistant': homeAssistant,

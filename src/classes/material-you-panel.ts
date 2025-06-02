@@ -831,7 +831,7 @@ export class MaterialYouPanel extends LitElement {
 				display: flex;
 				flex-direction: column;
 				align-items: flex-end;
-				width: 48px;
+				width: fit-content;
 				min-width: 0;
 				color: var(--secondary-text-color);
 				font-size: var(--md-sys-typescale-label-medium-size, 12px);
@@ -859,7 +859,6 @@ export class MaterialYouPanel extends LitElement {
 				align-items: center;
 				gap: 24px;
 				padding-bottom: 24px;
-				overflow-x: hidden;
 			}
 			ha-card {
 				width: min(600px, calc(100% - 36px));

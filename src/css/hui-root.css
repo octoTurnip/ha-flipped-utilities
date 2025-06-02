@@ -292,11 +292,6 @@ sl-tab[active]::after {
 	-webkit-tap-highlight-color: transparent;
 }
 
-/* Fix horizontal overflow */
-#view {
-	overflow-x: hidden;
-}
-
 /* Add bottom footer padding when present */
 div:has(sl-tab-group) {
 	--footer-offset: calc(
