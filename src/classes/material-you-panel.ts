@@ -749,7 +749,7 @@ export class MaterialYouPanel extends LitElement {
 			<div class="content">
 				${'Material Rounded' in this.hass.themes.themes
 					? this.buildAlertBox(
-							'Your theme install is corrupted! The v3 Material Rounded theme was not properly uninstalled and is possibly overwriting the updated Material You theme. Delete the config/themes/material_rounded folder. The up-to-date theme is in the config/themes/material_you folder.',
+							'Your theme install is corrupted! The legacy Material Rounded theme was not properly removed and is possibly overwriting Material You theme. Delete the config/themes/material_rounded folder from your Home Assistant server.',
 							'error',
 						)
 					: ''}
