@@ -119,20 +119,21 @@ mwc-ripple {
 	right: unset;
 	bottom: unset;
 	scale: 1;
-	transition: scale var(--md-sys-motion-expressive-spatial-fast);
 }
 .mdc-switch__native-control:dir(rtl) {
 	left: 34px;
 }
 .mdc-switch--checked .mdc-switch__native-control {
-	transform: translateX(-20px);
+	transform: translateX(-23px);
 	scale: 0.7;
-	translate: -3px;
 }
 @media (hover: hover) {
 	.mdc-switch__thumb:hover .mdc-switch__native-control {
+		transform: translateX(-8px);
 		scale: 0.56;
-		translate: -5px;
+	}
+	.mdc-switch--checked .mdc-switch__thumb:hover .mdc-switch__native-control {
+		transform: translateX(-25px);
 	}
 }
 .mdc-switch__thumb:has(input:focus-visible) .mdc-switch__native-control,
