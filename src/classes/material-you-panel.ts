@@ -627,7 +627,7 @@ export class MaterialYouPanel extends LitElement {
 		return this.hass.states[input]
 			? html`${this.buildMoreInfoButton('spec', userId)}
 				${this.buildSelector(
-					'Spec Version',
+					'Specification Version',
 					'spec',
 					userId,
 					{

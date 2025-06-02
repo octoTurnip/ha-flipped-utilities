@@ -36,7 +36,7 @@ export const inputs: Record<InputField, InputInfo> = {
 	spec: {
 		type: 'select',
 		default: '2021',
-		name: `${THEME_NAME} Spec Version`,
+		name: `${THEME_NAME} Specification Version`,
 		input: `${INPUT_SELECT_PREFIX}_spec`,
 		action: 'input_select.select_option',
 		icon: 'mdi:calendar-multiple',
