@@ -360,14 +360,10 @@ div:has(sl-tab-group) {
 	.edit-icon.view {
 		padding: 0;
 	}
-	ha-icon-button.edit-icon.view {
-		translate: -6px 0;
-	}
 
 	/* Position icon on left of indicator */
 	sl-tab ha-icon {
 		justify-content: flex-start;
-		padding-left: 16px;
 		width: 100%;
 	}
 
@@ -421,5 +417,11 @@ div:has(sl-tab-group) {
 	sl-tab:active ha-icon::after {
 		--state-layer-opacity: 0.18;
 		opacity: 1;
+	}
+
+	/* Fix edit mode horizontal item current item position */
+	.edit-mode sl-tab ha-icon {
+		position: relative;
+		inset-inline-start: 20px;
 	}
 }
