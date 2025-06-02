@@ -236,7 +236,7 @@ sl-tab::after {
 	height: 100%;
 	color: var(--md-sys-color-on-surface-variant);
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	z-index: 1;
 }
 
