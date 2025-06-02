@@ -747,6 +747,12 @@ export class MaterialYouPanel extends LitElement {
 		return html`
 			${this.buildHeader()}
 			<div class="content">
+				${'Material Rounded' in this.hass.themes.themes
+					? this.buildAlertBox(
+							'Your theme install is corrupted! The v3 Material Rounded theme was not properly uninstalled and is possibly overwriting the updated Material You theme. Delete the config/themes/material_rounded folder. The up-to-date theme is in the config/themes/material_you folder.',
+							'error',
+						)
+					: ''}
 				${!(THEME_NAME in this.hass.themes.themes)
 					? this.buildAlertBox(
 							`You do not have ${THEME_NAME} Theme installed! This module is made to work with ${THEME_NAME} Theme and will not function properly otherwise. Install it using HACS.`,
