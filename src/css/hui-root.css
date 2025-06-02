@@ -325,13 +325,14 @@ div:has(sl-tab-group) {
 		color: unset;
 	}
 
-	/* Move label to right of icon */
+	/* Move label to right of icon and ensure that it can contain content */
 	sl-tab::part(base) {
 		justify-content: flex-start;
 		align-self: center;
 		width: fit-content;
 	}
 	sl-tab {
+		min-width: fit-content;
 		justify-content: center;
 	}
 	.edit-mode sl-tab[active]::after {
@@ -404,11 +405,6 @@ div:has(sl-tab-group) {
 	sl-tab:active ha-icon::after {
 		--state-layer-opacity: 0.18;
 		opacity: 1;
-	}
-
-	/* Make edit mode view tabs fit all buttons */
-	.edit-mode sl-tab {
-		min-width: fit-content;
 	}
 
 	/* Fix edit mode horizontal item current item position */
