@@ -1,18 +1,18 @@
-import { css, html, LitElement } from 'lit';
+import {
+	argbFromHex,
+	blueFromArgb,
+	greenFromArgb,
+	redFromArgb,
+} from '@material/material-color-utilities';
+import { css, html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import './disk-only-color-picker';
+
 import packageInfo from '../../package.json';
 import { schemes } from '../models/constants/colors';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField, IUserPanelSettings } from '../models/interfaces/Panel';
 
-import {
-	argbFromHex,
-	argbFromRgb,
-	blueFromArgb,
-	greenFromArgb,
-	hexFromArgb,
-	redFromArgb,
-} from '@material/material-color-utilities';
 import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { showToast } from '../utils/common';
 import {
@@ -282,9 +282,10 @@ export class MaterialYouPanel extends LitElement {
 		};
 		switch (field) {
 			case 'base_color':
-				data.value = hexFromArgb(
-					argbFromRgb(value[0], value[1], value[2]),
-				);
+				// data.value = hexFromArgb(
+				// 	argbFromRgb(value[0], value[1], value[2]),
+				// );
+				data.value = value || inputs.base_color.default;
 				break;
 			case 'scheme':
 			case 'spec':
@@ -550,21 +551,21 @@ export class MaterialYouPanel extends LitElement {
 
 		return this.hass.states[input]
 			? html`${this.buildMoreInfoButton('base_color', userId)}
-					${this.buildSelector(
-						'Base Color',
-						'base_color',
-						userId,
-						{
-							color_rgb: {},
-						},
-						settings.settings.base_color ||
-							inputs.base_color.default,
-					)}
-					<div class="label">
-						${settings.settings.base_color ||
-						inputs.base_color.default}
-					</div>
-					${this.buildClearButton('base_color', userId)}`
+					<disk-only-color-picker
+						field="base_color"
+						user-id="${userId}"
+						value="${settings.settings.base_color ||
+						inputs.base_color.default}"
+						@value-changed=${this.handleSelectorChange}
+					></disk-only-color-picker>
+					<div class="labels">
+						<div class="label">Base Color</div>
+						${this.buildClearButton('base_color', userId)}
+						<div class="label secondary">
+							${settings.settings.base_color ||
+							inputs.base_color.default}
+						</div>
+					</div> `
 			: '';
 	}
 
@@ -694,16 +695,18 @@ export class MaterialYouPanel extends LitElement {
 			title = settings.stateObj.attributes.friendly_name ?? '';
 		}
 
-		let rows = [
-			this.buildBaseColorRow(settings),
-			this.buildSchemeRow(settings),
-			this.buildContrastRow(settings),
-			this.buildSpecRow(settings),
-			this.buildPlatformRow(settings),
-			this.buildStylesRow(settings),
-		];
-		const n = rows.length;
-		rows = rows.filter((row) => row != '');
+		let rows: Record<InputField, TemplateResult | string> = {
+			base_color: this.buildBaseColorRow(settings),
+			scheme: this.buildSchemeRow(settings),
+			contrast: this.buildContrastRow(settings),
+			spec: this.buildSpecRow(settings),
+			platform: this.buildPlatformRow(settings),
+			styles: this.buildStylesRow(settings),
+		};
+		const n = Object.keys(rows).length;
+		const rowNames = Object.keys(rows).filter(
+			(row) => rows[row as InputField] != '',
+		);
 
 		return html`
 			<ha-card .hass=${this.hass} .header=${title}>
@@ -711,7 +714,7 @@ export class MaterialYouPanel extends LitElement {
 					? html`<div class="subtitle">ID: ${userId}</div>`
 					: ''}
 				<div class="card-content">
-					${rows.length < n
+					${rowNames.length < n
 						? this.buildAlertBox(
 								this.hass.user?.is_admin
 									? `Press Create Helpers to create and initialize ${userId ? 'helpers for this user' : 'global default helpers'}.`
@@ -719,7 +722,15 @@ export class MaterialYouPanel extends LitElement {
 								this.hass.user?.is_admin ? 'info' : 'error',
 							)
 						: ''}
-					${rows.map((row) => html`<div class="row">${row}</div>`)}
+					${rowNames.map(
+						(name) =>
+							html`<div
+								class="row ${name}"
+								id="${name}${userId ? `-${userId}` : ''}"
+							>
+								${rows[name as InputField]}
+							</div>`,
+					)}
 				</div>
 				${this.hass.user?.is_admin
 					? html`<div class="card-actions">
@@ -931,11 +942,24 @@ export class MaterialYouPanel extends LitElement {
 				display: none;
 			}
 			.label {
-				padding: 20px;
-				margin: auto;
+				width: fit-content;
+				text-align: center;
 			}
-			ha-selector[field='base_color'] {
-				margin: 0 -4px;
+			.secondary {
+				color: var(--secondary-text-color);
+			}
+			.column {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 12px;
+			}
+			.row.base_color {
+				justify-content: space-between;
+				align-items: center;
+			}
+			disk-only-color-picker {
+				padding-top: 12px;
 			}
 
 			.card-actions {
@@ -950,6 +974,7 @@ export class MaterialYouPanel extends LitElement {
 				align-items: center;
 				color: var(--color);
 				cursor: pointer;
+				-webkit-tap-highlight-color: transparent;
 			}
 			.button::after {
 				content: '';
@@ -987,7 +1012,6 @@ export class MaterialYouPanel extends LitElement {
 				height: var(--button-size);
 				width: var(--button-size);
 				margin: 8px 12px;
-				flex: 1;
 				--color: var(--state-icon-color);
 				--button-size: 40px;
 				--mdc-icon-size: 24px;
