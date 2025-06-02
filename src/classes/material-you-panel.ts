@@ -343,6 +343,9 @@ export class MaterialYouPanel extends LitElement {
 			case 'contrast':
 			default:
 				value = config.settings[field] as string | number;
+				if (value == ' ') {
+					value = inputs[field].default;
+				}
 				break;
 		}
 
@@ -587,7 +590,7 @@ export class MaterialYouPanel extends LitElement {
 							options: schemes,
 						},
 					},
-					settings.settings.scheme || inputs.scheme.default,
+					inputs.scheme.default,
 				)}`
 			: '';
 	}
@@ -614,9 +617,7 @@ export class MaterialYouPanel extends LitElement {
 							slider_ticks: true,
 						},
 					},
-					isNaN(parseFloat(String(settings.settings.contrast)))
-						? inputs.contrast.default
-						: settings.settings.contrast,
+					inputs.contrast.default,
 				)}`
 			: '';
 	}
@@ -637,7 +638,7 @@ export class MaterialYouPanel extends LitElement {
 							options: ['2021', '2025'],
 						},
 					},
-					settings.settings.spec || inputs.spec.default,
+					inputs.spec.default,
 				)}${this.buildClearButton('spec', userId)}`
 			: '';
 	}
@@ -661,7 +662,7 @@ export class MaterialYouPanel extends LitElement {
 							],
 						},
 					},
-					settings.settings.platform || inputs.platform.default,
+					inputs.platform.default,
 				)}${this.buildClearButton('platform', userId)}`
 			: '';
 	}
@@ -680,8 +681,7 @@ export class MaterialYouPanel extends LitElement {
 						{
 							boolean: {},
 						},
-						(settings.settings.styles ?? inputs.styles.default) ==
-							'on',
+						inputs.styles.default == 'on',
 					)}
 				`
 			: '';
