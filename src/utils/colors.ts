@@ -4,8 +4,10 @@ import {
 	Hct,
 	hexFromArgb,
 	MaterialDynamicColors,
+	Platform,
 } from '@material/material-color-utilities';
 
+import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
 import { colors, logStyles } from '../models/constants/colors';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
@@ -27,6 +29,8 @@ export async function setTheme(target: HTMLElement) {
 		const colorInputUserId = `${inputs.base_color.input}_${userId}`;
 		const schemeInputUserId = `${inputs.scheme.input}_${userId}`;
 		const contrastInputUserId = `${inputs.contrast.input}_${userId}`;
+		const specInputUserId = `${inputs.spec.input}_${userId}`;
+		const platformInputUserId = `${inputs.platform.input}_${userId}`;
 
 		const html = await querySelectorAsync(document, 'html');
 
@@ -43,7 +47,7 @@ export async function setTheme(target: HTMLElement) {
 				hass.states[inputs.base_color.input]?.state?.trim() ||
 				'';
 
-			const schemeName =
+			let schemeName =
 				hass.states[schemeInputUserId]?.state?.trim() ||
 				hass.states[inputs.scheme.input]?.state?.trim() ||
 				'';
@@ -60,9 +64,23 @@ export async function setTheme(target: HTMLElement) {
 				}
 			}
 
+			let spec =
+				hass.states[specInputUserId]?.state?.trim() ||
+				hass.states[inputs.spec.input]?.state?.trim() ||
+				'';
+
+			let platform =
+				hass.states[platformInputUserId]?.state?.trim() ||
+				hass.states[inputs.platform.input]?.state?.trim() ||
+				'';
+
 			// Only update if one of the inputs is set
-			if (baseColor || schemeName || contrastLevel) {
+			if (baseColor || schemeName || contrastLevel || spec || platform) {
 				baseColor ||= inputs.base_color.default as string;
+				schemeName ||= inputs.scheme.default as string;
+				spec ||= inputs.spec.default as string;
+				platform ||= inputs.platform.default as string;
+
 				const schemeInfo = getSchemeInfo(schemeName);
 
 				for (const mode of ['light', 'dark']) {
@@ -70,6 +88,8 @@ export async function setTheme(target: HTMLElement) {
 						Hct.fromInt(argbFromHex(baseColor)),
 						mode == 'dark',
 						contrastLevel,
+						spec as SpecVersion,
+						platform as Platform,
 					);
 
 					for (const color of colors) {
@@ -86,7 +106,7 @@ export async function setTheme(target: HTMLElement) {
 					}
 				}
 
-				const message = `Material design system colors updated using base color ${baseColor}, scheme ${schemeInfo.label}, and contrast level ${contrastLevel}.`;
+				const message = `Material design system colors updated.\nBase Color ${baseColor} | Scheme ${schemeInfo.label} | Contrast Level ${contrastLevel} | Spec Version ${spec}, Platform ${platform[0].toUpperCase()}${platform.slice(1)}`;
 				console.info(`%c ${message} `, logStyles());
 				debugToast(message);
 			} else {

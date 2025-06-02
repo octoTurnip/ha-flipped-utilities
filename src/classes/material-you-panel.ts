@@ -172,6 +172,50 @@ export class MaterialYouPanel extends LitElement {
 			});
 		}
 
+		// Spec Version
+		entityId = `${inputs.spec.input}${idSuffix}`;
+		if (!this.hass.states[entityId]) {
+			const id = entityId.split('.')[1];
+			const config = {
+				icon: inputs.spec.icon,
+				options: ['2021', '2025', ' '],
+			};
+			await createInput(this.hass, 'select', {
+				name: id,
+				...config,
+			});
+			await updateInput(this.hass, 'select', id, {
+				name: `${inputs.spec.name}${userName}`,
+				...config,
+			});
+			await this.hass.callService('input_select', 'select_option', {
+				option: ' ',
+				entity_id: entityId,
+			});
+		}
+
+		// Platform
+		entityId = `${inputs.platform.input}${idSuffix}`;
+		if (!this.hass.states[entityId]) {
+			const id = entityId.split('.')[1];
+			const config = {
+				icon: inputs.platform.icon,
+				options: ['phone', 'watch', ' '],
+			};
+			await createInput(this.hass, 'select', {
+				name: id,
+				...config,
+			});
+			await updateInput(this.hass, 'select', id, {
+				name: `${inputs.platform.name}${userName}`,
+				...config,
+			});
+			await this.hass.callService('input_select', 'select_option', {
+				option: ' ',
+				entity_id: entityId,
+			});
+		}
+
 		// Styles
 		entityId = `${inputs.styles.input}${idSuffix}`;
 		if (!this.hass.states[entityId]) {
@@ -243,6 +287,8 @@ export class MaterialYouPanel extends LitElement {
 				);
 				break;
 			case 'scheme':
+			case 'spec':
+			case 'platform':
 				data.option = value || ' ';
 				break;
 			case 'contrast':
@@ -291,6 +337,8 @@ export class MaterialYouPanel extends LitElement {
 				value = config.settings[field] == 'on';
 				break;
 			case 'scheme':
+			case 'spec':
+			case 'platform':
 			case 'contrast':
 			default:
 				value = config.settings[field] as string | number;
@@ -354,6 +402,8 @@ export class MaterialYouPanel extends LitElement {
 				data.value = '';
 				break;
 			case 'scheme':
+			case 'spec':
+			case 'platform':
 				data.option = ' ';
 				break;
 			case 'contrast':
@@ -570,6 +620,51 @@ export class MaterialYouPanel extends LitElement {
 			: '';
 	}
 
+	buildSpecRow(settings: IUserPanelSettings) {
+		const userId = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.spec.input}${userId ? `_${userId}` : ''}`;
+
+		return this.hass.states[input]
+			? html`${this.buildMoreInfoButton('spec', userId)}
+				${this.buildSelector(
+					'Spec Version',
+					'spec',
+					userId,
+					{
+						select: {
+							mode: 'box',
+							options: ['2021', '2025'],
+						},
+					},
+					settings.settings.spec || inputs.spec.default,
+				)}${this.buildClearButton('spec', userId)}`
+			: '';
+	}
+
+	buildPlatformRow(settings: IUserPanelSettings) {
+		const userId = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.platform.input}${userId ? `_${userId}` : ''}`;
+
+		return this.hass.states[input]
+			? html`${this.buildMoreInfoButton('platform', userId)}
+				${this.buildSelector(
+					'Platform',
+					'platform',
+					userId,
+					{
+						select: {
+							mode: 'box',
+							options: [
+								{ value: 'phone', label: 'Phone' },
+								{ value: 'watch', label: 'Watch' },
+							],
+						},
+					},
+					settings.settings.platform || inputs.platform.default,
+				)}${this.buildClearButton('platform', userId)}`
+			: '';
+	}
+
 	buildStylesRow(settings: IUserPanelSettings) {
 		const userId = settings.stateObj?.attributes.user_id;
 		const input = `${inputs.styles.input}${userId ? `_${userId}` : ''}`;
@@ -603,6 +698,8 @@ export class MaterialYouPanel extends LitElement {
 			this.buildBaseColorRow(settings),
 			this.buildSchemeRow(settings),
 			this.buildContrastRow(settings),
+			this.buildSpecRow(settings),
+			this.buildPlatformRow(settings),
 			this.buildStylesRow(settings),
 		];
 		const n = rows.length;

@@ -65,9 +65,13 @@ async function main() {
 		inputs.base_color.input,
 		inputs.scheme.input,
 		inputs.contrast.input,
+		inputs.spec.input,
+		inputs.platform.input,
 		`${inputs.base_color.input}_${userId}`,
 		`${inputs.scheme.input}_${userId}`,
 		`${inputs.contrast.input}_${userId}`,
+		`${inputs.spec.input}_${userId}`,
+		`${inputs.platform.input}_${userId}`,
 	].filter((entityId) => haMain.hass.states[entityId]);
 
 	if (haMain.hass.user?.is_admin) {

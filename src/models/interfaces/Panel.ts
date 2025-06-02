@@ -7,7 +7,13 @@ export interface IUserPanelSettings {
 
 export type InputType = 'text' | 'select' | 'number' | 'boolean';
 
-export type InputField = 'base_color' | 'scheme' | 'contrast' | 'styles';
+export type InputField =
+	| 'base_color'
+	| 'scheme'
+	| 'contrast'
+	| 'spec'
+	| 'platform'
+	| 'styles';
 
 export interface InputInfo {
 	type: InputType;

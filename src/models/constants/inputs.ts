@@ -33,6 +33,22 @@ export const inputs: Record<InputField, InputInfo> = {
 		action: 'input_number.set_value',
 		icon: 'mdi:contrast-circle',
 	},
+	spec: {
+		type: 'select',
+		default: '2021',
+		name: `${THEME_NAME} Spec Version`,
+		input: `${INPUT_SELECT_PREFIX}_spec`,
+		action: 'input_select.select_option',
+		icon: 'mdi:calendar-multiple',
+	},
+	platform: {
+		type: 'select',
+		default: 'phone',
+		name: `${THEME_NAME} Platform`,
+		input: `${INPUT_SELECT_PREFIX}_platform`,
+		action: 'input_select.select_option',
+		icon: 'mdi:devices',
+	},
 	styles: {
 		type: 'boolean',
 		default: 'on',
