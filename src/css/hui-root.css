@@ -282,11 +282,6 @@ sl-tab[active]::after {
 	color: var(--app-header-edit-text-color);
 }
 
-/* Fix horizontal overflow */
-#view {
-	overflow-x: hidden;
-}
-
 /* Add bottom footer padding when present */
 .header:has(sl-tab-group) + #view {
 	padding-bottom: calc(

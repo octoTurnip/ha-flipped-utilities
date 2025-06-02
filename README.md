@@ -287,10 +287,6 @@ Toggle switches for setting boolean values.
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/switch.png" width="500"/>
 
-#### Notes
-
-- The re-styling of switches causes a horizontal overflow issue if its too close to the trailing end of the page. While I think I've added `overflow-x: hidden` to most pages where this can occur, I may have missed some. Let me know if you find any!
-
 ### [Sliders](https://m3.material.io/components/sliders/overview)
 
 Numerical inputs optimized for human interaction.

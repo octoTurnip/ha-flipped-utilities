@@ -1,5 +1,6 @@
 /* Material 3 colors and adjust padding to match footprint of old switch  */
 :host {
+	overflow: hidden;
 	padding: 0;
 	--switch-checked-button-color: var(--md-switch-checked-button-color);
 	--switch-unchecked-button-color: var(--md-switch-unchecked-button-color);
