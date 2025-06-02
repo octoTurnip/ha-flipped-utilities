@@ -406,6 +406,11 @@ div:has(sl-tab-group) {
 		opacity: 1;
 	}
 
+	/* Make edit mode view tabs fit all buttons */
+	.edit-mode sl-tab {
+		min-width: fit-content;
+	}
+
 	/* Fix edit mode horizontal item current item position */
 	.edit-mode sl-tab ha-icon {
 		position: relative;
