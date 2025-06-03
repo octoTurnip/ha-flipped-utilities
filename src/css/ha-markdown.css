@@ -15,6 +15,8 @@ h4,
 h5,
 h6 {
 	color: var(--md-sys-color-on-surface-variant);
+}
+:is(h1, h2, h3) + :is(h4, h5, h6) {
 	margin-top: 0;
 }
 
