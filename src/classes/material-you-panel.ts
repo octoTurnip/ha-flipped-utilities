@@ -561,7 +561,7 @@ export class MaterialYouPanel extends LitElement {
 						inputs.base_color.default}"
 						@value-changed=${this.handleSelectorChange}
 					></disk-only-color-picker>
-					<div class="labels">
+					<div class="column">
 						<div class="label">Base Color</div>
 						${this.buildClearButton('base_color', userId)}
 						<div class="label secondary">
