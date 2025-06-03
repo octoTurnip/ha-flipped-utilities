@@ -1,0 +1,62 @@
+/* Update headers to use app bar headline colors and fonts */
+
+/* Titles */
+h1,
+h2,
+h3 {
+	color: var(--md-sys-color-on-surface);
+}
+:is(h1, h2, h3):has(+ h4, + h5, + h6) {
+	margin-bottom: 0;
+}
+
+/* Subtitles */
+h4,
+h5,
+h6 {
+	color: var(--md-sys-color-on-surface-variant);
+	margin-top: 0;
+}
+
+/* Large Flexible Title */
+h1 {
+	font-size: var(--md-sys-typescale-display-small-size);
+	font-weight: var(--md-sys-typescale-display-small-weight);
+	line-height: var(--md-sys-typescale-display-small-line-height);
+	letter-spacing: var(--md-sys-typescale-display-small-tracking);
+}
+/* Medium Flexible Title */
+h2 {
+	font-size: var(--md-sys-typescale-headline-medium-size);
+	font-weight: var(--md-sys-typescale-headline-medium-weight);
+	line-height: var(--md-sys-typescale-headline-medium-line-height);
+	letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+}
+/* Small Title */
+h3 {
+	font-size: var(--md-sys-typescale-title-large-size);
+	font-weight: var(--md-sys-typescale-title-large-weight);
+	line-height: var(--md-sys-typescale-title-large-line-height);
+	letter-spacing: var(--md-sys-typescale-title-large-tracking);
+}
+/* Large Flexible Subtitle */
+h4 {
+	font-size: var(--md-sys-typescale-title-medium-size);
+	font-weight: var(--md-sys-typescale-title-medium-weight);
+	line-height: var(--md-sys-typescale-title-medium-line-height);
+	letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+}
+/* Medium Flexible Subtitle */
+h5 {
+	font-size: var(--md-sys-typescale-title-small-size);
+	font-weight: var(--md-sys-typescale-title-small-weight);
+	line-height: var(--md-sys-typescale-title-small-line-height);
+	letter-spacing: var(--md-sys-typescale-title-small-tracking);
+}
+/* Small Subtitle */
+h6 {
+	font-size: var(--md-sys-typescale-body-small-size);
+	font-weight: var(--md-sys-typescale-body-small-weight);
+	line-height: var(--md-sys-typescale-body-small-line-height);
+	letter-spacing: var(--md-sys-typescale-body-small-tracking);
+}

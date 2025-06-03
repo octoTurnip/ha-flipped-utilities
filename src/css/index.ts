@@ -8,6 +8,7 @@ import haFab from './ha-fab.css';
 import haGridLayoutSlider from './ha-grid-layout-slider.css';
 import haInputChip from './ha-input-chip.css';
 import haListItem from './ha-list-item.css';
+import haMarkdown from './ha-markdown.css';
 import haMdDialog from './ha-md-dialog.css';
 import haMdListItem from './ha-md-list-item.css';
 import haMdMenuItem from './ha-md-menu-item.css';
@@ -44,6 +45,7 @@ export const elements: Record<string, string> = {
 	'ha-input-chip': haInputChip,
 	'ha-list-item': haListItem,
 	'mwc-list-item': haListItem,
+	'ha-markdown': haMarkdown,
 	'ha-md-list-item': haMdListItem,
 	'ha-md-menu-item': haMdMenuItem,
 	'ha-menu-button': haMenuButton,

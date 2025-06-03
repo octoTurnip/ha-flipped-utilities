@@ -9,13 +9,13 @@
 
 [![My Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?repository=material-you-utilities&owner=Nerwyn&category=Plugin)
 
-# Material You Color Theme Generation and Component Modification
+# Material Design 3 Color Theme Generation and Component Modification
 
-Material You color theme generation and Home Assistant component modification.
+Material Design 3 color theme generation and Home Assistant component modification.
 
-A companion module for [Material You theme](https://github.com/Nerwyn/material-you-theme) for Home Assistant. This module turns Material You theme into a complete Material Design 3 overhaul of Home Assistant. You'll be able to use different colors, schemes, and contrast levels in your theme colors, and will be able to change the entirety of the Home Assistant user interface to look like a modern Material You app. This can all be configured from a settings panel included with this module.
+A companion module for [Material You theme](https://github.com/Nerwyn/material-you-theme) for Home Assistant. This module turns Material You theme into a complete Material Design 3 overhaul of Home Assistant. You'll be able to use different colors, schemes, and contrast levels in your theme colors, and will be able to change the entirety of the Home Assistant user interface to look like a modern Material Design 3 app. This can all be configured from a settings panel included with this module.
 
-This module generates color themes using [Material Color Utilities](https://github.com/material-foundation/material-color-utilities) based on user defined inputs and injects custom styles into many Home Assistant custom components to follow the [Material Design 3 specifications](https://m3.material.io/). Custom color theme generation and style injection have minimal performance impact and work well even on low end devices. If no user input is provided for base color, scheme name, or contrast level, then default values `#4C5C92`, `Tonal Spot`, `0` are used.
+This module generates color themes using [Material Color Utilities](https://github.com/material-foundation/material-color-utilities) based on user defined inputs and injects custom styles into many Home Assistant custom components to follow the [Material Design 3 specifications](https://m3.material.io/). Custom color theme generation and style injection have minimal performance impact and work well even on low end devices.
 
 # Installation
 
@@ -27,7 +27,7 @@ This module generates color themes using [Material Color Utilities](https://gith
 
 ## Add the Module as a Frontend Module and Custom Panel
 
-The component design upgrades performed by this module are very time sensitive, and must be run as soon as possible. Because of this you must install it as a frontend module in your `configuration.yaml` file.
+The component design upgrades performed by this module are very time sensitive, and must be run as soon as possible. Because of this you must install it as a frontend module in your `configuration.yaml` file. **This is not optional**.
 
 1. Open your `configuration.yaml`.
    - Your `configuration.yaml` file is found in the `config` folder. More information can be found [here](https://www.home-assistant.io/docs/configuration/).
@@ -65,6 +65,8 @@ While this module should be automatically updated through HACS after initial ins
 
 This module comes with it's own configuration panel! If you are the Home Assistant server administrator, you can use this panel to create and set input helper entities for all users and global defaults. If you are not the administrator you can set the input helper entities for yourself, but an administrator must create them first.
 
+TODO update screenshot and design of config panel to match Material Expressive.
+
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/configuration-panel.png" width="750"/>
 
 The settings for every user and the global settings are all the same. If a user does not have a setting set, then the global setting is used.
@@ -75,18 +77,16 @@ To create input helper entities for a user, click on `Create Helpers` in their s
 
 Material color themes are built around a base color, from which all other theme colors are derived depending on the scheme rules. This color defaults to `#4C5C92` (a shade of blue), but can be set to any other color using the color picker.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/base-color-picker.png" width="750"/>
-
 ### Home Assistant Android App Color Sensor
 
-If you are using the Home Assistant Android companion app, you can enable the accent color sensor in the companion app settings to use your phones Material You accent color as the theme base color:
+If you are using the Home Assistant Android companion app, you can enable the accent color sensor in the companion app settings to use your phones Material Design accent color as the theme base color:
 
 1. Navigate to `Settings` > `Companion app`.
 2. Click `Manage sensors.`
 3. Scroll down to the section titled `Dynamic color` and click `Accent color`.
-4. Toggle `Enable sensor` on. It should now return your phone's Material You base color as a hex code.
+4. Toggle `Enable sensor` on. It should now return your phone's Material Design base color as a hex code.
 
-You can then create an automation to set your Material You base color whenever the sensor changes.
+You can then create an automation to set your Material Design base color whenever the sensor changes.
 
 ```yaml
 description: ''
@@ -105,15 +105,15 @@ actions:
       entity_id: input_text.material_you_base_color
 ```
 
-## Alternate Schemes
+## Color Schemes
 
-By default, this theme will use the `Tonal Spot` color scheme. This scheme is the default color scheme used by Android 12 and later.
+By default, this theme will use the `Tonal Spot` color scheme. This scheme is the default color scheme used by Android 12.
 
 In addition to the modern Android color scheme, [Material Color Utilities](https://github.com/material-foundation/material-color-utilities) offers several alternate schemes.
 
 | Name        | Description                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tonal Spot  | Dynamic Color theme with low to medium colorfulness and a Tertiary TonalPalette with a hue related to the source color.<br> The default Material You theme on Android 12 and later.                                                                                                                                                                                                                                     |
+| Tonal Spot  | Dynamic Color theme with low to medium colorfulness and a Tertiary TonalPalette with a hue related to the source color.<br> The default Material You theme on Android 12.                                                                                                                                                                                                                                               |
 | Content     | A scheme that places the source color in `Scheme.primaryContainer`.<br> Primary Container is the source color, adjusted for color relativity.<br> It maintains constant appearance in light mode and dark mode.<br> This adds ~5 tone in light mode, and subtracts ~5 tone in dark mode.<br> Tertiary Container is the complement to the source color, using `TemperatureCache`. It also maintains constant appearance. |
 | Fidelity    | A scheme that places the source color in `Scheme.primaryContainer`.<br> Primary Container is the source color, adjusted for color relativity.<br> It maintains constant appearance in light mode and dark mode.<br> This adds ~5 tone in light mode, and subtracts ~5 tone in dark mode.<br> Tertiary Container is the complement to the source color, using `TemperatureCache`. It also maintains constant appearance. |
 | Expressive  | A Dynamic Color theme that is intentionally detached from the source color.                                                                                                                                                                                                                                                                                                                                             |
@@ -129,25 +129,35 @@ If an invalid or no scheme is provided, it will default to `Tonal Spot` or the g
 
 Each scheme can also be provided with a custom contrast from -1 to 1. Value outside of this range are clamped to it. If an invalid or no value is provided it will default to `0`.
 
+## Specification Version
+
+With the Material Expressive update, Material Design 3 now has new specifications for color themes. You can choose between the original `2021` color specification, or the updated `2025` specification. Combine the `2025` specification with the `Expressive` scheme to use the new Material Expressive palette.
+
+## Platform
+
+Material Expressive also comes with two platform options when using the 2025 color specification - `Phone` and `Watch`. While you probably want to keep this at the default `Phone` setting, you have the ability to choose.
+
 ## Style Upgrades
 
 If you want to disable the Material Design 3 component upgrades, toggle Style Upgrades off. Doing so will still allow you to set custom color themes.
 
-# Material You Components
+# Material Design 3 Components
 
 In addition to the CSS custom properties in the theme YAML, this themes companion module modifies the lifecycle methods styles of many Home Assistant component constructors to inject additional CSS styles to make the components follow the Material Design 3 specification.
 
 ## Navigation
 
-### [Top App Bar](https://m3.material.io/components/top-app-bar/overview)
+### [App Bars](https://m3.material.io/components/top-app-bar/overview)
 
-Menu buttons and view name displayed at the top of the screen.
+Menu buttons and subview title at the top of the screen. For regular views on scroll the menu buttons remain with a background. For subviews the entire app bar remains but shifts to a surface container color.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/top-app-bar.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/app-bar.png" width="500"/>
 
 ### Notes
 
-- The headline is present by default for views with a single tab and subviews. The fonts for these titles has been updated and the single tab headline has been centered to match the [center-aligned top app bar](https://m3.material.io/components/top-app-bar/specs#51ac0fae-61c2-4abc-b8f9-1167bf54e875) specification. Subviews use the [small top app bar](https://m3.material.io/components/top-app-bar/specs#14e23895-ac2e-40d8-b0f7-8d016c10a225) specification and have only received minor margin adustments to match the specification.
+- Subviews use the [small app bar](https://m3.material.io/components/app-bars/specs#fac99130-8bb8-498c-8cb8-16ea056cc3e1) specification and have only received minor margin adustments to match the specification.
+- The headline is now only present for subviews and hidden for single view dashboards. The fonts for these titles has been updated.
+- Standard views no longer have a headline by default. This was added to this theme shortly before Home Assistant added its own more customizable view title system. Between the built in title option and the Material Expressive updates, I decided to remove this title in favor of user added titles instead. Home Assistant's title system is more in line with the Material Expressive.
 
 ### [Navigation Bar](https://m3.material.io/components/navigation-bar/overview)
 
@@ -180,7 +190,7 @@ Desktop sidebar collapsed.
 
 #### Notes
 
-- The navigation rail style used by Home Assistant / this theme is [no longer considered best practice due to it not having visible labels](https://m3.material.io/components/navigation-rail/guidelines#0e078309-035a-42fa-b951-52ab63e4b0c0), despite it appearing in navigation rail screenshots in other parts of the specification and it still being used by Material You apps. I opted to not implemented navigation bar like labels as the sidebar expands into a drawer with labels, and because it would be difficult to modify the style of the navigation rail destinations to match the with label specification and still gracefully expand into a drawer.
+- The navigation rail style used by Home Assistant / this theme is [no longer considered best practice due to it not having visible labels](https://m3.material.io/components/navigation-rail/guidelines#0e078309-035a-42fa-b951-52ab63e4b0c0), despite it appearing in navigation rail screenshots in other parts of the specification and it still being used by Material Design 3 apps. I opted to not implemented navigation bar like labels as the sidebar expands into a drawer with labels, and because it would be difficult to modify the style of the navigation rail destinations to match the with label specification and still gracefully expand into a drawer.
 
 ### [Badges](https://m3.material.io/components/badges/overview)
 
