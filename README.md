@@ -153,14 +153,14 @@ Menu buttons at the top of the screen. For regular views the menu buttons remain
 
 Large, medium, and small headline titles and subtitles can be added using Home Assistant sections view titles either using markdown or HTML headings as described below.
 
-| Size   | Type  | Markdown              | HTML                       |
-| ------ | ----- | --------------------- | -------------------------- |
-| Large  | Title | # Large Title         | \<h1>Large Title\</h1>     |
-| Large  | Title | ## Medium Title       | \<h2>Medium Title\</h2>    |
-| Medium | Title | ### Small Title       | \<h3>Small Title\</h3>     |
-| Medium | Title | #### Large Subtitle   | \<h4>Large Subtitle\</h4>  |
-| Small  | Title | ##### Medium Subtitle | \<h5>Medium Subtitle\</h5> |
-| Small  | Title | ###### Small Subtitle | \<h6>Small Subtitle\</h6>  |
+| Size   | Type     | Markdown              | HTML                       |
+| ------ | -------- | --------------------- | -------------------------- |
+| Large  | Title    | # Large Title         | \<h1>Large Title\</h1>     |
+| Large  | Subtitle | #### Large Subtitle   | \<h4>Large Subtitle\</h4>  |
+| Medium | Title    | ## Medium Title       | \<h2>Medium Title\</h2>    |
+| Medium | Subtitle | ##### Medium Subtitle | \<h5>Medium Subtitle\</h5> |
+| Small  | Title    | ### Small Title       | \<h3>Small Title\</h3>     |
+| Small  | Subtitle | ###### Small Subtitle | \<h6>Small Subtitle\</h6>  |
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/app-bar.png" width="500"/>
 
