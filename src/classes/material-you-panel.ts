@@ -999,9 +999,6 @@ export class MaterialYouPanel extends LitElement {
 				justify-content: space-between;
 				align-items: center;
 			}
-			disk-color-picker {
-				margin-top: -40px;
-			}
 
 			.card-actions {
 				display: flex;
