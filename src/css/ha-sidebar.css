@@ -55,6 +55,8 @@ ha-md-list-item {
 	max-width: fit-content;
 	margin: 0 20px;
 	border-radius: var(--md-sys-shape-corner-full);
+
+	--sidebar-item-display: block;
 }
 
 /* Fix collapsed rail selected text color */
@@ -109,14 +111,13 @@ ha-md-list-item.selected {
 :host(:not([expanded])) .user::before {
 	content: '';
 	border-radius: var(--sidebar-item-state-layer-shape);
+	background-color: var(--sidebar-selected-background);
+	opacity: 1;
 	transition: transform var(--md-sys-motion-expressive-spatial-fast);
 	transform: scaleX(0);
 }
 :host([expanded]) ha-md-list-item.selected::before,
 :host(:not([expanded])) .user.selected::before {
-	border-radius: var(--sidebar-item-state-layer-shape);
-	background-color: var(--sidebar-selected-background);
-	opacity: 1;
 	transform: scaleX(1);
 }
 :host(:not([expanded])) .user.selected::before {
