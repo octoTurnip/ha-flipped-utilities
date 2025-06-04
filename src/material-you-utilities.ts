@@ -74,52 +74,61 @@ async function main() {
 		`${inputs.platform.input}_${userId}`,
 	];
 
-	if (haMain.hass.user?.is_admin) {
-		// Trigger on input change
-		haMain.hass.connection.subscribeMessage(
-			() => setThemeAll(),
-			{
-				type: 'subscribe_trigger',
-				trigger: {
-					platform: 'state',
-					entity_id: inputHelpers,
-				},
-			},
-			{ resubscribe: true },
-		);
+	const setupSubscriptions = async () => {
+		const hass = (await getHomeAssistantMainAsync()).hass;
+		if (hass.connection.connected) {
+			if (hass.user?.is_admin) {
+				// Trigger on input change
+				hass.connection.subscribeMessage(
+					() => setThemeAll(),
+					{
+						type: 'subscribe_trigger',
+						trigger: {
+							platform: 'state',
+							entity_id: inputHelpers,
+						},
+					},
+					{ resubscribe: true },
+				);
 
-		// Trigger on theme changed event
-		haMain.hass.connection.subscribeEvents(
-			() => setThemeAll(),
-			'themes_updated',
-		);
+				// Trigger on theme changed event
+				hass.connection.subscribeEvents(
+					() => setThemeAll(),
+					'themes_updated',
+				);
 
-		// Trigger on set theme service call
-		haMain.hass.connection.subscribeEvents((e: Record<string, any>) => {
-			if (e?.data?.service == 'set_theme') {
-				setTimeout(() => setThemeAll(), 1000);
-			}
-		}, 'call_service');
-	} else {
-		// Trigger on template change for sensors
-		for (const entityId of inputHelpers) {
-			haMain.hass.connection.subscribeMessage(
-				(msg: RenderTemplateResult | RenderTemplateError) => {
-					if ('error' in msg) {
-						console.error(msg.error);
-						debugToast(msg.error);
+				// Trigger on set theme service call
+				hass.connection.subscribeEvents((e: Record<string, any>) => {
+					if (e?.data?.service == 'set_theme') {
+						setTimeout(() => setThemeAll(), 1000);
 					}
-					setThemeAll();
-				},
-				{
-					type: 'render_template',
-					template: `{{ states("${entityId}") }}`,
-					entity_ids: entityId,
-					report_errors: true,
-				},
-			);
+				}, 'call_service');
+			} else {
+				// Trigger on template change for sensors
+				for (const entityId of inputHelpers) {
+					hass.connection.subscribeMessage(
+						(msg: RenderTemplateResult | RenderTemplateError) => {
+							if ('error' in msg) {
+								console.error(msg.error);
+								debugToast(msg.error);
+							}
+							setThemeAll();
+						},
+						{
+							type: 'render_template',
+							template: `{{ states("${entityId}") }}`,
+							entity_ids: entityId,
+							report_errors: true,
+						},
+					);
+				}
+			}
+			return;
 		}
-	}
+
+		setTimeout(() => setupSubscriptions(), 100);
+	};
+	setupSubscriptions();
 }
 
 main();
