@@ -67,7 +67,7 @@ This module comes with it's own configuration panel! If you are the Home Assista
 
 TODO update screenshot and design of config panel to match Material Expressive.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/configuration-panel.png" width="750"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/configuration-panel.png" width="750"/>
 
 The settings for every user and the global settings are all the same. If a user does not have a setting set, then the global setting is used.
 
@@ -162,9 +162,9 @@ Large, medium, and small headline titles and subtitles can be added using Home A
 | Medium | Subtitle | ##### Medium Subtitle | \<h5>Medium Subtitle\</h5> |
 | Small  | Subtitle | ###### Small Subtitle | \<h6>Small Subtitle\</h6>  |
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/app-bar.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/app-bar.png" width="500"/>
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/headline.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/headline.png" width="500"/>
 
 ### Notes
 
@@ -175,42 +175,41 @@ Large, medium, and small headline titles and subtitles can be added using Home A
 
 ### [Navigation Bar](https://m3.material.io/components/navigation-bar/overview)
 
-View tabs displayed at the bottom of the screen, dynamically scaling with page width.
+View tabs displayed at the bottom of the screen, dynamically scaling with page width. On wide (width greater than 870px) displays the view tabs are horizontal. On smaller displays the view tabs are vertical.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/navigation-bar.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/navigation-bar-vertical.png" width="500"/>
+
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/navigation-bar-horizontal.png" width="500"/>
 
 #### Notes
 
 - The view tabs are more akin to [Material Design 3 tabs](https://m3.material.io/components/tabs/overview), but I chose to restyle them as a navigation bar as doing so was one of the original purposes of this theme. View tabs as a navigation bar makes more sense within the context of how Home Assistant dashboards are used, and are much easier to use on tall phone displays.
-- Displaying navigation bars alongside drawers/rails is not considered good practice, but is done so in this theme due to the increased accessability the bottom aligned navigation bar offers over top aligned tabs.
+- Displaying navigation bars alongside rails is not considered good practice, but is done so in this theme due to the increased accessability the bottom aligned navigation bar offers over top aligned tabs.
 - Home Assistant itself uses bottom aligned tabs for mobile settings pages, which is similar to the navigation bar.
-
-### [Navigation Drawer](https://m3.material.io/components/navigation-drawer/overview)
-
-Desktop sidebar expanded and mobile modal navigation menu.
-
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/navigation-drawer.png" width="500"/>
-
-#### Notes
 
 - The navigation drawer (and rail below) is smaller in width and destination size than the specification calls for. This is to prevent it from taking up too much horizontal space, and due to difficulty restyling it without modifying the `ha-drawer` element, which is rendered too early to consitently modify the styles of.
 - The navigation drawer is supposed to have a top and bottom left border radius, but adding this requires modifying `ha-drawer`, which is rendered too early to be consistently modified.
 
 ### [Navigation Rail](https://m3.material.io/components/navigation-rail/overview)
 
-Desktop sidebar collapsed.
+Desktop sidebar and mobile modal drawer.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/navigation-rail.png" width="200"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/navigation-rail.png" width="500"/>
 
 #### Notes
 
-- The navigation rail style used by Home Assistant / this theme is [no longer considered best practice due to it not having visible labels](https://m3.material.io/components/navigation-rail/guidelines#0e078309-035a-42fa-b951-52ab63e4b0c0), despite it appearing in navigation rail screenshots in other parts of the specification and it still being used by Material Design 3 apps. I opted to not implemented navigation bar like labels as the sidebar expands into a drawer with labels, and because it would be difficult to modify the style of the navigation rail destinations to match the with label specification and still gracefully expand into a drawer.
+- The specification calls for the expanded and modal navigation rail to have variable width based on the width of the destination items, but making the width variable while expanded can cause it to cover the view. Therefore it uses the Home Assistant default fixed width for expanded drawers. The modal rail is variable width.
+- Previously the expanded rail and modal dialog used the [navigation drawer specification](https://m3.material.io/components/navigation-drawer/overview), which has been deprecated and merged into navigation rail.
 
 ### [Badges](https://m3.material.io/components/badges/overview)
 
-Alert the user to notifications.
+Alerts the user to notifications.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/badge.png" width="400"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/badge.png" width="400"/>
+
+#### Notes
+
+- Before Material Expressive, a third badge variant was available specific to the navigation drawer. This variant has been deprecated alongside the navigation drawer specification.
 
 ## [Cards](https://m3.material.io/components/cards/overview)
 
@@ -220,19 +219,19 @@ The ubiquitous container which most Home Assistant lovelace elements are built a
 
 A background color similar to the view background with elevation. The default card style.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/elevated-card.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/elevated-card.png" width="500"/>
 
 ### [Filled Card](https://m3.material.io/components/cards/specs#0f55bf62-edf2-4619-b00d-b9ed462f2c5a)
 
 A contrasting background color with no elevation.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/filled-card.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/filled-card.png" width="500"/>
 
 ### [Outlined Card](https://m3.material.io/components/cards/specs#9ad208b3-3d37-475c-a0eb-68cf845718f8)
 
 An outlined card with the same background color as the view and no elevation.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/outlined-card.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/outlined-card.png" width="500"/>
 
 ### Notes
 
@@ -258,19 +257,19 @@ card_mod:
 
 Buttons that are just text with no background.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/text-button.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/text-button.png" width="500"/>
 
 ### [Outlined Buttons](https://m3.material.io/components/buttons/specs#de72d8b1-ba16-4cd7-989e-e2ad3293cf63)
 
 Like text buttons, but with an outline.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/outlined-button.png" width="200"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/outlined-button.png" width="200"/>
 
 ### [Extended FAB](https://m3.material.io/components/extended-fab/overview)
 
 Floating action buttons which appear in legacy views, and the integrations, devices, and helpers pages.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/extended-fab.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/extended-fab.png" width="500"/>
 
 ## [Chips](https://m3.material.io/components/chips/overview)
 
@@ -280,13 +279,13 @@ Small button-like elements that can be used to display information or fire actio
 
 Follows the Assist Chip specification. Used in configuration menus and HACS.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/outlined-chip.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/outlined-chip.png" width="500"/>
 
 ### [Filled Chips](https://m3.material.io/components/chips/specs#e900592f-75a4-4298-853c-bedd8f462f83)
 
 Follows the Filter Chip (selected) specification. Can be added to the header or footer of some cards to fire actions and used in add-ons pages.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/filled-chip.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/filled-chip.png" width="500"/>
 
 #### Notes
 
@@ -296,7 +295,7 @@ Follows the Filter Chip (selected) specification. Can be added to the header or 
 
 Follows the Input Chip specification. Used by list selectors found in configuration menus.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/input-chip.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/input-chip.png" width="500"/>
 
 ### Notes
 
@@ -309,13 +308,13 @@ Follows the Input Chip specification. Used by list selectors found in configurat
 
 Toggle switches for setting boolean values.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/switch.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/switch.png" width="500"/>
 
 ### [Sliders](https://m3.material.io/components/sliders/overview)
 
 Numerical inputs optimized for human interaction.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/slider.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/slider.png" width="500"/>
 
 #### Notes
 
@@ -328,7 +327,7 @@ Numerical inputs optimized for human interaction.
 
 Floating messages that appear on the bottom of the screen, also known as toasts.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/snackbar.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/snackbar.png" width="500"/>
 
 #### Notes
 
@@ -342,13 +341,13 @@ Windows that appear to display information or ask for user input, like more-info
 
 Lighter color and updated font.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/basic-dialog.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/basic-dialog.png" width="500"/>
 
 #### [Full-screen Dialogs](https://m3.material.io/components/dialogs/specs#bbf1acde-f8d2-4ae1-9d51-343e96c4ac20)
 
 Background color changes on scroll and updated font.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/main/assets/full-screen-dialog.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/full-screen-dialog.png" width="500"/>
 
 #### Notes
 
