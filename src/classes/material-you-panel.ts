@@ -761,7 +761,7 @@ export class MaterialYouPanel extends LitElement {
 					<div class="title">${THEME_NAME} Utilities</div>
 					<div class="description">
 						${this.hass.user?.is_admin
-							? 'Create, edit, and delete input helpers for defining Material Design 3 color themes for you and your users.'
+							? 'Create, edit, and delete input helpers for designing Material Design 3 color themes for you and your users.'
 							: 'Design your own personal Material Design 3 color theme using the inputs below.'}
 					</div>
 				</div>
