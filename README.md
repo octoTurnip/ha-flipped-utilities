@@ -13,7 +13,7 @@
 
 Material Design 3 color theme generation and Home Assistant component modification.
 
-A companion module for [Material You theme](https://github.com/Nerwyn/material-you-theme) for Home Assistant. This module turns Material You theme into a complete Material Design 3 overhaul of Home Assistant. You'll be able to use different colors, schemes, and contrast levels in your theme colors, and will be able to change the entirety of the Home Assistant user interface to look like a modern Material Design 3 app. This can all be configured from a settings panel included with this module.
+A companion module for [Material You theme](https://github.com/Nerwyn/material-you-theme) for Home Assistant. This module turns Material You theme into a complete Material Design 3 overhaul of Home Assistant. You'll be able to use different colors, schemes, and contrast levels in your theme colors, and will be able to change the entirety of the Home Assistant user interface to look like a modern Material Design 3 app. This can all be configured from a configuration panel included with this module.
 
 This module generates color themes using [Material Color Utilities](https://github.com/material-foundation/material-color-utilities) based on user defined inputs. It also injects custom styles into many Home Assistant custom components to follow the [Material Design 3 specifications](https://m3.material.io/). The Material Design 3 specification is the source of truth for this module and Material You theme, and they will change over time to reflect updates to the specification. Custom color theme generation and style injection have minimal performance impact and work well even on low end devices.
 
@@ -55,7 +55,7 @@ panel_custom:
 
 4. Restart Home Assistant.
 
-Once Home Assistant has finished restarting, you should see the upgrade Material Design 3 components and the Material You Utilities settings panel in the sidebar. You may need to clear app/browser cache. You do not need to restart Home Assistant for subsequent updates.
+Once Home Assistant has finished restarting, you should see the upgrade Material Design 3 components and the Material You Utilities configuration panel in the sidebar. You may need to clear app/browser cache. You do not need to restart Home Assistant for subsequent updates.
 
 ## Updating and Troubleshooting
 
