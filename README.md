@@ -15,7 +15,7 @@ Material Design 3 color theme generation and Home Assistant component modificati
 
 A companion module for [Material You theme](https://github.com/Nerwyn/material-you-theme) for Home Assistant. This module turns Material You theme into a complete Material Design 3 overhaul of Home Assistant. You'll be able to use different colors, schemes, and contrast levels in your theme colors, and will be able to change the entirety of the Home Assistant user interface to look like a modern Material Design 3 app. This can all be configured from a settings panel included with this module.
 
-This module generates color themes using [Material Color Utilities](https://github.com/material-foundation/material-color-utilities) based on user defined inputs and injects custom styles into many Home Assistant custom components to follow the [Material Design 3 specifications](https://m3.material.io/). Custom color theme generation and style injection have minimal performance impact and work well even on low end devices.
+This module generates color themes using [Material Color Utilities](https://github.com/material-foundation/material-color-utilities) based on user defined inputs. It also injects custom styles into many Home Assistant custom components to follow the [Material Design 3 specifications](https://m3.material.io/). The Material Design 3 specification is the source of truth for this module and Material You theme, and they will change over time to reflect updates to the specification. Custom color theme generation and style injection have minimal performance impact and work well even on low end devices.
 
 # Installation
 
@@ -164,7 +164,7 @@ Large, medium, and small headline titles and subtitles can be added using Home A
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/app-bar.png" width="500"/>
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/headline.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/headline.png" width="300"/>
 
 ### Notes
 
@@ -206,7 +206,7 @@ Desktop sidebar and mobile modal drawer.
 
 Alerts the user to notifications.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/badge.png" width="400"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/badge.png" width="200"/>
 
 #### Notes
 

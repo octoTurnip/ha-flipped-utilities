@@ -540,10 +540,9 @@ export class MaterialYouPanel extends LitElement {
 				.hass=${this.hass}
 				.narrow=${this.narrow}
 			></ha-menu-button>
-			<div class="title">${THEME_NAME} Utilities</div>
 			<div class="versions">
-				<span class="version">M:${moduleVersion}</span>
-				<span class="version">T:${themeVersion}</span>
+				<span class="version">Module v${moduleVersion}</span>
+				<span class="version">Theme v${themeVersion}</span>
 			</div>
 		</div>`;
 	}
@@ -758,6 +757,14 @@ export class MaterialYouPanel extends LitElement {
 		return html`
 			${this.buildHeader()}
 			<div class="content">
+				<div class="page-header">
+					<div class="title">${THEME_NAME} Utilities</div>
+					<div class="description">
+						${this.hass.user?.is_admin
+							? 'Create, edit, and delete input helpers for defining Material Design 3 color themes for you and your users.'
+							: 'Design your own personal Material Design 3 color theme using the inputs below.'}
+					</div>
+				</div>
 				${'Material Rounded' in this.hass.themes.themes
 					? this.buildAlertBox(
 							'Your theme install is corrupted! The legacy Material Rounded theme was not properly removed and is possibly overwriting Material You theme. Delete the config/themes/material_rounded folder from your Home Assistant server.',
@@ -817,6 +824,11 @@ export class MaterialYouPanel extends LitElement {
 		return css`
 			:host {
 				font-family: var(--font-family);
+				color: var(--primary-text-color);
+				background-color: var(
+					--lovelace-background,
+					var(--primary-background-color)
+				);
 			}
 
 			.header {
@@ -826,23 +838,6 @@ export class MaterialYouPanel extends LitElement {
 				justify-content: space-between;
 				padding: 0 12px;
 				height: 64px;
-			}
-			.title {
-				font-size: var(--md-sys-typescale-title-large-size, 20px);
-				line-height: var(
-					--md-sys-typescale-title-large-line-height,
-					2rem
-				);
-				font-weight: var(--md-sys-typescale-title-large-weight, 500);
-				letter-spacing: var(
-					--md-sys-typescale-title-large-tracking,
-					0.0125em
-				);
-				white-space: nowrap;
-			}
-			.header .title {
-				height: 100%;
-				align-content: center;
 			}
 			.versions {
 				display: flex;
@@ -868,6 +863,35 @@ export class MaterialYouPanel extends LitElement {
 				overflow: hidden;
 				text-overflow: clip;
 				white-space: nowrap;
+			}
+
+			.page-header {
+				width: min(600px, calc(100% - 36px));
+			}
+			.page-header .title {
+				font-size: var(--md-sys-typescale-display-small-size, 36px);
+				font-weight: var(--md-sys-typescale-display-small-weight, 400);
+				line-height: var(
+					--md-sys-typescale-display-small-line-height,
+					44px
+				);
+				letter-spacing: var(
+					--md-sys-typescale-display-small-tracking,
+					0
+				);
+			}
+			.page-header .description {
+				color: var(--secondary-text-color);
+				font-size: var(--md-sys-typescale-title-medium-size, 16px);
+				font-weight: var(--md-sys-typescale-title-medium-weight, 500);
+				line-height: var(
+					--md-sys-typescale-title-medium-line-height,
+					24px
+				);
+				letter-spacing: var(
+					--md-sys-typescale-title-medium-tracking,
+					0.15px
+				);
 			}
 
 			.content {
