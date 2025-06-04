@@ -79,7 +79,7 @@ async function main() {
 		if (hass.connection.connected) {
 			if (hass.user?.is_admin) {
 				// Trigger on input change
-				hass.connection.subscribeMessage(
+				await hass.connection.subscribeMessage(
 					() => setThemeAll(),
 					{
 						type: 'subscribe_trigger',
@@ -92,21 +92,24 @@ async function main() {
 				);
 
 				// Trigger on theme changed event
-				hass.connection.subscribeEvents(
+				await hass.connection.subscribeEvents(
 					() => setThemeAll(),
 					'themes_updated',
 				);
 
 				// Trigger on set theme service call
-				hass.connection.subscribeEvents((e: Record<string, any>) => {
-					if (e?.data?.service == 'set_theme') {
-						setTimeout(() => setThemeAll(), 1000);
-					}
-				}, 'call_service');
+				await hass.connection.subscribeEvents(
+					(e: Record<string, any>) => {
+						if (e?.data?.service == 'set_theme') {
+							setTimeout(() => setThemeAll(), 1000);
+						}
+					},
+					'call_service',
+				);
 			} else {
 				// Trigger on template change for sensors
 				for (const entityId of inputHelpers) {
-					hass.connection.subscribeMessage(
+					await hass.connection.subscribeMessage(
 						(msg: RenderTemplateResult | RenderTemplateError) => {
 							if ('error' in msg) {
 								console.error(msg.error);
