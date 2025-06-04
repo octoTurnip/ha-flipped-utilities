@@ -4,9 +4,9 @@ import {
 	greenFromArgb,
 	redFromArgb,
 } from '@material/material-color-utilities';
+import 'disk-color-picker';
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import './disk-only-color-picker';
 
 import packageInfo from '../../package.json';
 import { schemes } from '../models/constants/colors';
@@ -269,7 +269,7 @@ export class MaterialYouPanel extends LitElement {
 		return config;
 	}
 
-	async handleSelectorChange(e: CustomEvent) {
+	async handleSelectorChange(e: Event) {
 		const userId = (e.target as HTMLElement).getAttribute('user-id');
 		const field = (e.target as HTMLElement).getAttribute(
 			'field',
@@ -282,9 +282,6 @@ export class MaterialYouPanel extends LitElement {
 		};
 		switch (field) {
 			case 'base_color':
-				// data.value = hexFromArgb(
-				// 	argbFromRgb(value[0], value[1], value[2]),
-				// );
 				data.value = value || inputs.base_color.default;
 				break;
 			case 'scheme':
@@ -553,15 +550,29 @@ export class MaterialYouPanel extends LitElement {
 		const userId = settings.stateObj?.attributes.user_id;
 		const input = `${inputs.base_color.input}${userId ? `_${userId}` : ''}`;
 
+		let timeout: ReturnType<typeof setTimeout>;
+		const handleChange = (e: Event) => {
+			clearTimeout(timeout);
+			const target = e.target as EventTarget & Record<'value', string>;
+			const value = target.value;
+			timeout = setTimeout(() => {
+				const event = new Event('value-changed');
+				event.detail = { value };
+				target.dispatchEvent(event);
+			}, 100);
+		};
+
 		return this.hass.states[input]
 			? html`${this.buildMoreInfoButton('base_color', userId)}
-					<disk-only-color-picker
+					<disk-color-picker
 						field="base_color"
 						user-id="${userId}"
 						value="${settings.settings.base_color ||
 						inputs.base_color.default}"
+						@change=${handleChange}
+						@keyup=${handleChange}
 						@value-changed=${this.handleSelectorChange}
-					></disk-only-color-picker>
+					></disk-color-picker>
 					<div class="column">
 						<div class="label">Base Color</div>
 						${this.buildClearButton('base_color', userId)}
@@ -986,8 +997,8 @@ export class MaterialYouPanel extends LitElement {
 				justify-content: space-between;
 				align-items: center;
 			}
-			disk-only-color-picker {
-				padding-top: 12px;
+			disk-color-picker {
+				margin-top: -40px;
 			}
 
 			.card-actions {
