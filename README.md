@@ -200,6 +200,7 @@ Desktop sidebar and mobile modal drawer.
 
 - The specification calls for the expanded and modal navigation rail to have variable width based on the width of the destination items, but making the width variable while expanded can cause it to cover the view. Therefore it uses the Home Assistant default fixed width for expanded drawers. The modal rail is variable width.
 - Previously the expanded rail and modal dialog used the [navigation drawer specification](https://m3.material.io/components/navigation-drawer/overview), which has been deprecated and merged into navigation rail.
+- Expanding and collapsing the rail has been updated with expressive animations.
 
 ### [Badges](https://m3.material.io/components/badges/overview)
 
@@ -265,9 +266,19 @@ Like text buttons, but with an outline.
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/outlined-button.png" width="200"/>
 
+### [FAB](https://m3.material.io/components/floating-action-button/overview)
+
+Floating action button with just an icon.
+
+#### Notes
+
+- Home Assistant doesn't normally use icon only FABs! The add view button in non-sections views has been transformed into a FAB as there isn't a good place for it on the transformed header or footer.
+
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/fab.png" width="500"/>
+
 ### [Extended FAB](https://m3.material.io/components/extended-fab/overview)
 
-Floating action buttons which appear in legacy views, and the integrations, devices, and helpers pages.
+Extended floating action buttons which appear in legacy views, and the integrations, devices, and helpers pages.
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/extended-fab.png" width="500"/>
 
@@ -352,6 +363,7 @@ Background color changes on scroll and updated font.
 #### Notes
 
 - Home Assistant has a more modern dialog used for confirmations and similar messages. This dialog mostly follows the Material Design 3 specification, but does not turn into a full-screen dialog on smaller displays.
+- Dialogs have been updated with an expressive opening animation.
 
 # Developing, Modifying, and Building
 
