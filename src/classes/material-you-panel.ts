@@ -563,7 +563,15 @@ export class MaterialYouPanel extends LitElement {
 		};
 
 		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('base_color', userId)}
+			? html`<div class="column">
+						${this.buildMoreInfoButton('base_color', userId)}
+						<div class="label">Base Color</div>
+						<div class="label secondary">
+							${settings.settings.base_color ||
+							inputs.base_color.default}
+						</div>
+						${this.buildClearButton('base_color', userId)}
+					</div>
 					<disk-color-picker
 						field="base_color"
 						user-id="${userId}"
@@ -573,14 +581,7 @@ export class MaterialYouPanel extends LitElement {
 						@keyup=${handleChange}
 						@value-changed=${this.handleSelectorChange}
 					></disk-color-picker>
-					<div class="column">
-						<div class="label">Base Color</div>
-						${this.buildClearButton('base_color', userId)}
-						<div class="label secondary">
-							${settings.settings.base_color ||
-							inputs.base_color.default}
-						</div>
-					</div> `
+					<div class="column"></div>`
 			: '';
 	}
 
@@ -991,6 +992,7 @@ export class MaterialYouPanel extends LitElement {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+				width: 72px;
 				gap: 12px;
 			}
 			.row.base_color {
