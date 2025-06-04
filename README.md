@@ -65,8 +65,6 @@ While this module should be automatically updated through HACS after initial ins
 
 This module comes with it's own configuration panel! If you are the Home Assistant server administrator, you can use this panel to create and set input helper entities for all users and global defaults. If you are not the administrator you can set the input helper entities for yourself, but an administrator must create them first.
 
-TODO update screenshot and design of config panel to match Material Expressive.
-
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/configuration-panel.png" width="750"/>
 
 The settings for every user and the global settings are all the same. If a user does not have a setting set, then the global setting is used.

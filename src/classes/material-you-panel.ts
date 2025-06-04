@@ -840,6 +840,7 @@ export class MaterialYouPanel extends LitElement {
 				justify-content: space-between;
 				padding: 0 12px;
 				height: 64px;
+				background-color: inherit;
 			}
 			.versions {
 				display: flex;
@@ -902,6 +903,7 @@ export class MaterialYouPanel extends LitElement {
 				align-items: center;
 				gap: 24px;
 				padding-bottom: 24px;
+				background-color: inherit;
 			}
 			ha-card {
 				width: min(600px, calc(100% - 36px));

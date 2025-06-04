@@ -20,11 +20,20 @@ export class DiskOnlyColorPicker extends DiskColorPicker {
 			</style>
 		`;
 
-		this.addEventListener('pointerup', () => {
-			const event = new Event('value-changed');
-			event.detail = { value: this.value };
-			this.dispatchEvent(event);
+		let timeout: ReturnType<typeof setTimeout>;
+		this.addEventListener('change', () => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				const event = new Event('value-changed');
+				event.detail = { value: this.value };
+				this.dispatchEvent(event);
+			}, 100);
 		});
+	}
+
+	updateColor() {
+		super.updateColor();
+		this._fire();
 	}
 }
 
