@@ -61,7 +61,7 @@ async function main() {
 
 	// User inputs
 	const userId = haMain.hass.user?.id;
-	const colorInputs = [
+	const inputHelpers = [
 		inputs.base_color.input,
 		inputs.scheme.input,
 		inputs.contrast.input,
@@ -72,7 +72,7 @@ async function main() {
 		`${inputs.contrast.input}_${userId}`,
 		`${inputs.spec.input}_${userId}`,
 		`${inputs.platform.input}_${userId}`,
-	].filter((entityId) => haMain.hass.states[entityId]);
+	];
 
 	if (haMain.hass.user?.is_admin) {
 		// Trigger on input change
@@ -82,7 +82,7 @@ async function main() {
 				type: 'subscribe_trigger',
 				trigger: {
 					platform: 'state',
-					entity_id: colorInputs,
+					entity_id: inputHelpers,
 				},
 			},
 			{ resubscribe: true },
@@ -102,7 +102,7 @@ async function main() {
 		}, 'call_service');
 	} else {
 		// Trigger on template change for sensors
-		for (const entityId of colorInputs) {
+		for (const entityId of inputHelpers) {
 			haMain.hass.connection.subscribeMessage(
 				(msg: RenderTemplateResult | RenderTemplateError) => {
 					if ('error' in msg) {

@@ -6,19 +6,19 @@ export class DiskOnlyColorPicker extends DiskColorPicker {
 	constructor() {
 		super();
 
-		this.root.innerHTML += `
-			<style id="no-arc">
-				#base {
-					height: 180px;
-					width: 180px;
-					-webkit-tap-highlight-color: transparent;
-				}
-				#wheel,
-				#wheelThumb {
-					display: none;
-				}
-			</style>
-		`;
+		// this.root.innerHTML += `
+		// 	<style id="no-arc">
+		// 		#base {
+		// 			height: 180px;
+		// 			width: 180px;
+		// 			-webkit-tap-highlight-color: transparent;
+		// 		}
+		// 		#wheel,
+		// 		#wheelThumb {
+		// 			display: none;
+		// 		}
+		// 	</style>
+		// `;
 
 		let timeout: ReturnType<typeof setTimeout>;
 		this.addEventListener('change', () => {
