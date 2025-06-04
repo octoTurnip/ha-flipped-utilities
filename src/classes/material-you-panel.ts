@@ -496,8 +496,10 @@ export class MaterialYouPanel extends LitElement {
 
 	buildSettingsData() {
 		// People information
-		const people = Object.keys(this.hass.states).filter((entity) =>
-			entity.startsWith('person.'),
+		const people = Object.keys(this.hass.states).filter(
+			(entity) =>
+				entity.startsWith('person.') &&
+				this.hass.states[entity].attributes.user_id,
 		);
 
 		// Current user
