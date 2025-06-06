@@ -108,7 +108,7 @@ async function main() {
 					'call_service',
 				);
 			} else {
-				// Trigger on template change for sensors
+				// Trigger on input change using templates
 				for (const entityId of inputHelpers) {
 					await hass.connection.subscribeMessage(
 						(msg: RenderTemplateResult | RenderTemplateError) => {
