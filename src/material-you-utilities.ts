@@ -59,24 +59,25 @@ async function main() {
 	const html = await querySelectorAsync(document, 'html');
 	setTheme(html);
 
-	// User inputs
-	const userId = haMain.hass.user?.id;
-	const inputHelpers = [
-		inputs.base_color.input,
-		inputs.scheme.input,
-		inputs.contrast.input,
-		inputs.spec.input,
-		inputs.platform.input,
-		`${inputs.base_color.input}_${userId}`,
-		`${inputs.scheme.input}_${userId}`,
-		`${inputs.contrast.input}_${userId}`,
-		`${inputs.spec.input}_${userId}`,
-		`${inputs.platform.input}_${userId}`,
-	];
-
 	const setupSubscriptions = async () => {
 		const hass = (await getHomeAssistantMainAsync()).hass;
-		if (hass.connection.connected) {
+		const userId = haMain.hass.user?.id;
+
+		if (hass.connection.connected && userId) {
+			// User inputs
+			const inputHelpers = [
+				inputs.base_color.input,
+				inputs.scheme.input,
+				inputs.contrast.input,
+				inputs.spec.input,
+				inputs.platform.input,
+				`${inputs.base_color.input}_${userId}`,
+				`${inputs.scheme.input}_${userId}`,
+				`${inputs.contrast.input}_${userId}`,
+				`${inputs.spec.input}_${userId}`,
+				`${inputs.platform.input}_${userId}`,
+			];
+
 			if (hass.user?.is_admin) {
 				// Trigger on input change
 				await hass.connection.subscribeMessage(
