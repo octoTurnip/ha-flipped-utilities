@@ -564,14 +564,6 @@ export class MaterialYouPanel extends LitElement {
 
 		return this.hass.states[input]
 			? html`<div class="column">
-						${this.buildMoreInfoButton('base_color', userId)}
-						<div class="label">Base Color</div>
-						<div class="label secondary">
-							${settings.settings.base_color ||
-							inputs.base_color.default}
-						</div>
-						${this.buildClearButton('base_color', userId)}
-					</div>
 					<disk-color-picker
 						field="base_color"
 						user-id="${userId}"
@@ -581,7 +573,20 @@ export class MaterialYouPanel extends LitElement {
 						@keyup=${handleChange}
 						@value-changed=${this.handleSelectorChange}
 					></disk-color-picker>
-					<div class="column"></div>`
+					<div class="subrow">
+						<div class="row">
+							${this.buildMoreInfoButton('base_color', userId)}
+							<div class="label">Base Color</div>
+						</div>
+						<div class="row">
+							<div class="label secondary">
+								${settings.settings.base_color ||
+								inputs.base_color.default}
+							</div>
+							${this.buildClearButton('base_color', userId)}
+						</div>
+					</div>
+				</div>`
 			: '';
 	}
 
@@ -834,6 +839,35 @@ export class MaterialYouPanel extends LitElement {
 		`;
 	}
 
+	firstUpdated() {
+		// Disk color picker style tweaks
+		const colorPickers =
+			this.shadowRoot?.querySelectorAll('disk-color-picker') ?? [];
+		for (const colorPicker of colorPickers) {
+			const style = document.createElement('style');
+			style.id = 'material-you';
+			style.textContent = `
+				/* Shift color picker down */
+				:host {
+					translate: 0 20px;
+				}
+
+				/* Scale the disk color picker relative to saturation arc */
+				#diskPanel {
+					scale: 1.25;
+				}
+
+				/* Fix ugly square tap shadows */
+				#diskTarget,
+				#diskThumb,
+				#wheelThumb {
+					-webkit-tap-highlight-color: transparent;
+				}
+			`;
+			colorPicker.shadowRoot?.appendChild(style);
+		}
+	}
+
 	static get styles() {
 		return css`
 			:host {
@@ -984,6 +1018,8 @@ export class MaterialYouPanel extends LitElement {
 			.label {
 				width: fit-content;
 				text-align: center;
+				align-content: center;
+				margin: auto 0;
 			}
 			.secondary {
 				color: var(--secondary-text-color);
@@ -992,12 +1028,17 @@ export class MaterialYouPanel extends LitElement {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				width: 72px;
-				gap: 12px;
+				width: 100%;
 			}
 			.row.base_color {
+				justify-content: center;
+				align-items: center;
+			}
+			.subrow {
+				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				width: 100%;
 			}
 
 			.card-actions {

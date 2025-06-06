@@ -27,7 +27,7 @@ This module generates color themes using [Material Color Utilities](https://gith
 
 ## Add the Module as a Frontend Module and Custom Panel
 
-The component design upgrades performed by this module are very time sensitive, and must be run as soon as possible. Because of this you must install it as a frontend module in your `configuration.yaml` file. **This is not optional**.
+**This is not optional**. The component design upgrades performed by this module are very time sensitive, and must be run as soon as possible. Because of this you must install it as a frontend module in your `configuration.yaml` file.
 
 1. Open your `configuration.yaml`.
    - Your `configuration.yaml` file is found in the `config` folder. More information can be found [here](https://www.home-assistant.io/docs/configuration/).
@@ -73,7 +73,7 @@ To create input helper entities for a user, click on `Create Helpers` in their s
 
 ## Base Color
 
-Material color themes are built around a base color, from which all other theme colors are derived depending on the scheme rules. This color defaults to `#4C5C92` (a shade of blue), but can be set to any other color using the color picker.
+Material color themes are built around a base color, from which all other theme colors are derived depending on the scheme rules. This color defaults to `#4C5C92` (a shade of blue), but can be set to any other color using the color wheel.
 
 ### Home Assistant Android App Color Sensor
 
