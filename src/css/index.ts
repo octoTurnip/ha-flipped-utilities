@@ -1,6 +1,7 @@
 import haAssistChip from './ha-assist-chip.css';
 import haButton from './ha-button.css';
 import haCard from './ha-card.css';
+import haConfigInfo from './ha-config-info.css';
 import haDialog from './ha-dialog.css';
 import haDrawer from './ha-drawer.css';
 import haEntityToggle from './ha-entity-toggle.css';
@@ -37,6 +38,7 @@ export const elements: Record<string, string> = {
 	'ha-assist-chip': haAssistChip,
 	'ha-button': haButton,
 	'ha-card': haCard,
+	'ha-config-info': haConfigInfo,
 	'ha-dialog': haDialog,
 	'ha-md-dialog': haMdDialog,
 	'ha-entity-toggle': haEntityToggle,

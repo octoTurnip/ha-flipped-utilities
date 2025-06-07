@@ -1,0 +1,4 @@
+/* Overflow fix for pages list card */
+ha-card:has(ha-md-list) {
+	overflow: hidden;
+}

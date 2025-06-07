@@ -1,10 +1,13 @@
-/* Make sliders use card background color for handle */
+/* Make sliders use card background color for handle and fix card-background-color */
 :host {
 	--md-slider-handle-color: var(--ha-card-background);
+	--card-background-color: var(--ha-card-background);
 }
 
 /* Elevated cards (default) */
-:host(.elevated) {
+:host(.elevated),
+:host([elevated]),
+:host([raised]) {
 	--ha-card-background: var(--md-sys-color-surface-container-low);
 	--ha-card-box-shadow: var(--md-sys-elevation-level1);
 	--ha-card-border-width: 0px;
@@ -12,7 +15,8 @@
 }
 
 /* Filled cards */
-:host(.filled) {
+:host(.filled),
+:host([filled]) {
 	--ha-card-background: var(--md-sys-color-surface-container-highest);
 	--ha-card-box-shadow: none;
 	--ha-card-border-width: 0px;
@@ -20,7 +24,8 @@
 }
 
 /* Outlined cards */
-:host(.outlined) {
+:host(.outlined),
+:host([outlined]) {
 	--ha-card-background: var(--md-sys-color-surface);
 	--ha-card-box-shadow: none;
 	--ha-card-border-width: 1px;
@@ -28,7 +33,8 @@
 }
 
 /* Transparent cards */
-:host(.transparent) {
+:host(.transparent),
+:host([transparent]) {
 	--ha-card-background: transparent;
 	--ha-card-box-shadow: none;
 	--ha-card-border-width: 0px;
