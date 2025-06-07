@@ -46,6 +46,10 @@ ha-md-list-item {
 	--sidebar-item-state-layer-shape: var(--md-sys-shape-corner-full);
 	--md-list-item-leading-space: 16px;
 	--md-list-item-trailing-space: 16px;
+	--md-focus-ring-shape-end-end: var(--md-sys-shape-corner-full);
+	--md-focus-ring-shape-end-start: var(--md-sys-shape-corner-full);
+	--md-focus-ring-shape-start-end: var(--md-sys-shape-corner-full);
+	--md-focus-ring-shape-start-start: var(--md-sys-shape-corner-full);
 }
 
 /* Expanded rail indicator should fit content width */
