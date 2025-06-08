@@ -14,7 +14,7 @@ import { HomeAssistant } from '../models/interfaces';
 import { InputField, IUserPanelSettings } from '../models/interfaces/Panel';
 
 import { inputs, THEME_NAME } from '../models/constants/inputs';
-import { showToast } from '../utils/common';
+import { showToast } from '../utils/logging';
 import {
 	createInput,
 	deleteInput,

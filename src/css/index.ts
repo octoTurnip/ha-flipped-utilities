@@ -1,5 +1,9 @@
 import haAssistChip from './ha-assist-chip.css';
 import haButton from './ha-button.css';
+import haCardElevated from './ha-card-elevated.css';
+import haCardFilled from './ha-card-filled.css';
+import haCardOutlined from './ha-card-outlined.css';
+import haCardTransparent from './ha-card-transparent.css';
 import haCard from './ha-card.css';
 import haConfigInfo from './ha-config-info.css';
 import haDialog from './ha-dialog.css';
@@ -69,4 +73,14 @@ export const elements: Record<string, string> = {
 	'hue-like-light-card': hueLikeLightCard,
 	'home-assistant': homeAssistant,
 	'home-assistant-main': homeAssistantMain,
+};
+
+/**
+ * Card type styles to set on user input
+ */
+export const cardTypes: Record<string, string> = {
+	elevated: haCardElevated,
+	filled: haCardFilled,
+	outlined: haCardOutlined,
+	transparent: haCardTransparent,
 };

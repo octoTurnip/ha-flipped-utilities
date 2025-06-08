@@ -8,16 +8,12 @@ import {
 } from '@material/material-color-utilities';
 
 import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
-import { colors, logStyles } from '../models/constants/colors';
+import { colors } from '../models/constants/colors';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { querySelectorAsync } from './async';
-import {
-	debugToast,
-	getHomeAssistantMainAsync,
-	getSchemeInfo,
-	getToken,
-} from './common';
+import { getHomeAssistantMainAsync, getSchemeInfo, getToken } from './common';
+import { debugToast, mdLog } from './logging';
 
 /* Generate and set theme colors based on user defined inputs */
 export async function setTheme(target: HTMLElement) {
@@ -107,8 +103,7 @@ export async function setTheme(target: HTMLElement) {
 				}
 
 				const message = `Material design system colors updated.\nBase Color ${baseColor} | Scheme ${schemeInfo.label} | Contrast Level ${contrastLevel} | Spec Version ${spec}, Platform ${platform[0].toUpperCase()}${platform.slice(1)}`;
-				console.info(`%c ${message} `, logStyles());
-				debugToast(message);
+				mdLog(message, true);
 			} else {
 				await unsetTheme();
 			}
@@ -159,8 +154,7 @@ export async function unsetTheme() {
 		}
 	}
 	const message = 'Material design system colors removed.';
-	console.info(`%c ${message} `, logStyles());
-	debugToast(message);
+	mdLog(message, true);
 }
 
 /** Call setTheme on all valid available targets */

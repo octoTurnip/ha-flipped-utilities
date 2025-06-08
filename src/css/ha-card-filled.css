@@ -1,0 +1,7 @@
+/* Filled cards */
+body {
+	--ha-card-background: var(--md-sys-color-surface-container-highest);
+	--ha-card-box-shadow: none;
+	--ha-card-border-width: 0;
+	--ha-card-border-color: transparent;
+}

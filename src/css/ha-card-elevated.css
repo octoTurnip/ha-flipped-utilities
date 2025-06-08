@@ -1,0 +1,7 @@
+/* Elevated cards (default) */
+body {
+	--ha-card-background: var(--md-sys-color-surface-container-low);
+	--ha-card-box-shadow: var(--md-sys-elevation-level1);
+	--ha-card-border-width: 0;
+	--ha-card-border-color: transparent;
+}

@@ -1,12 +1,13 @@
 import packageInfo from '../package.json';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
-import { logStyles } from './models/constants/colors';
 import { inputs } from './models/constants/inputs';
 import { RenderTemplateError, RenderTemplateResult } from './models/interfaces';
 import { getAsync, querySelectorAsync } from './utils/async';
+import { setCardType, setCardTypeAll } from './utils/cards';
 import { setTheme, setThemeAll } from './utils/colors';
-import { debugToast, getHomeAssistantMainAsync } from './utils/common';
+import { getHomeAssistantMainAsync } from './utils/common';
+import { debugToast, mdLog } from './utils/logging';
 import { setStyles } from './utils/styles';
 
 async function main() {
@@ -19,10 +20,7 @@ async function main() {
 	// Do this before anything else because it's time sensitive
 	setStyles(window);
 
-	console.info(
-		`%c Material You Utilities v${packageInfo.version} `,
-		logStyles(),
-	);
+	mdLog(`Material You Utilities v${packageInfo.version}`);
 
 	// Apply colors and styles on iframe when it's added
 	const haMain = await getHomeAssistantMainAsync();
@@ -43,6 +41,7 @@ async function main() {
 					const document = await getAsync(contentWindow, 'document');
 					const body = await querySelectorAsync(document, 'body');
 					setTheme(body);
+					setCardType(body);
 				}
 			}
 		}
@@ -55,9 +54,10 @@ async function main() {
 	// Define Material You Panel custom element
 	customElements.define('material-you-panel', MaterialYouPanel);
 
-	// Set user theme colors
+	// Set user theme colors and card type
 	const html = await querySelectorAsync(document, 'html');
 	setTheme(html);
+	setCardType(html);
 
 	const setupSubscriptions = async () => {
 		const hass = (await getHomeAssistantMainAsync()).hass;
@@ -65,7 +65,7 @@ async function main() {
 
 		if (hass.connection.connected && userId) {
 			// User inputs
-			const inputHelpers = [
+			const colorThemeInputs = [
 				inputs.base_color.input,
 				inputs.scheme.input,
 				inputs.contrast.input,
@@ -77,46 +77,75 @@ async function main() {
 				`${inputs.spec.input}_${userId}`,
 				`${inputs.platform.input}_${userId}`,
 			];
+			const styleInputs = [
+				inputs.card_type.input,
+				`${inputs.card_type.input}_${userId}`,
+			];
 
 			if (hass.user?.is_admin) {
 				// Trigger on input change
-				await hass.connection.subscribeMessage(
+				hass.connection.subscribeMessage(
 					() => setThemeAll(),
 					{
 						type: 'subscribe_trigger',
 						trigger: {
 							platform: 'state',
-							entity_id: inputHelpers,
+							entity_id: colorThemeInputs,
+						},
+					},
+					{ resubscribe: true },
+				);
+				hass.connection.subscribeMessage(
+					() => setCardTypeAll(),
+					{
+						type: 'subscribe_trigger',
+						trigger: {
+							platform: 'state',
+							entity_id: styleInputs,
 						},
 					},
 					{ resubscribe: true },
 				);
 
 				// Trigger on theme changed event
-				await hass.connection.subscribeEvents(
+				hass.connection.subscribeEvents(
 					() => setThemeAll(),
 					'themes_updated',
 				);
 
 				// Trigger on set theme service call
-				await hass.connection.subscribeEvents(
-					(e: Record<string, any>) => {
-						if (e?.data?.service == 'set_theme') {
-							setTimeout(() => setThemeAll(), 1000);
-						}
-					},
-					'call_service',
-				);
+				hass.connection.subscribeEvents((e: Record<string, any>) => {
+					if (e?.data?.service == 'set_theme') {
+						setTimeout(() => setThemeAll(), 1000);
+					}
+				}, 'call_service');
 			} else {
 				// Trigger on input change using templates
-				for (const entityId of inputHelpers) {
-					await hass.connection.subscribeMessage(
+				for (const entityId of colorThemeInputs) {
+					hass.connection.subscribeMessage(
 						(msg: RenderTemplateResult | RenderTemplateError) => {
 							if ('error' in msg) {
 								console.error(msg.error);
 								debugToast(msg.error);
 							}
 							setThemeAll();
+						},
+						{
+							type: 'render_template',
+							template: `{{ states("${entityId}") }}`,
+							entity_ids: entityId,
+							report_errors: true,
+						},
+					);
+				}
+				for (const entityId of styleInputs) {
+					hass.connection.subscribeMessage(
+						(msg: RenderTemplateResult | RenderTemplateError) => {
+							if ('error' in msg) {
+								console.error(msg.error);
+								debugToast(msg.error);
+							}
+							setCardTypeAll();
 						},
 						{
 							type: 'render_template',

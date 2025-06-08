@@ -2,7 +2,7 @@ import { elements } from '../css';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { querySelectorAsync } from './async';
-import { getHomeAssistantMainAsync, getInputFieldValue } from './common';
+import { getHomeAssistantMainAsync } from './common';
 
 // Theme check variables
 let theme = '';
@@ -47,7 +47,7 @@ function hasStyles(element: HTMLElement): HTMLStyleElement {
  * @param {string} styles CSS styles imported from file
  * @returns {string} styles converted to string and all set to !important
  */
-function loadStyles(styles: string): string {
+export function loadStyles(styles: string): string {
 	// Ensure new styles override default styles
 	let importantStyles = styles
 		.toString()
@@ -164,27 +164,6 @@ export async function setStyles(target: typeof globalThis) {
 
 					// Most coverage
 					applyStylesOnTimeout(this);
-
-					// Extra logic for certain elements
-					switch (name) {
-						case 'ha-card':
-							const type = getInputFieldValue('card_type');
-							if (
-								type &&
-								![
-									'elevated',
-									'raised', // alternate name for elevated
-									'filled',
-									'outlined',
-									'transparent',
-								].some((t) => this.hasAttribute(t))
-							) {
-								this.setAttribute(type, '');
-							}
-							break;
-						default:
-							break;
-					}
 				}
 			}
 
