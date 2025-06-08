@@ -795,7 +795,9 @@ export class MaterialYouPanel extends LitElement {
 								this.hass.user?.is_admin ? 'info' : 'error',
 							)
 						: ''}
-					<div class="card-content-section-header">Color Theme</div>
+					<div class="card-content-section-header">
+						Dynamic Color Theme
+					</div>
 					${rowNames.map((name) => {
 						if (themeRows[name]) {
 							return html`<div
