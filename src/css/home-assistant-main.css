@@ -9,4 +9,5 @@
 }
 :host([modal]) {
 	--mdc-drawer-width: unset;
+	--drawer-transition: all var(--md-sys-motion-expressive-spatial-fast);
 }
