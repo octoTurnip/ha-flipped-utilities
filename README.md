@@ -151,7 +151,7 @@ If you want to disable the Material Design 3 component upgrades, toggle Style Up
 
 The Material Design 3 specification has [three different card type style variations](https://m3.material.io/components/cards/overview#ccabd69f-a01a-4b55-868f-9428f244c4bd). You can choose which one will be used as the default card style here. You can also choose to make cards transparent.
 
-Some cards, like those found in the configuration pages, already have the attribute `outlined`. This attribute will supercede the default `elevated` card style or user chosen card type.
+Some cards, like those found in the configuration pages, already have the attribute `outlined`. This attribute will supersede the default `elevated` card style or user chosen card type.
 
 # Material Design 3 Components
 
@@ -249,13 +249,13 @@ An outlined card with the same background color as the view and no elevation.
 ### Notes
 
 - Cards will default to `elevated` unless they have a class or attribute that says otherwise.
-- Some cards such as those found in the settings pages already have the attribute `outlined`, which will supercede the default `elevated` style.
+- Some cards such as those found in the settings pages already have the attribute `outlined`, which will supersede the default `elevated` style.
 - In order to use card styles other than elevated, you have to modify the class of the card using card-mod or add an attribute using the configuration panel [as described above](#card-type). The options are:
   - elevated
   - filled
   - outlined
   - transparent
-- Card type classes set with card-mod will supercede card type attributes. This way you can set an overal default card type but still modify the card types of individual cards.
+- Card type classes set with card-mod will supersede card type attributes. This way you can set an overal default card type but still modify the card types of individual cards.
 
 ```yaml
 card_mod:
