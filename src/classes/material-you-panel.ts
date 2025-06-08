@@ -499,18 +499,26 @@ export class MaterialYouPanel extends LitElement {
 	buildSettingsDatum(userId?: string) {
 		const settings: Record<string, string | number | undefined> = {};
 		for (const field in inputs) {
-			settings[field] =
+			const values = [
 				this.hass.states[
 					`${inputs[field as InputField].input}${userId ? `_${userId}` : ''}`
-				]?.state ||
-				this.hass.states[inputs[field as InputField].input]?.state ||
-				inputs[field as InputField].default;
-		}
-		const contrast = parseFloat(settings.contrast as string);
-		if (isNaN(contrast)) {
-			settings.contrast = inputs.contrast.default;
-		} else {
-			settings.contrast = Math.max(Math.min(contrast, 1), -1);
+				]?.state?.trim(),
+				this.hass.states[
+					inputs[field as InputField].input
+				]?.state?.trim(),
+				inputs[field as InputField].default,
+			];
+			if (field == 'contrast') {
+				for (const value of values) {
+					const parsed = parseFloat(value as string);
+					if (!isNaN(parsed)) {
+						settings[field] = Math.max(Math.min(parsed, 1), -1);
+						break;
+					}
+				}
+			} else {
+				settings[field] = values[0] || values[1] || values[2];
+			}
 		}
 
 		return settings;
@@ -592,8 +600,7 @@ export class MaterialYouPanel extends LitElement {
 					<disk-color-picker
 						field="base_color"
 						user-id="${userId}"
-						value="${settings.settings.base_color ||
-						inputs.base_color.default}"
+						value="${settings.settings.base_color}"
 						@change=${handleChange}
 						@keyup=${handleChange}
 						@value-changed=${this.handleSelectorChange}
@@ -633,7 +640,7 @@ export class MaterialYouPanel extends LitElement {
 							options: schemes,
 						},
 					},
-					inputs.scheme.default,
+					settings.settings.scheme,
 				)}`
 			: '';
 	}
@@ -660,7 +667,7 @@ export class MaterialYouPanel extends LitElement {
 							slider_ticks: true,
 						},
 					},
-					inputs.contrast.default,
+					settings.settings.contrast,
 				)}`
 			: '';
 	}
@@ -681,7 +688,7 @@ export class MaterialYouPanel extends LitElement {
 							options: ['2021', '2025'],
 						},
 					},
-					inputs.spec.default,
+					settings.settings.spec,
 				)}${this.buildClearButton('spec', userId)}`
 			: '';
 	}
@@ -705,7 +712,7 @@ export class MaterialYouPanel extends LitElement {
 							],
 						},
 					},
-					inputs.platform.default,
+					settings.settings.platform,
 				)}${this.buildClearButton('platform', userId)}`
 			: '';
 	}
@@ -724,7 +731,7 @@ export class MaterialYouPanel extends LitElement {
 						{
 							boolean: {},
 						},
-						inputs.styles.default == 'on',
+						settings.settings.styles == 'on',
 					)}
 				`
 			: '';
@@ -751,7 +758,7 @@ export class MaterialYouPanel extends LitElement {
 							],
 						},
 					},
-					inputs.card_type.default,
+					settings.settings.card_type,
 				)}`
 			: '';
 	}
