@@ -5,8 +5,6 @@
 }
 
 /* Elevated cards (default) */
-:host(.elevated),
-:host(.raised),
 :host([elevated]),
 :host([raised]) {
 	--ha-card-background: var(--md-sys-color-surface-container-low);
@@ -16,7 +14,6 @@
 }
 
 /* Filled cards */
-:host(.filled),
 :host([filled]) {
 	--ha-card-background: var(--md-sys-color-surface-container-highest);
 	--ha-card-box-shadow: none;
@@ -25,7 +22,6 @@
 }
 
 /* Outlined cards */
-:host(.outlined),
 :host([outlined]) {
 	--ha-card-background: var(--md-sys-color-surface);
 	--ha-card-box-shadow: none;
@@ -34,8 +30,40 @@
 }
 
 /* Transparent cards */
-:host(.transparent),
 :host([transparent]) {
+	--ha-card-background: transparent;
+	--ha-card-box-shadow: none;
+	--ha-card-border-width: 0px;
+	--ha-card-border-color: transparent;
+}
+
+/* Elevated cards (default) */
+:host(.elevated),
+:host(.raised) {
+	--ha-card-background: var(--md-sys-color-surface-container-low);
+	--ha-card-box-shadow: var(--md-sys-elevation-level1);
+	--ha-card-border-width: 0px;
+	--ha-card-border-color: transparent;
+}
+
+/* Filled cards */
+:host(.filled) {
+	--ha-card-background: var(--md-sys-color-surface-container-highest);
+	--ha-card-box-shadow: none;
+	--ha-card-border-width: 0px;
+	--ha-card-border-color: transparent;
+}
+
+/* Outlined cards */
+:host(.outlined) {
+	--ha-card-background: var(--md-sys-color-surface);
+	--ha-card-box-shadow: none;
+	--ha-card-border-width: 1px;
+	--ha-card-border-color: var(--md-sys-color-outline-variant);
+}
+
+/* Transparent cards */
+:host(.transparent) {
 	--ha-card-background: transparent;
 	--ha-card-box-shadow: none;
 	--ha-card-border-width: 0px;

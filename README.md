@@ -71,11 +71,15 @@ The settings for every user and the global settings are all the same. If a user 
 
 To create input helper entities for a user, click on `Create Helpers` in their settings card. Similarly, you can delete input helper entities for a user by clicking `Delete Helpers`. After creating helpers, you or their non-admin user can modify them from the configuration panel or open their more info dialog using the buttons to their left.
 
-## Base Color
+You can use the configuration panel to setup the dynamic color theme and to modify some style options.
+
+## Dynamic Color Theme
+
+### Base Color
 
 Material color themes are built around a base color, from which all other theme colors are derived depending on the scheme rules. This color defaults to `#4C5C92` (a shade of blue), but can be set to any other color using the color wheel.
 
-### Home Assistant Android App Color Sensor
+#### Home Assistant Android App Color Sensor
 
 If you are using the Home Assistant Android companion app, you can enable the accent color sensor in the companion app settings to use your phones Material Design accent color as the theme base color:
 
@@ -103,7 +107,7 @@ actions:
       entity_id: input_text.material_you_base_color
 ```
 
-## Color Schemes
+### Color Schemes
 
 By default, this theme will use the `Tonal Spot` color scheme. This scheme is the default color scheme used by Android 12.
 
@@ -123,21 +127,31 @@ In addition to the modern Android color scheme, [Material Color Utilities](https
 
 If an invalid or no scheme is provided, it will default to `Tonal Spot` or the globally set scheme.
 
-## Contrast Level
+### Contrast Level
 
 Each scheme can also be provided with a custom contrast from -1 to 1. Value outside of this range are clamped to it. If an invalid or no value is provided it will default to `0`.
 
-## Specification Version
+### Specification Version
 
 With the Material Expressive update, Material Design 3 now has new specifications for color themes. You can choose between the original `2021` color specification, or the updated `2025` specification. Combine the `2025` specification with the `Expressive` scheme to use the new Material Expressive palette.
 
-## Platform
+### Platform
 
 Material Expressive also comes with two platform options when using the 2025 color specification - `Phone` and `Watch`. While you probably want to keep this at the default `Phone` setting, you have the ability to choose.
 
-## Style Upgrades
+## Style Options
 
-If you want to disable the Material Design 3 component upgrades, toggle Style Upgrades off. Doing so will still allow you to set custom color themes.
+A refresh is required for style options to apply.
+
+### Style Upgrades
+
+If you want to disable the Material Design 3 component upgrades, toggle Style Upgrades off. Doing so will still allow you to set custom color themes, but will disable any other options in this section.
+
+### Card Type
+
+The Material Design 3 specification has [three different card type style variations](https://m3.material.io/components/cards/overview#ccabd69f-a01a-4b55-868f-9428f244c4bd). You can choose which one will be used as the default card style here. You can also choose to make cards transparent.
+
+Some cards, like those found in the configuration pages, already have the attribute `outlined`. This attribute will supercede the default `elevated` card style or user chosen card type.
 
 # Material Design 3 Components
 
@@ -234,11 +248,14 @@ An outlined card with the same background color as the view and no elevation.
 
 ### Notes
 
-- In order to use card styles other than elevated, you have to modify the class of the card using card-mod. The options are:
+- Cards will default to `elevated` unless they have a class or attribute that says otherwise.
+- Some cards such as those found in the settings pages already have the attribute `outlined`, which will supercede the default `elevated` style.
+- In order to use card styles other than elevated, you have to modify the class of the card using card-mod or add an attribute using the configuration panel [as described above](#card-type). The options are:
   - elevated
   - filled
   - outlined
   - transparent
+- Card type classes set with card-mod will supercede card type attributes. This way you can set an overal default card type but still modify the card types of individual cards.
 
 ```yaml
 card_mod:
