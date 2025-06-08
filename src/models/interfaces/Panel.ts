@@ -13,7 +13,8 @@ export type InputField =
 	| 'contrast'
 	| 'spec'
 	| 'platform'
-	| 'styles';
+	| 'styles'
+	| 'card_type';
 
 export interface InputInfo {
 	type: InputType;

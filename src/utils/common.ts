@@ -1,6 +1,7 @@
 import { schemes } from '../models/constants/colors';
 import { INPUT_BOOLEAN_PREFIX, inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { InputField } from '../models/interfaces/Panel';
 import { IScheme } from '../models/interfaces/Scheme';
 import { getAsync, querySelectorAsync } from './async';
 
@@ -42,6 +43,28 @@ export async function getHomeAssistantMainAsync(): Promise<HassElement> {
 	)) as HassElement;
 	await getAsync(ha, 'shadowRoot');
 	return ha;
+}
+
+/**
+ * Get the value of an input field, checking the user value first and falling back to the global default input if needed
+ * @param {InputField} field
+ * @returns {string | undefined }
+ */
+export function getInputFieldValue(field: InputField): string | undefined {
+	const hass = (document.querySelector('home-assistant') as HassElement).hass;
+
+	const userId = hass.user?.id;
+	const input = `${inputs[field].input}${userId ? `_${userId}` : ''}`;
+
+	let value = hass.states[input]?.state;
+	if (!value || value == ' ') {
+		value = hass.states[inputs[field].input]?.state;
+		if (value == ' ') {
+			return undefined;
+		}
+	}
+
+	return value;
 }
 
 /**

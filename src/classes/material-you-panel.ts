@@ -236,6 +236,28 @@ export class MaterialYouPanel extends LitElement {
 			});
 		}
 
+		// Card Type
+		entityId = `${inputs.card_type.input}${idSuffix}`;
+		if (!this.hass.states[entityId]) {
+			const id = entityId.split('.')[1];
+			const config = {
+				icon: inputs.card_type.icon,
+				options: ['elevated', 'filled', 'outlined', 'transparent', ' '],
+			};
+			await createInput(this.hass, 'select', {
+				name: id,
+				...config,
+			});
+			await updateInput(this.hass, 'select', id, {
+				name: `${inputs.card_type.name}${userName}`,
+				...config,
+			});
+			await this.hass.callService('input_select', 'select_option', {
+				option: ' ',
+				entity_id: entityId,
+			});
+		}
+
 		let message = 'Global input entities created';
 		if (userName) {
 			message = `Input entities created for${userName}`;
@@ -287,6 +309,7 @@ export class MaterialYouPanel extends LitElement {
 			case 'scheme':
 			case 'spec':
 			case 'platform':
+			case 'card_type':
 				data.option = value || ' ';
 				break;
 			case 'contrast':
@@ -337,6 +360,7 @@ export class MaterialYouPanel extends LitElement {
 			case 'scheme':
 			case 'spec':
 			case 'platform':
+			case 'card_type':
 			case 'contrast':
 			default:
 				value = config.settings[field] as string | number;
@@ -405,6 +429,7 @@ export class MaterialYouPanel extends LitElement {
 			case 'scheme':
 			case 'spec':
 			case 'platform':
+			case 'card_type':
 				data.option = ' ';
 				break;
 			case 'contrast':
@@ -705,6 +730,32 @@ export class MaterialYouPanel extends LitElement {
 			: '';
 	}
 
+	buildCardTypeRow(settings: IUserPanelSettings) {
+		const userId = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.card_type.input}${userId ? `_${userId}` : ''}`;
+
+		return this.hass.states[input]
+			? html`${this.buildMoreInfoButton('card_type', userId)}
+				${this.buildSelector(
+					'Card Type',
+					'card_type',
+					userId,
+					{
+						select: {
+							mode: 'dropdown',
+							options: [
+								{ value: 'elevated', label: 'Elevated' },
+								{ value: 'filled', label: 'Filled' },
+								{ value: 'outlined', label: 'Outlined' },
+								{ value: 'transparent', label: 'Transparent' },
+							],
+						},
+					},
+					inputs.card_type.default,
+				)}`
+			: '';
+	}
+
 	buildSettingsCard(settings: IUserPanelSettings) {
 		const userId = settings.stateObj?.attributes.user_id;
 
@@ -713,18 +764,22 @@ export class MaterialYouPanel extends LitElement {
 			title = settings.stateObj.attributes.friendly_name ?? '';
 		}
 
-		let rows: Record<InputField, TemplateResult | string> = {
+		let themeRows: Partial<Record<InputField, TemplateResult | string>> = {
 			base_color: this.buildBaseColorRow(settings),
 			scheme: this.buildSchemeRow(settings),
 			contrast: this.buildContrastRow(settings),
 			spec: this.buildSpecRow(settings),
 			platform: this.buildPlatformRow(settings),
-			styles: this.buildStylesRow(settings),
 		};
+		let styleRows: Partial<Record<InputField, TemplateResult | string>> = {
+			styles: this.buildStylesRow(settings),
+			card_type: this.buildCardTypeRow(settings),
+		};
+		const rows = { ...themeRows, ...styleRows };
 		const n = Object.keys(rows).length;
 		const rowNames = Object.keys(rows).filter(
 			(row) => rows[row as InputField] != '',
-		);
+		) as InputField[];
 
 		return html`
 			<ha-card .hass=${this.hass} .header=${title}>
@@ -740,15 +795,30 @@ export class MaterialYouPanel extends LitElement {
 								this.hass.user?.is_admin ? 'info' : 'error',
 							)
 						: ''}
-					${rowNames.map(
-						(name) =>
-							html`<div
+					<div class="card-content-section-header">Color Theme</div>
+					${rowNames.map((name) => {
+						if (themeRows[name]) {
+							return html`<div
 								class="row ${name}"
 								id="${name}${userId ? `-${userId}` : ''}"
 							>
 								${rows[name as InputField]}
-							</div>`,
-					)}
+							</div>`;
+						}
+						return '';
+					})}
+					<div class="card-content-section-header">Style Options</div>
+					${rowNames.map((name) => {
+						if (styleRows[name]) {
+							return html`<div
+								class="row ${name}"
+								id="${name}${userId ? `-${userId}` : ''}"
+							>
+								${rows[name as InputField]}
+							</div>`;
+						}
+						return '';
+					})}
 				</div>
 				${this.hass.user?.is_admin
 					? html`<div class="card-actions">
@@ -849,7 +919,8 @@ export class MaterialYouPanel extends LitElement {
 			style.textContent = `
 				/* Shift color picker down */
 				:host {
-					translate: 0 20px;
+					height: 236px;
+					translate: 0 -24px;
 				}
 
 				/* Scale the disk color picker relative to saturation arc */
@@ -986,7 +1057,6 @@ export class MaterialYouPanel extends LitElement {
 			.card-content {
 				display: flex;
 				flex-direction: column;
-				gap: 24px;
 				padding: 0 16px 16px;
 			}
 			.subtitle {
@@ -1004,6 +1074,31 @@ export class MaterialYouPanel extends LitElement {
 					0.1px
 				);
 			}
+			.card-content-section-header {
+				font-size: var(--md-sys-typescale-title-medium-siz, 16px);
+				font-weight: var(--md-sys-typescale-title-medium-weight, 500);
+				line-height: var(
+					--md-sys-typescale-title-medium-line-height,
+					24px
+				);
+				letter-spacing: var(
+					--md-sys-typescale-title-medium-tracking,
+					0.15px
+				);
+			}
+			.card-content-section-header::before {
+				content: '';
+				display: block;
+				height: 1px;
+				width: 100%;
+				padding-top: 12px;
+				border-top: 1px
+					var(
+						--md-sys-color-outline-variant,
+						var(--divider-color, gray)
+					)
+					solid;
+			}
 
 			ha-selector {
 				width: 100%;
@@ -1011,6 +1106,7 @@ export class MaterialYouPanel extends LitElement {
 			.row {
 				display: flex;
 				align-items: flex-end;
+				margin-bottom: 16px;
 			}
 			.row:empty {
 				display: none;

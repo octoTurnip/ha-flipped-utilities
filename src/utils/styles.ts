@@ -2,7 +2,7 @@ import { elements } from '../css';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { querySelectorAsync } from './async';
-import { getHomeAssistantMainAsync } from './common';
+import { getHomeAssistantMainAsync, getInputFieldValue } from './common';
 
 // Theme check variables
 let theme = '';
@@ -131,7 +131,7 @@ function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
 			return;
 		}
 
-		// Quit if its been more than 20 seconds
+		// Quit if delay is more than 20 seconds
 		if (ms > 20000) {
 			return;
 		}
@@ -164,6 +164,27 @@ export async function setStyles(target: typeof globalThis) {
 
 					// Most coverage
 					applyStylesOnTimeout(this);
+
+					// Extra logic for certain elements
+					switch (name) {
+						case 'ha-card':
+							const type = getInputFieldValue('card_type');
+							if (
+								type &&
+								![
+									'elevated',
+									'raised', // alternate name for elevated
+									'filled',
+									'outlined',
+									'transparent',
+								].some((t) => this.hasAttribute(t))
+							) {
+								this.setAttribute(type, '');
+							}
+							break;
+						default:
+							break;
+					}
 				}
 			}
 

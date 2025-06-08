@@ -6,6 +6,7 @@
 
 /* Elevated cards (default) */
 :host(.elevated),
+:host(.raised),
 :host([elevated]),
 :host([raised]) {
 	--ha-card-background: var(--md-sys-color-surface-container-low);

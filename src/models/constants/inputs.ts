@@ -57,4 +57,12 @@ export const inputs: Record<InputField, InputInfo> = {
 		action: 'input_boolean.turn_on',
 		icon: 'mdi:material-design',
 	},
+	card_type: {
+		type: 'select',
+		default: 'elevated',
+		name: `${THEME_NAME} Card Type`,
+		input: `${INPUT_SELECT_PREFIX}_card_type`,
+		action: 'input_select.select_option',
+		icon: 'mdi:card',
+	},
 };
