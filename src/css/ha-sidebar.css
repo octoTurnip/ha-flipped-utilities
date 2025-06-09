@@ -2,7 +2,7 @@
 .title {
 	color: transparent;
 }
-:host([narrow]) .menu {
+:host([narrow]) .menu:not(:has(mwc-button, ha-icon-button)) {
 	height: 12px;
 }
 
