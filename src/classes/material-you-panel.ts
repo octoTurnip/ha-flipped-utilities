@@ -976,14 +976,15 @@ export class MaterialYouPanel extends LitElement {
 		`;
 	}
 
-	firstUpdated() {
+	updated() {
 		// Disk color picker style tweaks
 		const colorPickers =
 			this.shadowRoot?.querySelectorAll('disk-color-picker') ?? [];
 		for (const colorPicker of colorPickers) {
-			const style = document.createElement('style');
-			style.id = 'material-you';
-			style.textContent = `
+			if (!colorPicker.shadowRoot?.getElementById('material-you')) {
+				const style = document.createElement('style');
+				style.id = 'material-you';
+				style.textContent = `
 				/* Shift color picker down */
 				:host {
 					height: 236px;
@@ -1002,7 +1003,8 @@ export class MaterialYouPanel extends LitElement {
 					-webkit-tap-highlight-color: transparent;
 				}
 			`;
-			colorPicker.shadowRoot?.appendChild(style);
+				colorPicker.shadowRoot?.appendChild(style);
+			}
 		}
 	}
 
