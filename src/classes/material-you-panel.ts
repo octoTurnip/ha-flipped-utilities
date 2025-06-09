@@ -6,7 +6,7 @@ import {
 } from '@material/material-color-utilities';
 import 'disk-color-picker';
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 
 import packageInfo from '../../package.json';
 import { schemes } from '../models/constants/colors';
@@ -31,6 +31,9 @@ export class MaterialYouPanel extends LitElement {
 	currentUserSettings!: IUserPanelSettings;
 	globalSettings!: IUserPanelSettings;
 	otherUserSettings: Record<string, IUserPanelSettings> = {};
+
+	@state() tabBarIndex: number = 0;
+	tabs = ['you', 'everyone', 'devices'];
 
 	async handleDeleteHelpers(e: MouseEvent) {
 		const userId = (e.target as HTMLElement).getAttribute('user-id');
@@ -579,6 +582,30 @@ export class MaterialYouPanel extends LitElement {
 		</div>`;
 	}
 
+	handleTabBar(e: Event) {
+		const i = this.tabs.indexOf(e.detail.name);
+		if (this.tabBarIndex == i) {
+			return;
+		}
+		this.tabBarIndex = i;
+	}
+
+	buildTabBar(index: number, handler: (e: Event) => void, tabs: string[]) {
+		return html`
+			<sl-tab-group @sl-tab-show=${handler}>
+				${tabs.map(
+					(tab, i) =>
+						html`<sl-tab
+							slot="nav"
+							panel=${tab}
+							.active=${i == index}
+							>${tab}</sl-tab
+						>`,
+				)}
+			</sl-tab-group>
+		`;
+	}
+
 	buildBaseColorRow(settings: IUserPanelSettings) {
 		const userId = settings.stateObj?.attributes.user_id;
 		const input = `${inputs.base_color.input}${userId ? `_${userId}` : ''}`;
@@ -851,69 +878,97 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	render() {
+		if (!this.hass.user?.is_admin) {
+			this.tabBarIndex = 0;
+		}
+
 		this.buildSettingsData();
+
+		const warnings = html`
+			${'Material Rounded' in this.hass.themes.themes
+				? this.buildAlertBox(
+						'Your theme install is corrupted! The legacy Material Rounded theme was not properly removed and is possibly overwriting Material You theme. Delete the config/themes/material_rounded folder from your Home Assistant server.',
+						'error',
+					)
+				: ''}
+			${!(THEME_NAME in this.hass.themes.themes)
+				? this.buildAlertBox(
+						`You do not have ${THEME_NAME} Theme installed! This module is made to work with ${THEME_NAME} Theme and will not function properly otherwise. Install it using HACS.`,
+						'error',
+					)
+				: !this.hass.themes.theme.includes(THEME_NAME)
+					? this.buildAlertBox(
+							`You are not using ${THEME_NAME} Theme! Switch to it in your profile settings.`,
+							'warning',
+						)
+					: ''}
+		`;
+
+		let page: TemplateResult;
+		switch (this.tabBarIndex) {
+			case 2:
+				page = html`
+					<div class="section-header">
+						<div class="title">Devices</div>
+						<div class="description">Device specific theming.</div>
+					</div>
+					<h1>Not Implemented, Yet</h1>
+				`;
+				break;
+			case 1:
+				page = html`
+					<div class="section-header">
+						<div class="title">Everyone!</div>
+						<div class="description">
+							Default settings for all users. Used if a user
+							hasn't set their own settings.
+						</div>
+					</div>
+					${this.buildSettingsCard(this.globalSettings)}
+					<div class="section-header">
+						<div class="title">Everyone Else</div>
+						<div class="description">
+							Other users on this Home Assistant instance.
+						</div>
+					</div>
+					${Object.keys(this.otherUserSettings).map((userId) =>
+						this.buildSettingsCard(this.otherUserSettings[userId]),
+					)}
+				`;
+				break;
+			case 0:
+			default:
+				page = html`
+					<div class="section-header">
+						<div class="title">You!</div>
+						<div class="description">
+							Your personal ${THEME_NAME} settings.
+						</div>
+					</div>
+					${this.buildSettingsCard(this.currentUserSettings)}
+				`;
+				break;
+		}
+
 		return html`
 			${this.buildHeader()}
 			<div class="content">
+				${this.hass.user?.is_admin
+					? this.buildTabBar(
+							this.tabBarIndex,
+							this.handleTabBar,
+							this.tabs,
+						)
+					: ''}
+				${warnings}
 				<div class="page-header">
 					<div class="title">${THEME_NAME} Utilities</div>
 					<div class="description">
-						${this.hass.user?.is_admin
-							? 'Create, edit, and delete input helpers for designing Material Design 3 color themes for you and your users.'
-							: 'Design your own personal Material Design 3 color theme using the inputs below.'}
+						Design your own personal Material Design 3 dynamic color
+						theme.
 					</div>
 				</div>
-				${'Material Rounded' in this.hass.themes.themes
-					? this.buildAlertBox(
-							'Your theme install is corrupted! The legacy Material Rounded theme was not properly removed and is possibly overwriting Material You theme. Delete the config/themes/material_rounded folder from your Home Assistant server.',
-							'error',
-						)
-					: ''}
-				${!(THEME_NAME in this.hass.themes.themes)
-					? this.buildAlertBox(
-							`You do not have ${THEME_NAME} Theme installed! This module is made to work with ${THEME_NAME} Theme and will not function properly otherwise. Install it using HACS.`,
-							'error',
-						)
-					: !this.hass.themes.theme.includes(THEME_NAME)
-						? this.buildAlertBox(
-								`You are not using ${THEME_NAME} Theme! Switch to it in your profile settings.`,
-								'warning',
-							)
-						: ''}
-				<div class="section-header">
-					<div class="title">You!</div>
-					<div class="description">
-						Your personal ${THEME_NAME} settings.
-					</div>
-				</div>
-				${this.buildSettingsCard(this.currentUserSettings)}
-				${this.hass.user?.is_admin
-					? html`
-							<div class="section-header">
-								<div class="title">Everyone!</div>
-								<div class="description">
-									Default settings for all users. Used if a
-									user hasn't set their own settings.
-								</div>
-							</div>
-							${this.buildSettingsCard(this.globalSettings)}
-							${Object.keys(this.otherUserSettings).length
-								? html`<div class="section-header">
-										<div class="title">Everyone Else</div>
-										<div class="description">
-											Other users on this Home Assistant
-											instance.
-										</div>
-									</div>`
-								: ''}
-							${Object.keys(this.otherUserSettings).map(
-								(userId) =>
-									this.buildSettingsCard(
-										this.otherUserSettings[userId],
-									),
-							)}
-						`
-					: ''}
+				${page}
 			</div>
 		`;
 	}
@@ -957,6 +1012,8 @@ export class MaterialYouPanel extends LitElement {
 					--lovelace-background,
 					var(--primary-background-color)
 				);
+
+				--width: min(600px, calc(100% - 36px));
 			}
 
 			.header {
@@ -995,7 +1052,7 @@ export class MaterialYouPanel extends LitElement {
 			}
 
 			.page-header {
-				width: min(600px, calc(100% - 36px));
+				width: var(--width);
 			}
 			.page-header .title {
 				font-size: var(--md-sys-typescale-display-small-size, 36px);
@@ -1031,12 +1088,27 @@ export class MaterialYouPanel extends LitElement {
 				padding-bottom: 24px;
 				background-color: inherit;
 			}
+
+			sl-tab-group {
+				text-transform: capitalize;
+				width: var(--width);
+			}
+			sl-tab {
+				flex: 1;
+			}
+			sl-tab::part(base) {
+				width: 100%;
+				justify-content: center;
+			}
+
 			ha-card {
-				width: min(600px, calc(100% - 36px));
+				width: var(--width);
 			}
 			.section-header {
-				width: min(564px, 85%);
+				width: var(--width);
+				padding: 0 16px;
 				margin-bottom: -12px;
+				box-sizing: border-box;
 			}
 			.section-header .title {
 				line-height: var(
