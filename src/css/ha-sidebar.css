@@ -1,6 +1,6 @@
-/* Hide title */
+/* Hide title but keep it tappable */
 .title {
-	display: none;
+	color: transparent;
 }
 :host([narrow]) .menu {
 	height: 12px;
@@ -200,6 +200,12 @@ ha-md-list-item.selected {
 ha-md-list-item ha-svg-icon,
 ha-md-list-item ha-icon {
 	z-index: 0;
+}
+
+/* Fix hide/show panel button */
+.hide-panel,
+.show-panel {
+	z-index: 1;
 }
 
 /* Rail notification badge */
