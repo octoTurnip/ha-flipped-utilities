@@ -1090,6 +1090,7 @@ export class MaterialYouPanel extends LitElement {
 				gap: 24px;
 				padding-bottom: 24px;
 				background-color: inherit;
+				min-height: calc(100% - 88px);
 			}
 
 			sl-tab-group {
