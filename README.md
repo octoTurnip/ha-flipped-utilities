@@ -266,6 +266,7 @@ card_mod:
   1. Material Design 3 cards are containers for interactable elements and information, but cards in Home Assistant are mostly interactable elements themselves. Interactable elements in Material Design 3 tend to have much rounder corners.
   2. Material Design 3 specification website itself uses larger more rounded border radii for card elements.
   3. Material Design 3 apps like Google Home use larger border radii for card-like interactable elements.
+  4. The round border radii cards was one of the original features of this theme, back when it was called Material Rounded.
 
 ## Buttons
 
