@@ -910,7 +910,10 @@ export class MaterialYouPanel extends LitElement {
 				page = html`
 					<div class="section-header">
 						<div class="title">Devices</div>
-						<div class="description">Device specific theming.</div>
+						<div class="description">
+							Device specific settings which are prioritized over
+							user settings.
+						</div>
 					</div>
 					<h1>Not Implemented, Yet</h1>
 				`;
