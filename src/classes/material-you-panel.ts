@@ -302,16 +302,14 @@ export class MaterialYouPanel extends LitElement {
 		};
 		switch (field) {
 			case 'base_color':
-				data.value = value || inputs.base_color.default;
+			case 'contrast':
+				data.value = value || inputs[field].default;
 				break;
 			case 'scheme':
 			case 'spec':
 			case 'platform':
 			case 'card_type':
 				data.option = value || inputs[field].default;
-				break;
-			case 'contrast':
-				data.value = value || inputs[field].default;
 				break;
 			case 'styles':
 				value ??= true;
@@ -419,8 +417,22 @@ export class MaterialYouPanel extends LitElement {
 		const [domain, service] = inputs[field].action.split('.');
 		let data: Record<string, any> = {
 			entity_id: `${inputs[field].input}${id ? `_${id}` : ''}`,
-			value: inputs[field].default,
 		};
+		switch (field) {
+			case 'base_color':
+			case 'contrast':
+			case 'styles':
+				data.value = inputs[field].default;
+				break;
+			case 'scheme':
+			case 'spec':
+			case 'platform':
+			case 'card_type':
+				data.option = inputs[field].default;
+				break;
+			default:
+				break;
+		}
 
 		await this.hass.callService(domain, service, data);
 		this.requestUpdate();
@@ -923,11 +935,16 @@ export class MaterialYouPanel extends LitElement {
 		switch (this.tabBarIndex) {
 			case 2:
 				page = html`
+					${window.browser_mod
+						? ''
+						: this.buildAlertBox(
+								'Device specific settings requires browser_mod, which can be installed using HACS.',
+								'error',
+							)}
 					<div class="section-header">
 						<div class="title">This Device</div>
 						<div class="description">
-							This device/browser combination, prioritzed over all
-							other settings.
+							This device, prioritized over all other settings.
 						</div>
 					</div>
 					${this.buildSettingsCard(this.currentDeviceSettings)}
@@ -947,8 +964,8 @@ export class MaterialYouPanel extends LitElement {
 					<div class="section-header">
 						<div class="title">Everyone!</div>
 						<div class="description">
-							Default settings for all users. Used if a user
-							hasn't set their own settings.
+							Default settings for all users. Used if a user or
+							device doesn't have their own settings.
 						</div>
 					</div>
 					${this.buildSettingsCard(this.globalSettings)}
