@@ -103,8 +103,9 @@ export class MaterialYouPanel extends LitElement {
 			const id = entityId.split('.')[1];
 			const config = {
 				icon: inputs.base_color.icon,
-				min: 0,
+				min: 3,
 				max: 9,
+				pattern: '^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$',
 			};
 			await createInput(this.hass, 'text', {
 				name: id,
@@ -115,7 +116,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await this.hass.callService('input_text', 'set_value', {
-				value: '',
+				value: inputs.base_color.default,
 				entity_id: entityId,
 			});
 		}
@@ -126,7 +127,7 @@ export class MaterialYouPanel extends LitElement {
 			const id = entityId.split('.')[1];
 			const config = {
 				icon: inputs.scheme.icon,
-				options: [...schemes.map((scheme) => scheme.value), ' '],
+				options: [...schemes.map((scheme) => scheme.value)],
 			};
 			await createInput(this.hass, 'select', {
 				name: id,
@@ -137,7 +138,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
-				option: ' ',
+				option: inputs.scheme.default,
 				entity_id: entityId,
 			});
 		}
@@ -172,7 +173,7 @@ export class MaterialYouPanel extends LitElement {
 			const id = entityId.split('.')[1];
 			const config = {
 				icon: inputs.spec.icon,
-				options: ['2021', '2025', ' '],
+				options: ['2021', '2025'],
 			};
 			await createInput(this.hass, 'select', {
 				name: id,
@@ -183,7 +184,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
-				option: ' ',
+				option: inputs.spec.default,
 				entity_id: entityId,
 			});
 		}
@@ -194,7 +195,7 @@ export class MaterialYouPanel extends LitElement {
 			const id = entityId.split('.')[1];
 			const config = {
 				icon: inputs.platform.icon,
-				options: ['phone', 'watch', ' '],
+				options: ['phone', 'watch'],
 			};
 			await createInput(this.hass, 'select', {
 				name: id,
@@ -205,7 +206,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
-				option: ' ',
+				option: inputs.platform.default,
 				entity_id: entityId,
 			});
 		}
@@ -236,7 +237,7 @@ export class MaterialYouPanel extends LitElement {
 			const id = entityId.split('.')[1];
 			const config = {
 				icon: inputs.card_type.icon,
-				options: ['elevated', 'filled', 'outlined', 'transparent', ' '],
+				options: ['elevated', 'filled', 'outlined', 'transparent'],
 			};
 			await createInput(this.hass, 'select', {
 				name: id,
@@ -247,7 +248,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
-				option: ' ',
+				option: inputs.card_type.default,
 				entity_id: entityId,
 			});
 		}
@@ -307,10 +308,10 @@ export class MaterialYouPanel extends LitElement {
 			case 'spec':
 			case 'platform':
 			case 'card_type':
-				data.option = value || ' ';
+				data.option = value || inputs[field].default;
 				break;
 			case 'contrast':
-				data.value = value || 0;
+				data.value = value || inputs[field].default;
 				break;
 			case 'styles':
 				value ??= true;
@@ -361,7 +362,7 @@ export class MaterialYouPanel extends LitElement {
 			case 'contrast':
 			default:
 				value = config.settings[field] as string | number;
-				if (value == ' ') {
+				if (!value) {
 					value = inputs[field].default;
 				}
 				break;
@@ -418,24 +419,8 @@ export class MaterialYouPanel extends LitElement {
 		const [domain, service] = inputs[field].action.split('.');
 		let data: Record<string, any> = {
 			entity_id: `${inputs[field].input}${id ? `_${id}` : ''}`,
+			value: inputs[field].default,
 		};
-		switch (field) {
-			case 'base_color':
-				data.value = '';
-				break;
-			case 'scheme':
-			case 'spec':
-			case 'platform':
-			case 'card_type':
-				data.option = ' ';
-				break;
-			case 'contrast':
-				data.value = 0;
-				break;
-			case 'styles':
-			default:
-				break;
-		}
 
 		await this.hass.callService(domain, service, data);
 		this.requestUpdate();
