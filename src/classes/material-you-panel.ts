@@ -13,12 +13,7 @@ import { schemes } from '../models/constants/colors';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField, IUserPanelSettings } from '../models/interfaces/Panel';
 
-import {
-	COOKIE_KEY,
-	DEVICES_LIST,
-	inputs,
-	THEME_NAME,
-} from '../models/constants/inputs';
+import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { showToast } from '../utils/logging';
 import {
 	createInput,
@@ -73,7 +68,7 @@ export class MaterialYouPanel extends LitElement {
 			} else {
 				userName =
 					this.otherUserSettings[id].stateObj?.attributes
-						.friendly_name ?? '';
+						.friendly_name ?? id;
 			}
 			message = `Input entities cleared for ${userName}`;
 		}
@@ -98,23 +93,8 @@ export class MaterialYouPanel extends LitElement {
 		const idSuffix = id ? `_${id}` : '';
 		let name = '';
 		if (id) {
-			if (this.hass.user?.id == id) {
-				name =
-					this.currentUserSettings.stateObj?.attributes
-						.friendly_name ?? '';
-			} else {
-				let settings =
-					this.otherUserSettings[
-						Object.keys(this.otherUserSettings).filter(
-							(id2) => id == id2,
-						)[0]
-					];
-				if (settings) {
-					name = settings.stateObj?.attributes.friendly_name ?? '';
-				} else {
-				}
-			}
-			name = ` ${name}`;
+			const settings = this.getConfig(id);
+			name = ` ${settings.stateObj?.attributes?.friendly_name ?? settings.id}`;
 		}
 
 		// Base Color
@@ -294,10 +274,13 @@ export class MaterialYouPanel extends LitElement {
 	getConfig(id: string) {
 		let config: IUserPanelSettings;
 		if (id) {
-			if (id == this.hass.user?.id) {
+			if (id == this.currentUserSettings.id) {
 				config = this.currentUserSettings;
+			} else if (id == this.currentDeviceSettings.id) {
+				config = this.currentDeviceSettings;
 			} else {
-				config = this.otherUserSettings[id];
+				config =
+					this.otherUserSettings[id] ?? this.otherDeviceSettings[id];
 			}
 		} else {
 			config = this.globalSettings;
@@ -549,6 +532,7 @@ export class MaterialYouPanel extends LitElement {
 		// Current user
 		const currentUserId = this.hass.user?.id ?? '';
 		this.currentUserSettings = {
+			id: currentUserId,
 			stateObj:
 				this.hass.states[
 					people.filter(
@@ -562,13 +546,17 @@ export class MaterialYouPanel extends LitElement {
 
 		if (this.hass.user?.is_admin) {
 			// Global defaults
-			this.globalSettings = { settings: this.buildSettingsDatum() };
+			this.globalSettings = {
+				id: '',
+				settings: this.buildSettingsDatum(),
+			};
 
 			// Other users
 			for (const person of people) {
 				const userId = this.hass.states[person].attributes.user_id;
 				if (userId != currentUserId) {
 					this.otherUserSettings[userId] = {
+						id: userId,
 						stateObj: this.hass.states[person],
 						settings: this.buildSettingsDatum(userId),
 					};
@@ -576,24 +564,20 @@ export class MaterialYouPanel extends LitElement {
 			}
 
 			// Current device
-			let currentDeviceId = '';
-			for (const cookie of document.cookie.split(';')) {
-				const [key, value] = cookie.split('=');
-				if (key == COOKIE_KEY) {
-					currentDeviceId = key;
-					this.currentDeviceSettings = {
-						settings: this.buildSettingsDatum(value),
-					};
-					break;
-				}
-			}
+			const currentDeviceId = window.browser_mod?.browserID ?? 'NO_ID';
+			this.currentDeviceSettings = {
+				id: currentDeviceId,
+				settings: this.buildSettingsDatum(currentDeviceId),
+			};
 
 			// Other devices
-			const devices: string[] =
-				this.hass.states[DEVICES_LIST]?.attributes?.options ?? [];
-			for (const device of devices) {
-				if (device != currentDeviceId) {
+
+			for (const device of Object.keys(
+				window.browser_mod?.browsers ?? {},
+			)) {
+				if (device != window.browser_mod?.browserID) {
 					this.otherDeviceSettings[device] = {
+						id: device,
 						settings: this.buildSettingsDatum(device),
 					};
 				}
@@ -643,7 +627,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildBaseColorRow(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 		const input = `${inputs.base_color.input}${id ? `_${id}` : ''}`;
 
 		let timeout: ReturnType<typeof setTimeout>;
@@ -686,7 +670,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildSchemeRow(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 		const input = `${inputs.scheme.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
@@ -709,7 +693,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildContrastRow(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 		const input = `${inputs.contrast.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
@@ -736,7 +720,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildSpecRow(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 		const input = `${inputs.spec.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
@@ -757,7 +741,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildPlatformRow(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 		const input = `${inputs.platform.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
@@ -781,7 +765,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildStylesRow(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 		const input = `${inputs.styles.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
@@ -801,7 +785,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildCardTypeRow(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 		const input = `${inputs.card_type.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
@@ -827,11 +811,11 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildSettingsCard(settings: IUserPanelSettings) {
-		const id = settings.stateObj?.attributes.user_id;
+		const id = settings.id;
 
 		let title = 'Global';
-		if (settings.stateObj) {
-			title = settings.stateObj.attributes.friendly_name ?? '';
+		if (settings.id) {
+			title = settings.stateObj?.attributes?.friendly_name ?? settings.id;
 		}
 
 		let themeRows: Partial<Record<InputField, TemplateResult | string>> = {
@@ -944,14 +928,24 @@ export class MaterialYouPanel extends LitElement {
 		switch (this.tabBarIndex) {
 			case 2:
 				page = html`
+					<h3>TODO - add device button</h3>
 					<div class="section-header">
-						<div class="title">Devices</div>
+						<div class="title">This Device</div>
 						<div class="description">
-							Device specific settings which are prioritized over
-							user settings.
+							This device/browser combination, prioritzed over all
+							other settings.
 						</div>
 					</div>
-					<h1>Not Implemented, Yet</h1>
+					${this.buildSettingsCard(this.currentDeviceSettings)}
+					<div class="section-header">
+						<div class="title">Other Devices</div>
+						<div class="description">
+							Other devices on this Home Assistant instance.
+						</div>
+					</div>
+					${Object.keys(this.otherDeviceSettings).map((id) =>
+						this.buildSettingsCard(this.otherDeviceSettings[id]),
+					)}
 				`;
 				break;
 			case 1:

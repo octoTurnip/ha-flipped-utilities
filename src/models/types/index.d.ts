@@ -13,6 +13,10 @@ declare global {
 			};
 		};
 		MaterialYouInit?: boolean;
+		browser_mod?: {
+			browserID?: string;
+			browsers?: Record<string, Record<string, any>>;
+		};
 	}
 
 	interface Event {

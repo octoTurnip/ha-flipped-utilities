@@ -8,9 +8,6 @@ export const INPUT_SELECT_PREFIX = `input_select.${THEME}`;
 export const INPUT_NUMBER_PREFIX = `input_number.${THEME}`;
 export const INPUT_BOOLEAN_PREFIX = `input_boolean.${THEME}`;
 
-export const COOKIE_KEY = `${THEME}_device_id`;
-export const DEVICES_LIST = `${INPUT_SELECT_PREFIX}_devices`;
-
 export const inputs: Record<InputField, InputInfo> = {
 	base_color: {
 		type: 'text',

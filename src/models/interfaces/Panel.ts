@@ -1,6 +1,7 @@
 import { HassEntity } from 'home-assistant-js-websocket';
 
 export interface IUserPanelSettings {
+	id: string;
 	settings: Record<InputField, string | number | undefined>;
 	stateObj?: HassEntity;
 }
