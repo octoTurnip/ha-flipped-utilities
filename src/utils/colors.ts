@@ -11,6 +11,7 @@ import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/col
 import { colors } from '../models/constants/colors';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { InputField } from '../models/interfaces/Panel';
 import { querySelectorAsync } from './async';
 import { getHomeAssistantMainAsync, getSchemeInfo, getToken } from './common';
 import { debugToast, mdLog } from './logging';
@@ -20,14 +21,6 @@ export async function setTheme(target: HTMLElement) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
-		// Setup inputs
-		const userId = hass.user?.id;
-		const colorInputUserId = `${inputs.base_color.input}_${userId}`;
-		const schemeInputUserId = `${inputs.scheme.input}_${userId}`;
-		const contrastInputUserId = `${inputs.contrast.input}_${userId}`;
-		const specInputUserId = `${inputs.spec.input}_${userId}`;
-		const platformInputUserId = `${inputs.platform.input}_${userId}`;
-
 		const html = await querySelectorAsync(document, 'html');
 
 		const themeName = hass?.themes?.theme ?? '';
@@ -38,54 +31,57 @@ export async function setTheme(target: HTMLElement) {
 				'var(--md-sys-color-surface)',
 			);
 
-			let baseColor =
-				hass.states[colorInputUserId]?.state?.trim() ||
-				hass.states[inputs.base_color.input]?.state?.trim() ||
-				'';
+			// Setup input values
+			const values: Partial<Record<InputField, string | number>> = {
+				base_color: '',
+				scheme: '',
+				contrast: '',
+				spec: '',
+				platform: '',
+			};
+			const ids = [window.browser_mod?.browserID, hass.user?.id, ''];
+			for (const id of ids) {
+				if (id == undefined) {
+					continue;
+				}
 
-			let schemeName =
-				hass.states[schemeInputUserId]?.state?.trim() ||
-				hass.states[inputs.scheme.input]?.state?.trim() ||
-				'';
-
-			let contrastLevel: number = inputs.contrast.default as number;
-			for (const value of [
-				hass.states[contrastInputUserId]?.state,
-				hass.states[inputs.contrast.input]?.state,
-			]) {
-				const parsed = parseFloat(value);
-				if (!isNaN(parsed)) {
-					contrastLevel = Math.max(Math.min(parsed, 1), -1);
-					break;
+				for (const field in values) {
+					if (
+						values[field as InputField] ||
+						values[field as InputField] === 0
+					) {
+						continue;
+					}
+					values[field as InputField] =
+						hass.states[
+							`${inputs[field as InputField].input}${id ? `_${id}` : ''}`
+						]?.state?.trim();
 				}
 			}
 
-			let spec =
-				hass.states[specInputUserId]?.state?.trim() ||
-				hass.states[inputs.spec.input]?.state?.trim() ||
-				'';
-
-			let platform =
-				hass.states[platformInputUserId]?.state?.trim() ||
-				hass.states[inputs.platform.input]?.state?.trim() ||
-				'';
-
 			// Only update if one of the inputs is set
-			if (baseColor || schemeName || contrastLevel || spec || platform) {
-				baseColor ||= inputs.base_color.default as string;
-				schemeName ||= inputs.scheme.default as string;
-				spec ||= inputs.spec.default as string;
-				platform ||= inputs.platform.default as string;
+			if (
+				values.base_color ||
+				values.scheme ||
+				values.contrast ||
+				values.spec ||
+				values.platform
+			) {
+				values.base_color ||= inputs.base_color.default as string;
+				values.scheme ||= inputs.scheme.default as string;
+				values.contrast ??= inputs.contrast.default as number;
+				values.spec ||= inputs.spec.default as string;
+				values.platform ||= inputs.platform.default as string;
 
-				const schemeInfo = getSchemeInfo(schemeName);
+				const schemeInfo = getSchemeInfo(values.scheme as string);
 
 				for (const mode of ['light', 'dark']) {
 					const scheme = new schemeInfo.class(
-						Hct.fromInt(argbFromHex(baseColor)),
+						Hct.fromInt(argbFromHex(values.base_color as string)),
 						mode == 'dark',
-						contrastLevel,
-						spec as SpecVersion,
-						platform as Platform,
+						parseFloat(values.contrast as string),
+						values.spec as SpecVersion,
+						values.platform as Platform,
 					);
 
 					for (const color of colors) {
@@ -102,7 +98,7 @@ export async function setTheme(target: HTMLElement) {
 					}
 				}
 
-				const message = `Material design system colors updated.\nBase Color ${baseColor} | Scheme ${schemeInfo.label} | Contrast Level ${contrastLevel} | Spec Version ${spec}, Platform ${platform[0].toUpperCase()}${platform.slice(1)}`;
+				const message = `Material design system colors updated.\nBase Color ${values.base_color} | Scheme ${schemeInfo.label} | Contrast Level ${values.contrast} | Spec Version ${values.spec}, Platform ${(values.platform as string)[0].toUpperCase()}${(values.platform as string).slice(1)}`;
 				mdLog(message, true);
 			} else {
 				await unsetTheme();

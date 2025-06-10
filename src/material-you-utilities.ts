@@ -62,6 +62,7 @@ async function main() {
 	const setupSubscriptions = async () => {
 		const hass = (await getHomeAssistantMainAsync()).hass;
 		const userId = haMain.hass.user?.id;
+		const deviceId = window.browser_mod?.browserID;
 
 		if (hass.connection.connected && userId) {
 			// User inputs
@@ -81,6 +82,18 @@ async function main() {
 				inputs.card_type.input,
 				`${inputs.card_type.input}_${userId}`,
 			];
+			if (deviceId) {
+				colorThemeInputs.push(
+					...[
+						`${inputs.base_color.input}_${deviceId}`,
+						`${inputs.scheme.input}_${deviceId}`,
+						`${inputs.contrast.input}_${deviceId}`,
+						`${inputs.spec.input}_${deviceId}`,
+						`${inputs.platform.input}_${deviceId}`,
+					],
+				);
+				styleInputs.push(`${inputs.card_type.input}_${deviceId}`);
+			}
 
 			if (hass.user?.is_admin) {
 				// Trigger on input change

@@ -18,14 +18,23 @@ export async function setCardType(target: HTMLElement) {
 			style.id = 'material-you-card-type';
 		}
 
-		// Setup input
-		const userId = hass.user?.id;
-		const input = `${inputs.card_type.input}_${userId}`;
+		// Get value
+		let value = '';
+		const ids = [window.browser_mod?.browserID, hass.user?.id, ''];
+		for (const id of ids) {
+			if (id == undefined) {
+				continue;
+			}
 
-		let value = hass.states[input]?.state;
-		if (!(value in cardTypes)) {
-			value = hass.states[inputs.card_type.input]?.state;
+			value =
+				hass.states[`${inputs.card_type.input}${id ? `_${id}` : ''}`]
+					?.state;
+
+			if (value in cardTypes) {
+				break;
+			}
 		}
+
 		if (!(value in cardTypes)) {
 			if (hasStyleTag) {
 				target.removeChild(style);

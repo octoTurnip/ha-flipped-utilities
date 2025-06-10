@@ -938,7 +938,6 @@ export class MaterialYouPanel extends LitElement {
 		switch (this.tabBarIndex) {
 			case 2:
 				page = html`
-					<h3>TODO - add device button</h3>
 					<div class="section-header">
 						<div class="title">This Device</div>
 						<div class="description">
