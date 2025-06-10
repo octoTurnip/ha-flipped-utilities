@@ -818,6 +818,7 @@ export class MaterialYouPanel extends LitElement {
 			title = settings.stateObj?.attributes?.friendly_name ?? settings.id;
 		}
 
+		let missingRows = false;
 		let themeRows: Partial<Record<InputField, TemplateResult | string>> = {
 			base_color: this.buildBaseColorRow(settings),
 			scheme: this.buildSchemeRow(settings),
@@ -825,15 +826,22 @@ export class MaterialYouPanel extends LitElement {
 			spec: this.buildSpecRow(settings),
 			platform: this.buildPlatformRow(settings),
 		};
+		for (const name in themeRows) {
+			if (!themeRows[name as InputField]) {
+				delete themeRows[name as InputField];
+				missingRows = true;
+			}
+		}
 		let styleRows: Partial<Record<InputField, TemplateResult | string>> = {
 			styles: this.buildStylesRow(settings),
 			card_type: this.buildCardTypeRow(settings),
 		};
-		const rows = { ...themeRows, ...styleRows };
-		const n = Object.keys(rows).length;
-		const rowNames = Object.keys(rows).filter(
-			(row) => rows[row as InputField] != '',
-		) as InputField[];
+		for (const name in styleRows) {
+			if (!styleRows[name as InputField]) {
+				delete styleRows[name as InputField];
+				missingRows = true;
+			}
+		}
 
 		return html`
 			<ha-card .hass=${this.hass} .header=${title}>
@@ -841,7 +849,7 @@ export class MaterialYouPanel extends LitElement {
 					? html`<div class="subtitle">ID: ${id}</div>`
 					: ''}
 				<div class="card-content">
-					${rowNames.length < n
+					${missingRows
 						? this.buildAlertBox(
 								this.hass.user?.is_admin
 									? `Press Create Helpers to create and initialize ${id ? 'helpers for this user' : 'global default helpers'}.`
@@ -849,32 +857,34 @@ export class MaterialYouPanel extends LitElement {
 								this.hass.user?.is_admin ? 'info' : 'error',
 							)
 						: ''}
-					<div class="card-content-section-header">
-						Dynamic Color Theme
-					</div>
-					${rowNames.map((name) => {
-						if (themeRows[name]) {
-							return html`<div
+					${Object.keys(themeRows).length
+						? html`<div class="card-content-section-header">
+								Dynamic Color Theme
+							</div>`
+						: ''}
+					${Object.keys(themeRows).map(
+						(name) =>
+							html`<div
 								class="row ${name}"
 								id="${name}${id ? `-${id}` : ''}"
 							>
-								${rows[name as InputField]}
-							</div>`;
-						}
-						return '';
-					})}
-					<div class="card-content-section-header">Style Options</div>
-					${rowNames.map((name) => {
-						if (styleRows[name]) {
-							return html`<div
+								${themeRows[name as InputField]}
+							</div>`,
+					)}
+					${Object.keys(styleRows).length
+						? html`<div class="card-content-section-header">
+								Style Options
+							</div>`
+						: ''}
+					${Object.keys(styleRows).map(
+						(name) =>
+							html`<div
 								class="row ${name}"
 								id="${name}${id ? `-${id}` : ''}"
 							>
-								${rows[name as InputField]}
-							</div>`;
-						}
-						return '';
-					})}
+								${styleRows[name as InputField]}
+							</div>`,
+					)}
 				</div>
 				${this.hass.user?.is_admin
 					? html`<div class="card-actions">
