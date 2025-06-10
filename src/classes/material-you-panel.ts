@@ -13,7 +13,12 @@ import { schemes } from '../models/constants/colors';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField, IUserPanelSettings } from '../models/interfaces/Panel';
 
-import { inputs, THEME_NAME } from '../models/constants/inputs';
+import {
+	COOKIE_KEY,
+	DEVICES_LIST,
+	inputs,
+	THEME_NAME,
+} from '../models/constants/inputs';
 import { showToast } from '../utils/logging';
 import {
 	createInput,
@@ -28,16 +33,18 @@ export class MaterialYouPanel extends LitElement {
 	@property() route!: object;
 	@property() panel!: object;
 
-	currentUserSettings!: IUserPanelSettings;
 	globalSettings!: IUserPanelSettings;
+	currentUserSettings!: IUserPanelSettings;
 	otherUserSettings: Record<string, IUserPanelSettings> = {};
+	currentDeviceSettings!: IUserPanelSettings;
+	otherDeviceSettings: Record<string, IUserPanelSettings> = {};
 
 	@state() tabBarIndex: number = 0;
 	tabs = ['you', 'everyone', 'devices'];
 
 	async handleDeleteHelpers(e: MouseEvent) {
-		const userId = (e.target as HTMLElement).getAttribute('user-id');
-		const idSuffix = userId ? `_${userId}` : '';
+		const id = (e.target as HTMLElement).getAttribute('data-id');
+		const idSuffix = id ? `_${id}` : '';
 
 		if (
 			!(await handleConfirmation(this, {
@@ -59,13 +66,13 @@ export class MaterialYouPanel extends LitElement {
 		}
 
 		let message = 'Global input entities cleared';
-		if (userId) {
+		if (id) {
 			let userName = '';
-			if (userId == this.hass.user?.id) {
+			if (id == this.hass.user?.id) {
 				userName = this.hass.user?.name ?? '';
 			} else {
 				userName =
-					this.otherUserSettings[userId].stateObj?.attributes
+					this.otherUserSettings[id].stateObj?.attributes
 						.friendly_name ?? '';
 			}
 			message = `Input entities cleared for ${userName}`;
@@ -73,11 +80,11 @@ export class MaterialYouPanel extends LitElement {
 		showToast(this, message);
 	}
 
-	buildDeleteHelpersButton(userId?: string) {
+	buildDeleteHelpersButton(id?: string) {
 		return html`
 			<div
 				class="delete button"
-				user-id="${userId}"
+				data-id="${id}"
 				@click=${this.handleDeleteHelpers}
 			>
 				Delete Helpers
@@ -87,23 +94,27 @@ export class MaterialYouPanel extends LitElement {
 
 	async handleCreateHelpers(e: MouseEvent) {
 		// User ID and name checks
-		const userId = (e.target as HTMLElement).getAttribute('user-id');
-		const idSuffix = userId ? `_${userId}` : '';
-		let userName = '';
-		if (userId) {
-			if (this.hass.user?.id == userId) {
-				userName =
+		const id = (e.target as HTMLElement).getAttribute('data-id');
+		const idSuffix = id ? `_${id}` : '';
+		let name = '';
+		if (id) {
+			if (this.hass.user?.id == id) {
+				name =
 					this.currentUserSettings.stateObj?.attributes
 						.friendly_name ?? '';
 			} else {
-				userName =
+				let settings =
 					this.otherUserSettings[
 						Object.keys(this.otherUserSettings).filter(
-							(id) => userId == id,
+							(id2) => id == id2,
 						)[0]
-					].stateObj?.attributes.friendly_name ?? '';
+					];
+				if (settings) {
+					name = settings.stateObj?.attributes.friendly_name ?? '';
+				} else {
+				}
 			}
-			userName = ` ${userName}`;
+			name = ` ${name}`;
 		}
 
 		// Base Color
@@ -120,7 +131,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await updateInput(this.hass, 'text', id, {
-				name: `${inputs.base_color.name}${userName}`,
+				name: `${inputs.base_color.name}${name}`,
 				...config,
 			});
 			await this.hass.callService('input_text', 'set_value', {
@@ -142,7 +153,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.scheme.name}${userName}`,
+				name: `${inputs.scheme.name}${name}`,
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
@@ -166,7 +177,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await updateInput(this.hass, 'number', id, {
-				name: `${inputs.contrast.name}${userName}`,
+				name: `${inputs.contrast.name}${name}`,
 				...config,
 			});
 			await this.hass.callService('input_number', 'set_value', {
@@ -188,7 +199,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.spec.name}${userName}`,
+				name: `${inputs.spec.name}${name}`,
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
@@ -210,7 +221,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.platform.name}${userName}`,
+				name: `${inputs.platform.name}${name}`,
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
@@ -231,7 +242,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await updateInput(this.hass, 'boolean', id, {
-				name: `${inputs.styles.name}${userName}`,
+				name: `${inputs.styles.name}${name}`,
 				...config,
 			});
 			await this.hass.callService('input_boolean', 'turn_on', {
@@ -252,7 +263,7 @@ export class MaterialYouPanel extends LitElement {
 				...config,
 			});
 			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.card_type.name}${userName}`,
+				name: `${inputs.card_type.name}${name}`,
 				...config,
 			});
 			await this.hass.callService('input_select', 'select_option', {
@@ -262,17 +273,17 @@ export class MaterialYouPanel extends LitElement {
 		}
 
 		let message = 'Global input entities created';
-		if (userName) {
-			message = `Input entities created for${userName}`;
+		if (name) {
+			message = `Input entities created for${name}`;
 		}
 		showToast(this, message);
 	}
 
-	buildCreateHelpersButton(userId?: string) {
+	buildCreateHelpersButton(id?: string) {
 		return html`
 			<div
 				class="create button"
-				user-id="${userId}"
+				data-id="${id}"
 				@click=${this.handleCreateHelpers}
 			>
 				Create Helpers
@@ -280,13 +291,13 @@ export class MaterialYouPanel extends LitElement {
 		`;
 	}
 
-	getConfig(userId: string) {
+	getConfig(id: string) {
 		let config: IUserPanelSettings;
-		if (userId) {
-			if (userId == this.hass.user?.id) {
+		if (id) {
+			if (id == this.hass.user?.id) {
 				config = this.currentUserSettings;
 			} else {
-				config = this.otherUserSettings[userId];
+				config = this.otherUserSettings[id];
 			}
 		} else {
 			config = this.globalSettings;
@@ -295,7 +306,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	async handleSelectorChange(e: Event) {
-		const userId = (e.target as HTMLElement).getAttribute('user-id');
+		const id = (e.target as HTMLElement).getAttribute('data-id');
 		const field = (e.target as HTMLElement).getAttribute(
 			'field',
 		) as InputField;
@@ -303,7 +314,7 @@ export class MaterialYouPanel extends LitElement {
 
 		let [domain, service] = inputs[field].action.split('.');
 		let data: Record<string, any> = {
-			entity_id: `${inputs[field].input}${userId ? `_${userId}` : ''}`,
+			entity_id: `${inputs[field].input}${id ? `_${id}` : ''}`,
 		};
 		switch (field) {
 			case 'base_color':
@@ -333,14 +344,14 @@ export class MaterialYouPanel extends LitElement {
 	buildSelector(
 		label: string,
 		field: InputField,
-		userId: string,
+		id: string,
 		selector: object,
 		placeholder?: string | number | boolean | object,
 	) {
 		// https://github.com/home-assistant/frontend/tree/dev/src/components/ha-selector
 		// https://github.com/home-assistant/frontend/blob/dev/src/data/selector.ts
 
-		const config = this.getConfig(userId);
+		const config = this.getConfig(id);
 		let value: string | number | number[] | boolean;
 		switch (field) {
 			case 'base_color':
@@ -381,7 +392,7 @@ export class MaterialYouPanel extends LitElement {
 			.label="${label}"
 			.placeholder=${placeholder}
 			.required=${false}
-			user-id="${userId}"
+			data-id="${id}"
 			field="${field}"
 			@value-changed=${this.handleSelectorChange}
 		></ha-selector>`;
@@ -414,8 +425,8 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	async handleClearClick(e: MouseEvent, target?: HTMLElement) {
-		const userId = ((e.target as HTMLElement) ?? target).getAttribute(
-			'user-id',
+		const id = ((e.target as HTMLElement) ?? target).getAttribute(
+			'data-id',
 		);
 		const field = ((e.target as HTMLElement) ?? target).getAttribute(
 			'field',
@@ -423,7 +434,7 @@ export class MaterialYouPanel extends LitElement {
 
 		const [domain, service] = inputs[field].action.split('.');
 		let data: Record<string, any> = {
-			entity_id: `${inputs[field].input}${userId ? `_${userId}` : ''}`,
+			entity_id: `${inputs[field].input}${id ? `_${id}` : ''}`,
 		};
 		switch (field) {
 			case 'base_color':
@@ -447,14 +458,14 @@ export class MaterialYouPanel extends LitElement {
 		this.requestUpdate();
 	}
 
-	buildClearButton(field: InputField, userId?: string) {
+	buildClearButton(field: InputField, id?: string) {
 		return html`
 			<div class="clear button">
 				<ha-icon
 					@click=${this.handleClearClick}
 					@keydown=${this.handleKeyDown}
 					tabindex="0"
-					user-id="${userId}"
+					data-id="${id}"
 					field="${field}"
 					.icon="${'mdi:close'}"
 				></ha-icon>
@@ -463,14 +474,14 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	handleMoreInfoClick(e: MouseEvent, target: HTMLElement) {
-		const userId = ((e.target as HTMLElement) || target).getAttribute(
-			'user-id',
+		const id = ((e.target as HTMLElement) || target).getAttribute(
+			'data-id',
 		);
 		const field = ((e.target as HTMLElement) || target).getAttribute(
 			'field',
 		) as InputField;
 
-		const entityId = `${inputs[field].input}${userId ? `_${userId}` : ''}`;
+		const entityId = `${inputs[field].input}${id ? `_${id}` : ''}`;
 		const event = new Event('hass-more-info', {
 			bubbles: true,
 			cancelable: true,
@@ -480,8 +491,8 @@ export class MaterialYouPanel extends LitElement {
 		this.dispatchEvent(event);
 	}
 
-	buildMoreInfoButton(field: InputField, userId?: string) {
-		const entityId = `${inputs[field].input}${userId ? `_${userId}` : ''}`;
+	buildMoreInfoButton(field: InputField, id?: string) {
+		const entityId = `${inputs[field].input}${id ? `_${id}` : ''}`;
 		const icon =
 			this.hass.states[entityId].attributes.icon || inputs[field].icon;
 
@@ -491,7 +502,7 @@ export class MaterialYouPanel extends LitElement {
 					@click=${this.handleMoreInfoClick}
 					@keydown=${this.handleKeyDown}
 					tabindex="0"
-					user-id="${userId}"
+					data-id="${id}"
 					field="${field}"
 					.icon="${icon}"
 				></ha-icon>
@@ -499,12 +510,12 @@ export class MaterialYouPanel extends LitElement {
 		`;
 	}
 
-	buildSettingsDatum(userId?: string) {
+	buildSettingsDatum(id?: string) {
 		const settings: Record<string, string | number | undefined> = {};
 		for (const field in inputs) {
 			const values = [
 				this.hass.states[
-					`${inputs[field as InputField].input}${userId ? `_${userId}` : ''}`
+					`${inputs[field as InputField].input}${id ? `_${id}` : ''}`
 				]?.state?.trim(),
 				this.hass.states[
 					inputs[field as InputField].input
@@ -549,16 +560,41 @@ export class MaterialYouPanel extends LitElement {
 			settings: this.buildSettingsDatum(currentUserId),
 		};
 
-		// If admin, add global and all user settings
 		if (this.hass.user?.is_admin) {
+			// Global defaults
 			this.globalSettings = { settings: this.buildSettingsDatum() };
 
+			// Other users
 			for (const person of people) {
 				const userId = this.hass.states[person].attributes.user_id;
 				if (userId != currentUserId) {
 					this.otherUserSettings[userId] = {
 						stateObj: this.hass.states[person],
 						settings: this.buildSettingsDatum(userId),
+					};
+				}
+			}
+
+			// Current device
+			let currentDeviceId = '';
+			for (const cookie of document.cookie.split(';')) {
+				const [key, value] = cookie.split('=');
+				if (key == COOKIE_KEY) {
+					currentDeviceId = key;
+					this.currentDeviceSettings = {
+						settings: this.buildSettingsDatum(value),
+					};
+					break;
+				}
+			}
+
+			// Other devices
+			const devices: string[] =
+				this.hass.states[DEVICES_LIST]?.attributes?.options ?? [];
+			for (const device of devices) {
+				if (device != currentDeviceId) {
+					this.otherDeviceSettings[device] = {
+						settings: this.buildSettingsDatum(device),
 					};
 				}
 			}
@@ -607,8 +643,8 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildBaseColorRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.base_color.input}${userId ? `_${userId}` : ''}`;
+		const id = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.base_color.input}${id ? `_${id}` : ''}`;
 
 		let timeout: ReturnType<typeof setTimeout>;
 		const handleChange = (e: Event) => {
@@ -626,7 +662,7 @@ export class MaterialYouPanel extends LitElement {
 			? html`<div class="column">
 					<disk-color-picker
 						field="base_color"
-						user-id="${userId}"
+						data-id="${id}"
 						value="${settings.settings.base_color}"
 						@change=${handleChange}
 						@keyup=${handleChange}
@@ -634,7 +670,7 @@ export class MaterialYouPanel extends LitElement {
 					></disk-color-picker>
 					<div class="subrow">
 						<div class="row">
-							${this.buildMoreInfoButton('base_color', userId)}
+							${this.buildMoreInfoButton('base_color', id)}
 							<div class="label">Base Color</div>
 						</div>
 						<div class="row">
@@ -642,7 +678,7 @@ export class MaterialYouPanel extends LitElement {
 								${settings.settings.base_color ||
 								inputs.base_color.default}
 							</div>
-							${this.buildClearButton('base_color', userId)}
+							${this.buildClearButton('base_color', id)}
 						</div>
 					</div>
 				</div>`
@@ -650,17 +686,17 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildSchemeRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.scheme.input}${userId ? `_${userId}` : ''}`;
+		const id = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.scheme.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
 			? html`${this.buildMoreInfoButton(
 					'scheme',
-					userId,
+					id,
 				)}${this.buildSelector(
 					'Scheme Name',
 					'scheme',
-					userId,
+					id,
 					{
 						select: {
 							mode: 'dropdown',
@@ -673,17 +709,17 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildContrastRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.contrast.input}${userId ? `_${userId}` : ''}`;
+		const id = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.contrast.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
 			? html`${this.buildMoreInfoButton(
 					'contrast',
-					userId,
+					id,
 				)}${this.buildSelector(
 					'Contrast Level',
 					'contrast',
-					userId,
+					id,
 					{
 						number: {
 							min: -1,
@@ -700,15 +736,15 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildSpecRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.spec.input}${userId ? `_${userId}` : ''}`;
+		const id = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.spec.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('spec', userId)}
+			? html`${this.buildMoreInfoButton('spec', id)}
 				${this.buildSelector(
 					'Specification Version',
 					'spec',
-					userId,
+					id,
 					{
 						select: {
 							mode: 'box',
@@ -716,20 +752,20 @@ export class MaterialYouPanel extends LitElement {
 						},
 					},
 					settings.settings.spec,
-				)}${this.buildClearButton('spec', userId)}`
+				)}${this.buildClearButton('spec', id)}`
 			: '';
 	}
 
 	buildPlatformRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.platform.input}${userId ? `_${userId}` : ''}`;
+		const id = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.platform.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('platform', userId)}
+			? html`${this.buildMoreInfoButton('platform', id)}
 				${this.buildSelector(
 					'Platform',
 					'platform',
-					userId,
+					id,
 					{
 						select: {
 							mode: 'box',
@@ -740,21 +776,21 @@ export class MaterialYouPanel extends LitElement {
 						},
 					},
 					settings.settings.platform,
-				)}${this.buildClearButton('platform', userId)}`
+				)}${this.buildClearButton('platform', id)}`
 			: '';
 	}
 
 	buildStylesRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.styles.input}${userId ? `_${userId}` : ''}`;
+		const id = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.styles.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
 			? html`
-					${this.buildMoreInfoButton('styles', userId)}
+					${this.buildMoreInfoButton('styles', id)}
 					${this.buildSelector(
 						'Style Upgrades',
 						'styles',
-						userId,
+						id,
 						{
 							boolean: {},
 						},
@@ -765,15 +801,15 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildCardTypeRow(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
-		const input = `${inputs.card_type.input}${userId ? `_${userId}` : ''}`;
+		const id = settings.stateObj?.attributes.user_id;
+		const input = `${inputs.card_type.input}${id ? `_${id}` : ''}`;
 
 		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('card_type', userId)}
+			? html`${this.buildMoreInfoButton('card_type', id)}
 				${this.buildSelector(
 					'Card Type',
 					'card_type',
-					userId,
+					id,
 					{
 						select: {
 							mode: 'dropdown',
@@ -791,7 +827,7 @@ export class MaterialYouPanel extends LitElement {
 	}
 
 	buildSettingsCard(settings: IUserPanelSettings) {
-		const userId = settings.stateObj?.attributes.user_id;
+		const id = settings.stateObj?.attributes.user_id;
 
 		let title = 'Global';
 		if (settings.stateObj) {
@@ -818,13 +854,13 @@ export class MaterialYouPanel extends LitElement {
 		return html`
 			<ha-card .hass=${this.hass} .header=${title}>
 				${settings.stateObj
-					? html`<div class="subtitle">ID: ${userId}</div>`
+					? html`<div class="subtitle">ID: ${id}</div>`
 					: ''}
 				<div class="card-content">
 					${rowNames.length < n
 						? this.buildAlertBox(
 								this.hass.user?.is_admin
-									? `Press Create Helpers to create and initialize ${userId ? 'helpers for this user' : 'global default helpers'}.`
+									? `Press Create Helpers to create and initialize ${id ? 'helpers for this user' : 'global default helpers'}.`
 									: 'Some or all input helpers not setup! Ask an Home Assistant administrator to do so.',
 								this.hass.user?.is_admin ? 'info' : 'error',
 							)
@@ -836,7 +872,7 @@ export class MaterialYouPanel extends LitElement {
 						if (themeRows[name]) {
 							return html`<div
 								class="row ${name}"
-								id="${name}${userId ? `-${userId}` : ''}"
+								id="${name}${id ? `-${id}` : ''}"
 							>
 								${rows[name as InputField]}
 							</div>`;
@@ -848,7 +884,7 @@ export class MaterialYouPanel extends LitElement {
 						if (styleRows[name]) {
 							return html`<div
 								class="row ${name}"
-								id="${name}${userId ? `-${userId}` : ''}"
+								id="${name}${id ? `-${id}` : ''}"
 							>
 								${rows[name as InputField]}
 							</div>`;
@@ -859,8 +895,8 @@ export class MaterialYouPanel extends LitElement {
 				${this.hass.user?.is_admin
 					? html`<div class="card-actions">
 							${this.buildCreateHelpersButton(
-								userId,
-							)}${this.buildDeleteHelpersButton(userId)}
+								id,
+							)}${this.buildDeleteHelpersButton(id)}
 						</div>`
 					: ''}
 			</ha-card>
@@ -934,8 +970,8 @@ export class MaterialYouPanel extends LitElement {
 							Other users on this Home Assistant instance.
 						</div>
 					</div>
-					${Object.keys(this.otherUserSettings).map((userId) =>
-						this.buildSettingsCard(this.otherUserSettings[userId]),
+					${Object.keys(this.otherUserSettings).map((id) =>
+						this.buildSettingsCard(this.otherUserSettings[id]),
 					)}
 				`;
 				break;
