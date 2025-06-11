@@ -98,7 +98,7 @@ export async function setTheme(target: HTMLElement) {
 					}
 				}
 
-				const message = `Material design system colors updated.\nBase Color ${values.base_color} | Scheme ${schemeInfo.label} | Contrast Level ${values.contrast} | Spec Version ${values.spec}, Platform ${(values.platform as string)[0].toUpperCase()}${(values.platform as string).slice(1)}`;
+				const message = `Material design system colors updated.\nBase Color - ${values.base_color} | Scheme - ${schemeInfo.label} | Contrast Level - ${values.contrast} | Specification Version - ${values.spec} | Platform - ${(values.platform as string)[0].toUpperCase()}${(values.platform as string).slice(1)}`;
 				mdLog(message, true);
 			} else {
 				await unsetTheme();
