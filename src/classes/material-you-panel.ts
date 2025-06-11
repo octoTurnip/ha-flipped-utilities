@@ -1418,7 +1418,7 @@ export class MaterialYouPanel extends LitElement {
 					var(--md-sys-motion-expressive-effects-default);
 			}
 			@media (hover: hover) {
-				.theme-mode-fab {
+				.theme-mode-fab:hover {
 					box-shadow: var(
 						--md-sys-elevation-level4,
 						var(--mdc-fab-box-shadow)
