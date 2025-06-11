@@ -541,6 +541,14 @@ export class MaterialYouPanel extends LitElement {
 			settings: this.buildSettingsDatum(currentUserId),
 		};
 
+		// Current device
+		const currentDeviceId =
+			window.browser_mod?.browserID ?? 'INVALID_NO_ID_FOUND';
+		this.currentDeviceSettings = {
+			id: currentDeviceId,
+			settings: this.buildSettingsDatum(currentDeviceId),
+		};
+
 		if (this.hass.user?.is_admin) {
 			// Global defaults
 			this.globalSettings = {
@@ -560,15 +568,7 @@ export class MaterialYouPanel extends LitElement {
 				}
 			}
 
-			// Current device
-			const currentDeviceId = window.browser_mod?.browserID ?? 'NO_ID';
-			this.currentDeviceSettings = {
-				id: currentDeviceId,
-				settings: this.buildSettingsDatum(currentDeviceId),
-			};
-
 			// Other devices
-
 			for (const device of Object.keys(
 				window.browser_mod?.browsers ?? {},
 			)) {
@@ -894,6 +894,15 @@ export class MaterialYouPanel extends LitElement {
 		`;
 	}
 
+	buildSectionHeader(title: string, description: string) {
+		return html`
+			<div class="section-header">
+				<div class="title">${title}</div>
+				<div class="description">${description}</div>
+			</div>
+		`;
+	}
+
 	buildAlertBox(
 		title: string,
 		type: 'info' | 'warning' | 'error' | 'success' = 'info',
@@ -936,45 +945,39 @@ export class MaterialYouPanel extends LitElement {
 			case 2:
 				page = html`
 					${window.browser_mod
-						? ''
+						? html` ${this.buildSectionHeader(
+								'This Device',
+								'Your settings for this device, prioritized over all other settings.',
+							)}
+							${this.buildSettingsCard(
+								this.currentDeviceSettings,
+							)}
+							${this.buildSectionHeader(
+								'Other Devices',
+								'Other devices on this Home Assistant instance registered with Browser Mod, for both you and other users.',
+							)}
+							${Object.keys(this.otherDeviceSettings).map((id) =>
+								this.buildSettingsCard(
+									this.otherDeviceSettings[id],
+								),
+							)}`
 						: this.buildAlertBox(
-								'Device specific settings requires browser_mod, which can be installed using HACS.',
+								'Device settings requires Browser Mod, which can be installed using HACS.',
 								'error',
 							)}
-					<div class="section-header">
-						<div class="title">This Device</div>
-						<div class="description">
-							This device, prioritized over all other settings.
-						</div>
-					</div>
-					${this.buildSettingsCard(this.currentDeviceSettings)}
-					<div class="section-header">
-						<div class="title">Other Devices</div>
-						<div class="description">
-							Other devices on this Home Assistant instance.
-						</div>
-					</div>
-					${Object.keys(this.otherDeviceSettings).map((id) =>
-						this.buildSettingsCard(this.otherDeviceSettings[id]),
-					)}
 				`;
 				break;
 			case 1:
 				page = html`
-					<div class="section-header">
-						<div class="title">Everyone!</div>
-						<div class="description">
-							Default settings for all users. Used if a user or
-							device doesn't have their own settings.
-						</div>
-					</div>
+					${this.buildSectionHeader(
+						'Everyone!',
+						'Default settings for all users. Used if a user or device does not have its own settings.',
+					)}
 					${this.buildSettingsCard(this.globalSettings)}
-					<div class="section-header">
-						<div class="title">Everyone Else</div>
-						<div class="description">
-							Other users on this Home Assistant instance.
-						</div>
-					</div>
+					${this.buildSectionHeader(
+						'Everyone Else',
+						'Other users on this Home Assistant instance.',
+					)}
 					${Object.keys(this.otherUserSettings).map((id) =>
 						this.buildSettingsCard(this.otherUserSettings[id]),
 					)}
@@ -983,13 +986,22 @@ export class MaterialYouPanel extends LitElement {
 			case 0:
 			default:
 				page = html`
-					<div class="section-header">
-						<div class="title">You!</div>
-						<div class="description">
-							Your personal ${THEME_NAME} settings.
-						</div>
-					</div>
+					${this.buildSectionHeader(
+						'You!',
+						`Your personal ${THEME_NAME} settings.`,
+					)}
 					${this.buildSettingsCard(this.currentUserSettings)}
+					${window.browser_mod
+						? html`
+								${this.buildSectionHeader(
+									'This Device',
+									'Your settings for this device.',
+								)}
+								${this.buildSettingsCard(
+									this.currentDeviceSettings,
+								)}
+							`
+						: ''}
 				`;
 				break;
 		}
@@ -1008,8 +1020,7 @@ export class MaterialYouPanel extends LitElement {
 				<div class="page-header">
 					<div class="title">${THEME_NAME} Utilities</div>
 					<div class="description">
-						Design your own personal Material Design 3 dynamic color
-						theme.
+						Design your own Material Design 3 dynamic color theme.
 					</div>
 				</div>
 				${page}
