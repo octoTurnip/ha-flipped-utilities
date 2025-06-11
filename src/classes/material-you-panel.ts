@@ -37,6 +37,9 @@ export class MaterialYouPanel extends LitElement {
 	@state() tabBarIndex: number = 0;
 	tabs = ['you', 'everyone', 'devices'];
 
+	@state() darkModeIndex: number = 0;
+	darkModes = ['auto', 'light', 'dark'];
+
 	async handleDeleteHelpers(e: MouseEvent) {
 		const id = (e.target as HTMLElement).getAttribute('data-id');
 		const idSuffix = id ? `_${id}` : '';
@@ -913,6 +916,37 @@ export class MaterialYouPanel extends LitElement {
 		></ha-alert>`;
 	}
 
+	handleThemeMode(_e: MouseEvent) {
+		this.darkModeIndex += 1;
+		if (this.darkModeIndex > this.darkModes.length - 1) {
+			this.darkModeIndex = 0;
+		}
+
+		const dark = {
+			auto: undefined,
+			light: false,
+			dark: true,
+		}[this.darkModes[this.darkModeIndex]];
+
+		const event = new Event('settheme', { bubbles: true, composed: true });
+		event.detail = { theme: THEME_NAME, dark };
+		this.dispatchEvent(event);
+	}
+
+	buildThemeModeFAB() {
+		const icon = {
+			auto: 'mdi:theme-light-dark',
+			light: 'mdi:white-balance-sunny',
+			dark: 'mdi:weather-night',
+		}[this.darkModes[this.darkModeIndex]];
+
+		return html`
+			<div class="theme-mode-fab" @click=${this.handleThemeMode}>
+				<ha-icon .icon=${icon}></ha-icon>
+			</div>
+		`;
+	}
+
 	render() {
 		if (!this.hass.user?.is_admin) {
 			this.tabBarIndex = 0;
@@ -1025,6 +1059,7 @@ export class MaterialYouPanel extends LitElement {
 				</div>
 				${page}
 			</div>
+			${this.buildThemeModeFAB()}
 		`;
 	}
 
@@ -1142,7 +1177,7 @@ export class MaterialYouPanel extends LitElement {
 				flex-direction: column;
 				align-items: center;
 				gap: 24px;
-				padding-bottom: 24px;
+				padding-bottom: 80px;
 				background-color: inherit;
 				min-height: calc(100% - 88px);
 			}
@@ -1351,6 +1386,51 @@ export class MaterialYouPanel extends LitElement {
 			}
 			.delete {
 				--color: var(--error-color);
+			}
+
+			.theme-mode-fab {
+				position: fixed;
+				inset-block-end: 12px;
+				inset-inline-end: 12px;
+				height: 56px;
+				width: 56px;
+				border-radius: var(--md-sys-shape-corner-large, 16px);
+				background: var(--md-sys-color-tertiary-container, #5b3d57);
+				color: var(--md-sys-color-on-tertiary-container, #ffd7f6);
+				box-shadow: var(
+					--md-sys-elevation-level3,
+					var(--mdc-fab-box-shadow)
+				);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.theme-mode-fab::after {
+				content: '';
+				position: absolute;
+				height: 56px;
+				width: 56px;
+				cursor: pointer;
+				border-radius: var(--md-sys-shape-corner-large, 16px);
+				background: var(--md-sys-color-on-tertiary-container, #5b3d57);
+				opacity: 0;
+				transition: opacity
+					var(--md-sys-motion-expressive-effects-default);
+			}
+			@media (hover: hover) {
+				.theme-mode-fab {
+					box-shadow: var(
+						--md-sys-elevation-level4,
+						var(--mdc-fab-box-shadow)
+					);
+				}
+				.theme-mode-fab:hover::after {
+					opacity: 0.08;
+				}
+			}
+			.theme-mode-fab:focus-visible::after,
+			.theme-mode-fab:active::after {
+				opacity: 0.18;
 			}
 		`;
 	}
