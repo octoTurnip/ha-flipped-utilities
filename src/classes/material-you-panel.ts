@@ -1063,6 +1063,12 @@ export class MaterialYouPanel extends LitElement {
 		`;
 	}
 
+	firstUpdated() {
+		this.darkModeIndex = this.darkModes.indexOf(
+			this.hass.themes.darkMode ? 'dark' : 'light',
+		);
+	}
+
 	updated() {
 		// Disk color picker style tweaks
 		const colorPickers =
@@ -1392,6 +1398,9 @@ export class MaterialYouPanel extends LitElement {
 				position: fixed;
 				inset-block-end: calc(env(safe-area-inset-bottom) + 12px);
 				inset-inline-end: calc(env(safe-area-inset-right) + 12px);
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				height: 56px;
 				width: 56px;
 				border-radius: var(--md-sys-shape-corner-large, 16px);
@@ -1401,9 +1410,8 @@ export class MaterialYouPanel extends LitElement {
 					--md-sys-elevation-level3,
 					var(--mdc-fab-box-shadow)
 				);
-				display: flex;
-				justify-content: center;
-				align-items: center;
+				transition: box-shadow
+					var(--md-sys-motion-expressive-effects-slow);
 			}
 			.theme-mode-fab::after {
 				content: '';
