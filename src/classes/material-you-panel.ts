@@ -1025,7 +1025,7 @@ export class MaterialYouPanel extends LitElement {
 						`Your personal ${THEME_NAME} settings.`,
 					)}
 					${this.buildSettingsCard(this.currentUserSettings)}
-					${window.browser_mod
+					${window.browser_mod && !this.hass.user?.is_admin
 						? html`
 								${this.buildSectionHeader(
 									'This Device',
