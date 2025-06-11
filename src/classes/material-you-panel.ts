@@ -1390,8 +1390,8 @@ export class MaterialYouPanel extends LitElement {
 
 			.theme-mode-fab {
 				position: fixed;
-				inset-block-end: 12px;
-				inset-inline-end: 12px;
+				inset-block-end: calc(env(safe-area-inset-bottom) + 12px);
+				inset-inline-end: calc(env(safe-area-inset-right) + 12px);
 				height: 56px;
 				width: 56px;
 				border-radius: var(--md-sys-shape-corner-large, 16px);
