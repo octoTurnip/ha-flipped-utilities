@@ -142,6 +142,7 @@ sl-tab {
 	min-width: 72px;
 	max-width: 163px;
 	cursor: pointer;
+	overflow: hidden;
 	-webkit-tap-highlight-color: transparent;
 }
 
@@ -314,7 +315,7 @@ div:has(sl-tab-group) {
 }
 
 /* Large displays alternate navigation bar */
-@media (width > 870px) {
+@media (width > 870px) or (orientation: landscape) {
 	/* Center view tabs */
 	sl-tab-group::part(tabs) {
 		justify-content: center;
@@ -353,6 +354,8 @@ div:has(sl-tab-group) {
 	sl-tab ha-icon {
 		justify-content: flex-start;
 		width: 100%;
+		position: relative;
+		inset-inline-start: 20px;
 	}
 
 	/* Horizontal label, indicator, and state layers */
