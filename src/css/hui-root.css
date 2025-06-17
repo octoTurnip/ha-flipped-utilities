@@ -65,6 +65,7 @@ ha-tooltip ha-icon-button {
 	justify-content: center;
 	width: 32px;
 	margin: 0 4px;
+	overflow: hidden;
 }
 :host([scrolled]) ha-menu-button {
 	background: var(--md-sys-color-surface-container);
