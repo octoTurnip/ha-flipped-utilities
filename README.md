@@ -199,9 +199,6 @@ View tabs displayed at the bottom of the screen, dynamically scaling with page w
 - Displaying navigation bars alongside rails is not considered good practice, but is done so in this theme due to the increased accessability the bottom aligned navigation bar offers over top aligned tabs.
 - Home Assistant itself uses bottom aligned tabs for mobile settings pages, which is similar to the navigation bar.
 
-- The navigation drawer (and rail below) is smaller in width and destination size than the specification calls for. This is to prevent it from taking up too much horizontal space, and due to difficulty restyling it without modifying the `ha-drawer` element, which is rendered too early to consitently modify the styles of.
-- The navigation drawer is supposed to have a top and bottom left border radius, but adding this requires modifying `ha-drawer`, which is rendered too early to be consistently modified.
-
 ### [Navigation Rail](https://m3.material.io/components/navigation-rail/overview)
 
 Desktop sidebar and mobile modal drawer.
@@ -275,6 +272,10 @@ card_mod:
 Buttons that are just text with no background.
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/text-button.png" width="500"/>
+
+#### Notes
+
+- Home Assistant uses a mix of its internal `ha-button` element and the element it extends `mwc-button`. The former can have styles injected into it but the latter loads too early to be consistently modified. Therefore some buttons in Home Assistant will appear round while others have rounded corners. Both are considered fine by the Material Design 3 specification.
 
 ### [Outlined Buttons](https://m3.material.io/components/buttons/specs#de72d8b1-ba16-4cd7-989e-e2ad3293cf63)
 
