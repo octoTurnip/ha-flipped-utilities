@@ -187,7 +187,7 @@ Large, medium, and small headline titles and subtitles can be added using Home A
 
 ### [Navigation Bar](https://m3.material.io/components/navigation-bar/overview)
 
-View tabs displayed at the bottom of the screen, dynamically scaling with page width. On wide (width greater than 870px) displays the view tabs are horizontal. On smaller displays the view tabs are vertical.
+View tabs displayed at the bottom of the screen, dynamically scaling with page width. On wide (landscape or width greater than 870px) displays the view tabs are horizontal. On smaller displays the view tabs are vertical.
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/navigation-bar-vertical.png" width="500"/>
 
