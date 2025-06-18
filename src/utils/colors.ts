@@ -39,7 +39,11 @@ export async function setTheme(target: HTMLElement) {
 				spec: '',
 				platform: '',
 			};
-			const ids = [window.browser_mod?.browserID, hass.user?.id, ''];
+			const ids = [
+				window.browser_mod?.browserID?.replace(/-/g, '_'),
+				hass.user?.id,
+				'',
+			];
 			for (const id of ids) {
 				if (id == undefined) {
 					continue;

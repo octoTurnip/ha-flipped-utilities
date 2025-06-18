@@ -546,7 +546,8 @@ export class MaterialYouPanel extends LitElement {
 
 		// Current device
 		const currentDeviceId =
-			window.browser_mod?.browserID ?? 'INVALID_NO_ID_FOUND';
+			window.browser_mod?.browserID?.replace(/-/g, '_') ??
+			'INVALID_NO_ID_FOUND';
 		this.currentDeviceSettings = {
 			id: currentDeviceId,
 			settings: this.buildSettingsDatum(currentDeviceId),
@@ -575,9 +576,10 @@ export class MaterialYouPanel extends LitElement {
 			for (const device of Object.keys(
 				window.browser_mod?.browsers ?? {},
 			)) {
-				if (device != window.browser_mod?.browserID) {
+				const deviceId = device.replace(/-/g, '_');
+				if (device != currentDeviceId) {
 					this.otherDeviceSettings[device] = {
-						id: device,
+						id: deviceId,
 						settings: this.buildSettingsDatum(device),
 					};
 				}

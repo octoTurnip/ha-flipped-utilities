@@ -62,7 +62,7 @@ async function main() {
 	const setupSubscriptions = async () => {
 		const hass = (await getHomeAssistantMainAsync()).hass;
 		const userId = haMain.hass.user?.id;
-		const deviceId = window.browser_mod?.browserID;
+		const deviceId = window.browser_mod?.browserID?.replace(/-/g, '_');
 
 		if (hass.connection.connected && userId) {
 			// User inputs
