@@ -340,14 +340,14 @@ Toggle switches for setting boolean values.
 
 ### [Sliders](https://m3.material.io/components/sliders/overview)
 
-Numerical inputs optimized for human interaction.
+Numerical inputs optimized for human interaction. Uses the small variant, which is still much larger than the default slider.
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/slider.png" width="500"/>
 
 #### Notes
 
 - The specification calls for the tooltip to appear and the handle to narrow when the slider is focused or pressed, but not hovered. The Home Assistant slider shows the tooltip on hover, and it is difficult to disable this behavior without breaking the tooltip and slider narrowing altogether. So instead the tooltip appears and handle narrows on hover.
-- Home Assistant actually has its own implementation of a Material Design 3 slider, but it is only used for the card configuration layout grid size picker. The styles of this slider have been slightly modified to use theme colors, to modify the tooltip size, and to narrow the handle when pressed or focused.
+- Home Assistant actually has its own implementation of a Material Design 3 slider (extra small variant), but it is only used for the card configuration layout grid size picker. The styles of this slider have been slightly modified to use theme colors, to modify the tooltip size, and to narrow the handle when pressed or focused.
 
 ## Pop-ups
 

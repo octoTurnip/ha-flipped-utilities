@@ -1,19 +1,17 @@
 /* Scale and translate handle on hover */
 .handle {
 	background: var(--ha-dialog-surface-background);
-	transition:
-		scale var(--md-sys-motion-expressive-spatial-fast),
-		translate var(--md-sys-motion-expressive-spatial-fast);
 }
-:host(#columns:focus-visible) .handle,
-:host(#columns:active) .handle {
+.handle::after {
+	transition: scale var(--md-sys-motion-expressive-spatial-fast);
+}
+:host(#columns:focus-visible) .handle::after,
+:host(#columns:active) .handle::after {
 	scale: 0.5 1;
-	translate: -4px 0;
 }
-:host(#rows:focus-visible) .handle,
-:host(#rows:active) .handle {
+:host(#rows:focus-visible) .handle::after,
+:host(#rows:active) .handle::after {
 	scale: 1 0.5;
-	translate: 0 -4px;
 }
 
 /* Change background and dot colors */
