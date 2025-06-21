@@ -5,3 +5,8 @@
 	line-height: var(--md-sys-typescale-body-large-line-height);
 	letter-spacing: var(--md-sys-typescale-body-large-tracking);
 }
+
+/* Fix slot size for switches */
+.mdc-deprecated-list-item__meta {
+	--mdc-list-item-meta-size: fit-content;
+}
