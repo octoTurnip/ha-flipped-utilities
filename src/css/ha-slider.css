@@ -49,15 +49,6 @@ input:focus-visible ~ .handleContainerPadded .handleNub::after,
 input:active ~ .handleContainerPadded .handleNub::after {
 	scale: 0.5 1;
 }
-:host(:focus-within)
-	.container
-	.handleContainerPadded
-	.handleContainerBlock
-	:not(.hover)
-	.handleNub::after {
-	scale: 1 1;
-}
-
 /* Hide focus ring */
 md-focus-ring {
 	display: none;
@@ -82,4 +73,27 @@ md-focus-ring {
 	:not(.hover)
 	.label {
 	transform: scale(0);
+}
+
+/* Add track inner corner shape */
+.handle::before,
+.handle::after {
+	content: '';
+	position: absolute;
+	height: var(--md-slider-active-track-height);
+	width: 6px;
+}
+.handle::before {
+	background: var(--md-slider-active-track-color);
+	inset-inline-start: -2px;
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+	box-shadow: 2px 0 0 2px var(--md-slider-handle-color);
+}
+.handle::after {
+	background: var(--md-slider-inactive-track-color);
+	inset-inline-end: -2px;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
+	box-shadow: -2px 0 0 2px var(--md-slider-handle-color);
 }
