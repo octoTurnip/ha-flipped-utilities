@@ -8,5 +8,7 @@
 
 /* Fix slot size for switches */
 .mdc-deprecated-list-item__meta {
-	--mdc-list-item-meta-size: fit-content;
+	min-width: 24px;
+
+	--mdc-list-item-meta-size: min-content;
 }
