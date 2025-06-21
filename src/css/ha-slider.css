@@ -82,26 +82,25 @@ md-focus-ring {
 .handle::before,
 .handle::after {
 	content: '';
-	position: absolute;
+	position: relative;
 	height: var(--md-slider-active-track-height);
-	width: 6px;
-	background: transparent;
+	width: 4px;
 }
 .handle::before {
-	inset-inline-start: -2px;
+	inset-inline-start: -8px;
 	border-start-end-radius: 2px;
 	border-end-end-radius: 2px;
 }
 .handle::before,
 .handle:dir(rtl)::after {
-	box-shadow: 2px 0 0 2px var(--md-slider-handle-color);
+	box-shadow: 2px 0 0 var(--md-slider-handle-color);
 }
 .handle::after {
-	inset-inline-end: -2px;
+	inset-inline-end: -8px;
 	border-start-start-radius: 2px;
 	border-end-start-radius: 2px;
 }
 .handle::after,
 .handle:dir(rtl)::before {
-	box-shadow: -2px 0 0 2px var(--md-slider-handle-color);
+	box-shadow: -2px 0 0 var(--md-slider-handle-color);
 }

@@ -1,7 +1,7 @@
 import packageInfo from '../package.json';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
-import { inputs } from './models/constants/inputs';
+import { inputs, THEME_NAME } from './models/constants/inputs';
 import { RenderTemplateError, RenderTemplateResult } from './models/interfaces';
 import { getAsync, querySelectorAsync } from './utils/async';
 import { setCardType, setCardTypeAll } from './utils/cards';
@@ -55,9 +55,26 @@ async function main() {
 	customElements.define('material-you-panel', MaterialYouPanel);
 
 	// Set user theme colors and card type
-	const html = await querySelectorAsync(document, 'html');
-	setTheme(html);
-	setCardType(html);
+	const setOnFirstLoad = async (ms: number) => {
+		if (ms > 10000) {
+			return;
+		}
+
+		const theme = haMain.hass?.themes?.theme;
+		if (!theme) {
+			setTimeout(() => {
+				setOnFirstLoad(ms);
+			}, 2 * ms);
+			return;
+		}
+
+		if (theme.includes(THEME_NAME)) {
+			const html = await querySelectorAsync(document, 'html');
+			setTheme(html);
+			setCardType(html);
+		}
+	};
+	setOnFirstLoad(100);
 
 	const setupSubscriptions = async () => {
 		const hass = (await getHomeAssistantMainAsync()).hass;
