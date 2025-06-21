@@ -1,4 +1,4 @@
-/* Fix slider thumb color */
+/* Fix slider thumb background color */
 #content {
 	--md-slider-handle-color: var(--ha-dialog-surface-background);
 }

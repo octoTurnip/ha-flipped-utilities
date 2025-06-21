@@ -11,26 +11,12 @@
 	--md-slider-disabled-handle-color: var(--md-slider-handle-color);
 }
 
-/* Explictly resize handle and reduce width on active or focus */
+/* Space around handle */
 .handleNub {
 	height: var(--md-slider-active-track-height);
 	box-shadow: 0 0 1px 0 var(--md-slider-handle-color);
 	width: 16px;
 	border-radius: 0;
-	transition: scale var(--md-sys-motion-expressive-spatial-fast);
-}
-.hover .handleNub,
-input:focus-visible ~ .handleContainerPadded .handleNub,
-input:active ~ .handleContainerPadded .handleNub {
-	scale: 0.5 1;
-}
-:host(:focus-within)
-	.container
-	.handleContainerPadded
-	.handleContainerBlock
-	:not(.hover)
-	.handleNub {
-	scale: 1 1;
 }
 
 /* Add curve to handle if min or max value, which must be defined in parent */
@@ -53,9 +39,23 @@ input[max='100'][aria-valuetext='100'] ~ .handleContainerPadded .handleNub {
 	margin: auto;
 	background: var(--md-sys-color-primary);
 	border-radius: var(--md-sys-shape-corner-full);
+	transition: scale var(--md-sys-motion-expressive-spatial-fast);
 }
 :host([disabled]) .handleNub::after {
 	background: var(--md-sys-color-on-surface);
+}
+.hover .handleNub::after,
+input:focus-visible ~ .handleContainerPadded .handleNub::after,
+input:active ~ .handleContainerPadded .handleNub::after {
+	scale: 0.5 1;
+}
+:host(:focus-within)
+	.container
+	.handleContainerPadded
+	.handleContainerBlock
+	:not(.hover)
+	.handleNub::after {
+	scale: 1 1;
 }
 
 /* Hide focus ring */
