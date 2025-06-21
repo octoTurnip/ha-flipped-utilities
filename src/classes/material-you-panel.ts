@@ -970,7 +970,7 @@ export class MaterialYouPanel extends LitElement {
 					)
 				: !this.hass.themes.theme.includes(THEME_NAME)
 					? this.buildAlertBox(
-							`You are not using ${THEME_NAME} Theme! Switch to it in your profile settings.`,
+							`You are not using ${THEME_NAME} Theme! Switch to it using the floating action button at the bottom of the page.`,
 							'warning',
 						)
 					: ''}
