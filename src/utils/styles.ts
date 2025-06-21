@@ -142,6 +142,29 @@ function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
 }
 
 /**
+ * Explicitly apply styles to top level elements
+ */
+async function applyExplicitStyles() {
+	checkTheme();
+	if (!theme) {
+		setTimeout(() => applyExplicitStyles(), 100);
+		return;
+	}
+
+	if (theme && shouldSetStyles) {
+		const haMain = await getHomeAssistantMainAsync();
+		const ha = await querySelectorAsync(document, 'home-assistant');
+		const haDrawer = await querySelectorAsync(
+			haMain.shadowRoot as ShadowRoot,
+			'ha-drawer',
+		);
+		applyStyles(ha);
+		applyStyles(haMain);
+		applyStyles(haDrawer);
+	}
+}
+
+/**
  * Modify targets custom element registry define function to intercept constructors to use custom styles
  * Style are redundantly added in multiple places to ensure speed and consistency
  * @param {typeof globalThis} target
@@ -174,14 +197,5 @@ export async function setStyles(target: typeof globalThis) {
 	};
 
 	// Explictly set styles for some elements that load too early
-	const haMain = await getHomeAssistantMainAsync();
-	const ha = await querySelectorAsync(document, 'home-assistant');
-	const haDrawer = await querySelectorAsync(
-		haMain.shadowRoot as ShadowRoot,
-		'ha-drawer',
-	);
-
-	applyStyles(ha);
-	applyStyles(haMain);
-	applyStyles(haDrawer);
+	applyExplicitStyles();
 }
