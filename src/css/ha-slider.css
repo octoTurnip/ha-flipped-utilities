@@ -49,9 +49,12 @@ input:focus-visible ~ .handleContainerPadded .handleNub::after,
 input:active ~ .handleContainerPadded .handleNub::after {
 	scale: 0.5 1;
 }
-/* Hide focus ring */
+
+/* Reshape focus ring */
 md-focus-ring {
-	display: none;
+	height: 56px;
+	width: 12px;
+	z-index: 1;
 }
 
 /* Set label width and position */
