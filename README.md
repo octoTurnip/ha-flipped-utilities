@@ -102,7 +102,7 @@ actions:
   - action: input_text.set_value
     metadata: {}
     data:
-      value: '{{ states("sensor.pixel_fold_accent_color") }}'
+      value: '{{ trigger.to_state.state }}'
     target:
       entity_id: input_text.material_you_base_color
 ```
