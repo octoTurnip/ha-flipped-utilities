@@ -1,5 +1,5 @@
 import { elements } from '../css';
-import { inputs } from '../models/constants/inputs';
+import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { querySelectorAsync } from './async';
 import { getHomeAssistantMainAsync } from './common';
@@ -22,7 +22,7 @@ function checkTheme() {
 		theme = ha?.hass?.themes?.theme;
 		if (theme) {
 			shouldSetStyles =
-				theme.includes('Material You') &&
+				theme.includes(THEME_NAME) &&
 				(ha?.hass.states[`${inputs.styles.input}_${ha?.hass.user?.id}`]
 					?.state ??
 					ha?.hass.states[inputs.styles.input]?.state ??
