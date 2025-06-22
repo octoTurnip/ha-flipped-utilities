@@ -10,55 +10,62 @@ export async function setCardType(target: HTMLElement) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
-		let hasStyleTag = true;
-		let style = target.querySelector('#material-you-card-type');
-		if (!style) {
-			hasStyleTag = false;
-			style = document.createElement('style');
-			style.id = 'material-you-card-type';
-		}
-
-		// Get value
-		let value = '';
-		const ids = [
-			window.browser_mod?.browserID?.replace(/-/g, '_'),
-			hass.user?.id,
-			'',
-		];
-		for (const id of ids) {
-			if (id == undefined) {
-				continue;
+		const themeName = hass?.themes?.theme ?? '';
+		if (themeName.includes('Material You')) {
+			let hasStyleTag = true;
+			let style = target.querySelector('#material-you-card-type');
+			if (!style) {
+				hasStyleTag = false;
+				style = document.createElement('style');
+				style.id = 'material-you-card-type';
 			}
 
-			value =
-				hass.states[`${inputs.card_type.input}${id ? `_${id}` : ''}`]
-					?.state;
+			// Get value
+			let value = '';
+			const ids = [
+				window.browser_mod?.browserID?.replace(/-/g, '_'),
+				hass.user?.id,
+				'',
+			];
+			for (const id of ids) {
+				if (id == undefined) {
+					continue;
+				}
 
-			if (value in cardTypes) {
-				break;
+				value =
+					hass.states[
+						`${inputs.card_type.input}${id ? `_${id}` : ''}`
+					]?.state;
+
+				if (value in cardTypes) {
+					break;
+				}
 			}
-		}
 
-		if (!(value in cardTypes)) {
-			if (hasStyleTag) {
-				target.removeChild(style);
-				const message =
-					'Material design card type set to default (elevated).';
-				mdLog(message, true);
+			if (!(value in cardTypes)) {
+				if (hasStyleTag) {
+					target.removeChild(style);
+					mdLog(
+						'Material design card type set to default (elevated).',
+						true,
+					);
+				}
+				return;
 			}
-			return;
-		}
 
-		style.textContent = loadStyles(cardTypes[value]);
-		if (!hasStyleTag) {
-			target.appendChild(style);
-		}
+			style.textContent = loadStyles(cardTypes[value]);
+			if (!hasStyleTag) {
+				target.appendChild(style);
+			}
 
-		const message = `Material design card type set to ${value}.`;
-		mdLog(message, true);
+			mdLog(`Material design card type set to ${value}.`, true);
+		} else {
+			await unsetCardType();
+		}
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
+		await unsetCardType();
 	}
 }
 
@@ -68,4 +75,15 @@ export async function setCardTypeAll() {
 	for (const target of targets) {
 		setCardType(target);
 	}
+}
+
+export async function unsetCardType() {
+	const targets = await getTargets();
+	for (const target of targets) {
+		const style = target.querySelector('#material-you-card-type');
+		if (style) {
+			document.removeChild(style);
+		}
+	}
+	mdLog('Material design card type unset.', true);
 }
