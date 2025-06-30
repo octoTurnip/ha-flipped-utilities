@@ -139,8 +139,8 @@ sl-tab {
 	gap: 4px;
 	height: var(--footer-height);
 	box-sizing: border-box;
-	min-width: 72px;
-	max-width: 163px;
+	min-width: 56px;
+	max-width: 174px;
 	cursor: pointer;
 	overflow: hidden;
 	-webkit-tap-highlight-color: transparent;
