@@ -4,14 +4,16 @@ import {
 	greenFromArgb,
 	redFromArgb,
 } from '@material/material-color-utilities';
-import 'disk-color-picker';
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-
 import packageInfo from '../../package.json';
 import { schemes } from '../models/constants/colors';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField, IUserPanelSettings } from '../models/interfaces/Panel';
+if (!customElements.get('disk-color-picker')) {
+	// HACS install causes this module to be defined twice, this squashes the error
+	require('disk-color-picker');
+}
 
 import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { showToast } from '../utils/logging';
@@ -65,15 +67,15 @@ export class MaterialYouPanel extends LitElement {
 
 		let message = 'Global input entities cleared';
 		if (id) {
-			let userName = '';
+			let name = '';
 			if (id == this.hass.user?.id) {
-				userName = this.hass.user?.name ?? '';
+				name = this.hass.user?.name ?? '';
 			} else {
-				userName =
+				name =
 					this.otherUserSettings[id].stateObj?.attributes
 						.friendly_name ?? id;
 			}
-			message = `Input entities cleared for ${userName}`;
+			message = `Input entities cleared for ${name}`;
 		}
 		showToast(this, message);
 	}
