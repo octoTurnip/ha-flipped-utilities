@@ -10,6 +10,7 @@ export type InputType = 'text' | 'select' | 'number' | 'boolean';
 
 export type InputField =
 	| 'base_color'
+	| 'image_url'
 	| 'scheme'
 	| 'contrast'
 	| 'spec'

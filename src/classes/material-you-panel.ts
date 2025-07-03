@@ -126,6 +126,29 @@ export class MaterialYouPanel extends LitElement {
 			});
 		}
 
+		// Base Image URL
+		entityId = `${inputs.image_url.input}${idSuffix}`;
+		if (!this.hass.states[entityId]) {
+			const id = entityId.split('.')[1];
+			const config = {
+				icon: inputs.image_url.icon,
+				min: 0,
+				max: 255,
+			};
+			await createInput(this.hass, 'text', {
+				name: id,
+				...config,
+			});
+			await updateInput(this.hass, 'text', id, {
+				name: `${inputs.image_url.name}${name}`,
+				...config,
+			});
+			await this.hass.callService('input_text', 'set_value', {
+				value: inputs.image_url.default,
+				entity_id: entityId,
+			});
+		}
+
 		// Scheme Name
 		entityId = `${inputs.scheme.input}${idSuffix}`;
 		if (!this.hass.states[entityId]) {
@@ -307,6 +330,7 @@ export class MaterialYouPanel extends LitElement {
 		};
 		switch (field) {
 			case 'base_color':
+			case 'image_url':
 			case 'contrast':
 				data.value = value || inputs[field].default;
 				break;
@@ -358,6 +382,7 @@ export class MaterialYouPanel extends LitElement {
 			case 'styles':
 				value = config.settings[field] == 'on';
 				break;
+			case 'image_url':
 			case 'scheme':
 			case 'spec':
 			case 'platform':
@@ -425,6 +450,7 @@ export class MaterialYouPanel extends LitElement {
 		};
 		switch (field) {
 			case 'base_color':
+			case 'image_url':
 			case 'contrast':
 			case 'styles':
 				data.value = inputs[field].default;
@@ -673,6 +699,24 @@ export class MaterialYouPanel extends LitElement {
 			: '';
 	}
 
+	buildImageUrlRow(settings: IUserPanelSettings) {
+		const id = settings.id;
+		const input = `${inputs.image_url.input}${id ? `_${id}` : ''}`;
+
+		return this.hass.states[input]
+			? html`${this.buildMoreInfoButton('image_url', id)}
+				${this.buildSelector(
+					'Image URL',
+					'image_url',
+					id,
+					{
+						text: {},
+					},
+					settings.settings.image_url,
+				)}`
+			: '';
+	}
+
 	buildSchemeRow(settings: IUserPanelSettings) {
 		const id = settings.id;
 		const input = `${inputs.scheme.input}${id ? `_${id}` : ''}`;
@@ -825,6 +869,7 @@ export class MaterialYouPanel extends LitElement {
 		let missingRows = false;
 		let themeRows: Partial<Record<InputField, TemplateResult | string>> = {
 			base_color: this.buildBaseColorRow(settings),
+			image_url: this.buildImageUrlRow(settings),
 			scheme: this.buildSchemeRow(settings),
 			contrast: this.buildContrastRow(settings),
 			spec: this.buildSpecRow(settings),
@@ -1319,6 +1364,9 @@ export class MaterialYouPanel extends LitElement {
 				justify-content: space-between;
 				align-items: center;
 				width: 100%;
+			}
+			.subrow .row {
+				margin-bottom: 0;
 			}
 
 			.card-actions {

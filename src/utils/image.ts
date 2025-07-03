@@ -1,0 +1,134 @@
+import {
+	hexFromArgb,
+	QuantizerCelebi,
+	Score,
+} from '@material/material-color-utilities';
+import { inputs, THEME_NAME } from '../models/constants/inputs';
+import { HassElement } from '../models/interfaces';
+import { debugToast } from './logging';
+
+/**
+ * Convert RGBA 8-bit values to ARGB integer
+ * @param {number} red
+ * @param {number} green
+ * @param {number} blue
+ * @param {number} alpha
+ * @returns {number}
+ */
+function argbFromRgba(red: number, green: number, blue: number, alpha: number) {
+	return (
+		((alpha << 24) |
+			((red & 255) << 16) |
+			((green & 255) << 8) |
+			(blue & 255)) >>>
+		0
+	);
+}
+
+/**
+ * Generate and set a theme base color from an image
+ */
+export async function setBaseColorFromImage() {
+	const hass = (document.querySelector('home-assistant') as HassElement).hass;
+
+	try {
+		const themeName = hass?.themes?.theme ?? '';
+		if (themeName.includes(THEME_NAME)) {
+			// Retrieve image URL
+			const ids = [
+				window.browser_mod?.browserID?.replace(/-/g, '_'),
+				hass.user?.id,
+				'',
+			];
+			let url = '';
+			let output = '';
+			for (const id of ids) {
+				if (id == undefined) {
+					continue;
+				}
+				output = `${inputs.base_color.input}${id ? `_${id}` : ''}`;
+				url =
+					hass.states[
+						`${inputs.image_url.input}${id ? `_${id}` : ''}`
+					]?.state?.trim();
+				if (url) {
+					break;
+				}
+			}
+
+			// Do not fetch if no image URL is set
+			if (!url) {
+				return;
+			}
+
+			// Create image and retrieve image locally or from external source
+			const xy = 128;
+			const img = new Image(xy, xy);
+			img.crossOrigin = 'anonymous';
+			if (url.includes('://') || url.startsWith('data:')) {
+				img.src = url;
+			} else {
+				const r = await hass.fetchWithAuth(url, { mode: 'cors' });
+				const blob = await r.blob();
+				img.src = URL.createObjectURL(blob);
+				url = r.url;
+			}
+			await new Promise((resolve) => {
+				img.onload = resolve;
+			});
+
+			// Create canvas and draw image to it
+			const canvas = document.createElement('canvas');
+			canvas.height = xy;
+			canvas.width = xy;
+			const ctx = canvas.getContext('2d');
+			ctx?.drawImage(img, 0, 0, xy, xy);
+
+			// Get image data and convert to ARGB array
+			const imageData = ctx?.getImageData(
+				0,
+				0,
+				canvas.width,
+				canvas.height,
+			);
+			const pixels = imageData?.data ?? [];
+			URL.revokeObjectURL(img.src);
+			const a = [];
+			for (let i = 0; i < pixels.length - 3; i += 4) {
+				a.push(
+					argbFromRgba(
+						pixels[i],
+						pixels[i + 1],
+						pixels[i + 2],
+						pixels[i + 3],
+					),
+				);
+			}
+
+			// Quantize image and score colors
+			const quantized = QuantizerCelebi.quantize(a, 128);
+			const colors = Score.score(quantized);
+
+			// Get color index from query string
+			let i = 0;
+			const params = new URL(url).searchParams;
+			if (params.has('i')) {
+				i = parseInt(params.get('i') as string);
+				if (isNaN(i)) {
+					return;
+				}
+				i = Math.max(Math.min(i, colors.length - 1), 0);
+			}
+
+			// Set base color
+			const baseColor = hexFromArgb(colors[i]);
+			hass.callService('input_text', 'set_value', {
+				entity_id: output,
+				value: baseColor,
+			});
+		}
+	} catch (e) {
+		console.error(e);
+		debugToast(String(e));
+	}
+}

@@ -1,5 +1,5 @@
 import { cardTypes } from '../css';
-import { inputs } from '../models/constants/inputs';
+import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { getTargets } from './colors';
 import { debugToast, mdLog } from './logging';
@@ -11,7 +11,7 @@ export async function setCardType(target: HTMLElement) {
 
 	try {
 		const themeName = hass?.themes?.theme ?? '';
-		if (themeName.includes('Material You')) {
+		if (themeName.includes(THEME_NAME)) {
 			let hasStyleTag = true;
 			let style = target.querySelector('#material-you-card-type');
 			if (!style) {

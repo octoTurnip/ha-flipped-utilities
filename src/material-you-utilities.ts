@@ -7,6 +7,7 @@ import { getAsync, querySelectorAsync } from './utils/async';
 import { setCardType, setCardTypeAll } from './utils/cards';
 import { setTheme, setThemeAll } from './utils/colors';
 import { getHomeAssistantMainAsync } from './utils/common';
+import { setBaseColorFromImage } from './utils/image';
 import { debugToast, mdLog } from './utils/logging';
 import { setStyles } from './utils/styles';
 
@@ -70,8 +71,9 @@ async function main() {
 
 		if (theme.includes(THEME_NAME)) {
 			const html = await querySelectorAsync(document, 'html');
-			setTheme(html);
-			setCardType(html);
+			await setBaseColorFromImage();
+			await setTheme(html);
+			await setCardType(html);
 		}
 	};
 	setOnFirstLoad(100);
@@ -95,6 +97,10 @@ async function main() {
 				`${inputs.spec.input}_${userId}`,
 				`${inputs.platform.input}_${userId}`,
 			];
+			const imageUrlInputs = [
+				inputs.image_url.input,
+				`${inputs.image_url.input}_${userId}`,
+			];
 			const styleInputs = [
 				inputs.card_type.input,
 				`${inputs.card_type.input}_${userId}`,
@@ -109,6 +115,7 @@ async function main() {
 						`${inputs.platform.input}_${deviceId}`,
 					],
 				);
+				imageUrlInputs.push(`${inputs.image_url.input}_${deviceId}`);
 				styleInputs.push(`${inputs.card_type.input}_${deviceId}`);
 			}
 
@@ -121,6 +128,17 @@ async function main() {
 						trigger: {
 							platform: 'state',
 							entity_id: colorThemeInputs,
+						},
+					},
+					{ resubscribe: true },
+				);
+				hass.connection.subscribeMessage(
+					() => setBaseColorFromImage(),
+					{
+						type: 'subscribe_trigger',
+						trigger: {
+							platform: 'state',
+							entity_id: imageUrlInputs,
 						},
 					},
 					{ resubscribe: true },
@@ -159,6 +177,23 @@ async function main() {
 								debugToast(msg.error);
 							}
 							setThemeAll();
+						},
+						{
+							type: 'render_template',
+							template: `{{ states("${entityId}") }}`,
+							entity_ids: entityId,
+							report_errors: true,
+						},
+					);
+				}
+				for (const entityId of imageUrlInputs) {
+					hass.connection.subscribeMessage(
+						(msg: RenderTemplateResult | RenderTemplateError) => {
+							if ('error' in msg) {
+								console.error(msg.error);
+								debugToast(msg.error);
+							}
+							setBaseColorFromImage();
 						},
 						{
 							type: 'render_template',

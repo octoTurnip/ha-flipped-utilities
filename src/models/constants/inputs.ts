@@ -17,6 +17,14 @@ export const inputs: Record<InputField, InputInfo> = {
 		action: 'input_text.set_value',
 		icon: 'mdi:palette',
 	},
+	image_url: {
+		type: 'text',
+		default: '',
+		name: `${THEME_NAME} Image URL`,
+		input: `${INPUT_TEXT_PREFIX}_image_url`,
+		action: 'input_text.set_value',
+		icon: 'mdi:image',
+	},
 	scheme: {
 		type: 'select',
 		default: 'tonalspot',

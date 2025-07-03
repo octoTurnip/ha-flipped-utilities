@@ -9,7 +9,7 @@ import {
 
 import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
 import { colors } from '../models/constants/colors';
-import { inputs } from '../models/constants/inputs';
+import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Panel';
 import { querySelectorAsync } from './async';
@@ -24,7 +24,7 @@ export async function setTheme(target: HTMLElement) {
 		const html = await querySelectorAsync(document, 'html');
 
 		const themeName = hass?.themes?.theme ?? '';
-		if (themeName.includes('Material You')) {
+		if (themeName.includes(THEME_NAME)) {
 			// Fix explicit html background color
 			html?.style.setProperty(
 				'background-color',
