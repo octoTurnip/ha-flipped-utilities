@@ -167,6 +167,10 @@ The Material Design 3 specification has [three different card type style variati
 
 Some cards, like those found in the configuration pages, already have the attribute `outlined`. This attribute will supersede the default `elevated` card style or user chosen card type.
 
+## Theme Mode FAB
+
+For your convenience, you can click on the floating action button on the bottom right of the configuration panel to switch to Material You theme and between light, dark, and auto modes.
+
 # Material Design 3 Components
 
 In addition to the CSS custom properties in the theme YAML, this themes companion module modifies the lifecycle methods styles of many Home Assistant component constructors to inject additional CSS styles to make the components follow the Material Design 3 specification.
