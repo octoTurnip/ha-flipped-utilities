@@ -67,13 +67,21 @@ This module comes with it's own configuration panel! If you are the Home Assista
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/configuration-panel.png" width="750"/>
 
-The settings for every user and the global settings are all the same. If a user does not have a setting set, then the global setting is used.
+The settings for every user, device, and the global settings are all the same. If a user does not have helpers setup, then the global settings are used.
 
 To create input helper entities for a user, click on `Create Helpers` in their settings card. Similarly, you can delete input helper entities for a user by clicking `Delete Helpers`. After creating helpers, you or their non-admin user can modify them from the configuration panel or open their more info dialog using the buttons to their left.
 
-You can use the configuration panel to setup the dynamic color theme and to modify some style options.
+## You, Everyone, and Devices
+
+The first tab is for you! These settings apply to any Home Assistant browser/device instance logged in to your profile. If you are not an administrator, then you will only see this tab and the current device settings will also appear below your settings.
+
+The second tab is for everyone else. This includes all other users on the Home Assistant server, including other administrators. It also has the global settings, which apply when a user or device does not have their own input helpers setup.
+
+The third tab is for device specific settings. You can setup input helpers specific to a user-browser-device combination. The current device settings appears at the top of this tab. These settings require [Browser Mod](https://github.com/thomasloven/hass-browser_mod) to keep track of user-browser-device IDs.
 
 ## Dynamic Color Theme
+
+You can use the configuration panel to setup the dynamic color theme and to modify some style options.
 
 ### Base Color
 
@@ -106,6 +114,12 @@ actions:
     target:
       entity_id: input_text.material_you_base_color
 ```
+
+### Image URL
+
+Instead of explicitly defining your theme base color, you can instead provide an image. This image can be hosted on your Home Assistant server in the `config/www` folder or be from an external website ([with CORS approval](https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/CORS_enabled_image)). A set of up to four possible base colors will be derived from this image from you to choose from and set to the base color field. You can choose between the possible options by appending the query string `?i=` to the end of your image URL, setting i to a number between 0 and 3 inclusive.
+
+Note that changing image file by itself but not changing the name will not trigger a color theme update. Color theme generation triggers on first page load, when an input's value changes, or (admin only) when a set theme action is called.
 
 ### Color Schemes
 
