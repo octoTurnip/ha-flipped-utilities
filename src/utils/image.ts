@@ -65,7 +65,7 @@ export async function setBaseColorFromImage() {
 			const xy = 128;
 			const img = new Image(xy, xy);
 			img.crossOrigin = 'anonymous';
-			if (url.includes('://') || url.startsWith('data:')) {
+			if (url.includes('://')) {
 				img.src = url;
 			} else {
 				const r = await hass.fetchWithAuth(url, { mode: 'cors' });
