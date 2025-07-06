@@ -5,7 +5,7 @@ import {
 	redFromArgb,
 } from '@material/material-color-utilities';
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { schemes } from '../models/constants/colors';
 import { inputs, THEME_NAME } from '../models/constants/inputs';
 import {
@@ -33,6 +33,9 @@ if (!customElements.get('disk-color-picker')) {
 export class MaterialYouConfigCard extends LitElement {
 	@property() hass!: HomeAssistant;
 	@property() dataId?: string;
+
+	@state() tabBarIndex: number = 0;
+	tabs = ['colors', 'styles'];
 
 	personEntityId?: string;
 	darkMode?: boolean;
@@ -281,6 +284,30 @@ export class MaterialYouConfigCard extends LitElement {
 			<div class="create button" @click=${this.handleCreateHelpers}>
 				Create Helpers
 			</div>
+		`;
+	}
+
+	handleTabBar(e: Event) {
+		const i = this.tabs.indexOf(e.detail.name);
+		if (this.tabBarIndex == i) {
+			return;
+		}
+		this.tabBarIndex = i;
+	}
+
+	buildTabBar(index: number, handler: (e: Event) => void, tabs: string[]) {
+		return html`
+			<sl-tab-group @sl-tab-show=${handler}>
+				${tabs.map(
+					(tab, i) =>
+						html`<sl-tab
+							slot="nav"
+							panel=${tab}
+							.active=${i == index}
+							>${tab}</sl-tab
+						>`,
+				)}
+			</sl-tab-group>
 		`;
 	}
 
@@ -679,18 +706,27 @@ export class MaterialYouConfigCard extends LitElement {
 		if (this.darkMode != this.hass.themes?.darkMode) {
 			this.darkMode = this.hass.themes?.darkMode;
 
-			for (const [key, value] of Object.entries(
-				this.hass.themes?.themes[THEME_NAME].modes?.[
-					this.darkMode ? 'dark' : 'light'
-				] ?? {},
-			)) {
-				this.style.setProperty(`--${key}`, value);
+			const style = this.shadowRoot?.getElementById('material-you-theme');
+			if (style) {
+				const styles: string[] = [];
+				for (const [key, value] of Object.entries(
+					this.hass.themes?.themes[THEME_NAME].modes?.[
+						this.darkMode ? 'dark' : 'light'
+					] ?? {},
+				)) {
+					styles.push(`--${key}: ${value};`);
+				}
+
+				style.textContent = `
+					:host {
+						${styles.join('\n')}
+					}
+				`;
 			}
 		}
 	}
 
 	render() {
-		this.applyThemeMode();
 		this.setupIds();
 
 		let title = 'Global';
@@ -702,28 +738,40 @@ export class MaterialYouConfigCard extends LitElement {
 				this.dataId;
 		}
 
-		let missingRows = false;
-		let themeRows: Partial<Record<InputField, TemplateResult | string>> = {
-			base_color: this.buildBaseColorRow(),
-			image_url: this.buildImageUrlRow(),
-			scheme: this.buildSchemeRow(),
-			contrast: this.buildContrastRow(),
-			spec: this.buildSpecRow(),
-			platform: this.buildPlatformRow(),
-		};
-		for (const name in themeRows) {
-			if (!themeRows[name as InputField]) {
-				delete themeRows[name as InputField];
-				missingRows = true;
-			}
+		let rows: Partial<Record<InputField, TemplateResult | string>>;
+		switch (this.tabBarIndex) {
+			case 1:
+				rows = {
+					styles: this.buildStylesRow(),
+					card_type: this.buildCardTypeRow(),
+				};
+				break;
+			case 0:
+			default:
+				rows = {
+					base_color: this.buildBaseColorRow(),
+					image_url: this.buildImageUrlRow(),
+					scheme: this.buildSchemeRow(),
+					contrast: this.buildContrastRow(),
+					spec: this.buildSpecRow(),
+					platform: this.buildPlatformRow(),
+				};
+
+				if (
+					this.hass.states[
+						`${inputs.spec.input}${this.dataId ? `_${this.dataId}` : ''}`
+					]?.state != '2025'
+				) {
+					delete rows.platform;
+				}
+
+				break;
 		}
-		let styleRows: Partial<Record<InputField, TemplateResult | string>> = {
-			styles: this.buildStylesRow(),
-			card_type: this.buildCardTypeRow(),
-		};
-		for (const name in styleRows) {
-			if (!styleRows[name as InputField]) {
-				delete styleRows[name as InputField];
+
+		let missingRows = false;
+		for (const name in rows) {
+			if (!rows[name as InputField]) {
+				delete rows[name as InputField];
 				missingRows = true;
 			}
 		}
@@ -733,6 +781,11 @@ export class MaterialYouConfigCard extends LitElement {
 				${this.personEntityId
 					? html`<div class="subtitle">ID: ${this.dataId}</div>`
 					: ''}
+				${this.buildTabBar(
+					this.tabBarIndex,
+					this.handleTabBar,
+					this.tabs,
+				)}
 				<div class="card-content">
 					${missingRows
 						? buildAlertBox(
@@ -742,26 +795,10 @@ export class MaterialYouConfigCard extends LitElement {
 								this.hass.user?.is_admin ? 'info' : 'error',
 							)
 						: ''}
-					${Object.keys(themeRows).length
-						? html`<div class="card-content-section-header">
-								Dynamic Color Theme
-							</div>`
-						: ''}
-					${Object.keys(themeRows).map(
+					${Object.keys(rows).map(
 						(name) =>
 							html`<div class="row ${name}">
-								${themeRows[name as InputField]}
-							</div>`,
-					)}
-					${Object.keys(styleRows).length
-						? html`<div class="card-content-section-header">
-								Style Options
-							</div>`
-						: ''}
-					${Object.keys(styleRows).map(
-						(name) =>
-							html`<div class="row ${name}">
-								${styleRows[name as InputField]}
+								${rows[name as InputField]}
 							</div>`,
 					)}
 				</div>
@@ -771,6 +808,7 @@ export class MaterialYouConfigCard extends LitElement {
 						</div>`
 					: ''}
 			</ha-card>
+			<style id="material-you-theme"></style>
 		`;
 	}
 
@@ -939,6 +977,9 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	updated() {
+		// Apply theme mode
+		this.applyThemeMode();
+
 		// Disk color picker style tweaks
 		const colorPickers =
 			this.shadowRoot?.querySelectorAll('disk-color-picker') ?? [];
@@ -949,8 +990,8 @@ export class MaterialYouConfigCard extends LitElement {
 				style.textContent = `
 					/* Shift color picker down */
 					:host {
-						height: 236px;
-						translate: 0 -24px;
+						height: 248px;
+						translate: 0 -16px;
 					}
 	
 					/* Scale the disk color picker relative to saturation arc */
@@ -979,7 +1020,7 @@ export class MaterialYouConfigCard extends LitElement {
 			.card-content {
 				display: flex;
 				flex-direction: column;
-				padding: 0 16px 16px;
+				padding: 16px;
 			}
 			.subtitle {
 				margin-top: -24px;
@@ -996,30 +1037,19 @@ export class MaterialYouConfigCard extends LitElement {
 					0.1px
 				);
 			}
-			.card-content-section-header {
-				font-size: var(--md-sys-typescale-title-medium-siz, 16px);
-				font-weight: var(--md-sys-typescale-title-medium-weight, 500);
-				line-height: var(
-					--md-sys-typescale-title-medium-line-height,
-					24px
-				);
-				letter-spacing: var(
-					--md-sys-typescale-title-medium-tracking,
-					0.15px
-				);
+
+			sl-tab-group {
+				text-transform: capitalize;
+				width: var(--width);
+				position: relative;
+				z-index: 1;
 			}
-			.card-content-section-header::before {
-				content: '';
-				display: block;
-				height: 1px;
+			sl-tab {
+				flex: 1;
+			}
+			sl-tab::part(base) {
 				width: 100%;
-				padding-top: 12px;
-				border-top: 1px
-					var(
-						--md-sys-color-outline-variant,
-						var(--divider-color, gray)
-					)
-					solid;
+				justify-content: center;
 			}
 
 			ha-selector {

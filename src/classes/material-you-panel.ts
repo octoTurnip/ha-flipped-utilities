@@ -160,7 +160,7 @@ export class MaterialYouPanel extends LitElement {
 			case 2:
 				page = html`
 					${window.browser_mod
-						? html` ${this.buildSectionHeader(
+						? html`${this.buildSectionHeader(
 									'This Device',
 									'Your settings for this device, prioritized over all other settings.',
 								)}
