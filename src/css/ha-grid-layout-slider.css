@@ -6,6 +6,9 @@
 /* Scale and translate handle on hover */
 .handle {
 	background: var(--ha-dialog-surface-background);
+	transition:
+		left var(--md-sys-motion-expressive-spatial-default),
+		top var(--md-sys-motion-expressive-spatial-default);
 }
 .handle::after {
 	transition: scale var(--md-sys-motion-expressive-spatial-fast);

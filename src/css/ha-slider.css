@@ -11,6 +11,16 @@
 	--md-slider-disabled-handle-color: var(--md-slider-handle-color);
 }
 
+/* Animation */
+.track::before,
+.track::after,
+.handleContainer {
+	transition:
+		clip-path var(--md-sys-motion-expressive-spatial-default),
+		inset-inline-start var(--md-sys-motion-expressive-spatial-default),
+		inline-size var(--md-sys-motion-expressive-spatial-default);
+}
+
 /* Space around handle */
 .handleNub {
 	height: var(--md-slider-active-track-height);
