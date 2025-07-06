@@ -1,3 +1,4 @@
+import { html } from 'lit';
 import { schemes } from '../models/constants/colors';
 import { inputs } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
@@ -42,4 +43,11 @@ export async function getHomeAssistantMainAsync(): Promise<HassElement> {
 	)) as HassElement;
 	await getAsync(ha, 'shadowRoot');
 	return ha;
+}
+
+export function buildAlertBox(
+	title: string,
+	type: 'info' | 'warning' | 'error' | 'success' = 'info',
+) {
+	return html`<ha-alert .title="${title}" .alertType="${type}"></ha-alert>`;
 }

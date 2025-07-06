@@ -17,7 +17,7 @@ import { getHomeAssistantMainAsync, getSchemeInfo, getToken } from './common';
 import { debugToast, mdLog } from './logging';
 
 /* Generate and set theme colors based on user defined inputs */
-export async function setTheme(target: HTMLElement) {
+export async function setTheme(target: HTMLElement, id?: string) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
@@ -39,11 +39,16 @@ export async function setTheme(target: HTMLElement) {
 				spec: '',
 				platform: '',
 			};
-			const ids = [
-				window.browser_mod?.browserID?.replace(/-/g, '_'),
-				hass.user?.id,
-				'',
-			];
+			let ids: (string | undefined)[];
+			if (id != undefined) {
+				ids = [id];
+			} else {
+				ids = [
+					window.browser_mod?.browserID?.replace(/-/g, '_'),
+					hass.user?.id,
+					'',
+				];
+			}
 			for (const id of ids) {
 				if (id == undefined) {
 					continue;

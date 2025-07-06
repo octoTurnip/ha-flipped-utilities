@@ -28,18 +28,23 @@ function argbFromRgba(red: number, green: number, blue: number, alpha: number) {
 /**
  * Generate and set a theme base color from an image
  */
-export async function setBaseColorFromImage() {
+export async function setBaseColorFromImage(id?: string) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
 			// Retrieve image URL
-			const ids = [
-				window.browser_mod?.browserID?.replace(/-/g, '_'),
-				hass.user?.id,
-				'',
-			];
+			let ids: (string | undefined)[];
+			if (id) {
+				ids = [id];
+			} else {
+				ids = [
+					window.browser_mod?.browserID?.replace(/-/g, '_'),
+					hass.user?.id,
+					'',
+				];
+			}
 			let url = '';
 			let output = '';
 			for (const id of ids) {

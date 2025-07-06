@@ -1,4 +1,5 @@
 import packageInfo from '../package.json';
+import { MaterialYouConfigCard } from './classes/material-you-config-card';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
 import { inputs, THEME_NAME } from './models/constants/inputs';
@@ -53,6 +54,7 @@ async function main() {
 	});
 
 	// Define Material You Panel custom element
+	customElements.define('material-you-config-card', MaterialYouConfigCard);
 	customElements.define('material-you-panel', MaterialYouPanel);
 
 	// Set user theme colors and card type

@@ -6,7 +6,7 @@ import { debugToast, mdLog } from './logging';
 import { loadStyles } from './styles';
 
 /** Change ha-card styles to match the selected card type */
-export async function setCardType(target: HTMLElement) {
+export async function setCardType(target: HTMLElement, id?: string) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
@@ -22,11 +22,16 @@ export async function setCardType(target: HTMLElement) {
 
 			// Get value
 			let value = '';
-			const ids = [
-				window.browser_mod?.browserID?.replace(/-/g, '_'),
-				hass.user?.id,
-				'',
-			];
+			let ids: (string | undefined)[];
+			if (id != undefined) {
+				ids = [id];
+			} else {
+				ids = [
+					window.browser_mod?.browserID?.replace(/-/g, '_'),
+					hass.user?.id,
+					'',
+				];
+			}
 			for (const id of ids) {
 				if (id == undefined) {
 					continue;
