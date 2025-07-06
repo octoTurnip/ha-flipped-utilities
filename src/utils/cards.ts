@@ -54,6 +54,9 @@ export async function setCardType(
 				if (hasStyleTag) {
 					target.removeChild(style);
 					mdLog(
+						target instanceof ShadowRoot
+							? (target.host as HTMLElement)
+							: target,
 						'Material design card type set to default (elevated).',
 						true,
 					);
@@ -66,7 +69,13 @@ export async function setCardType(
 				target.appendChild(style);
 			}
 
-			mdLog(`Material design card type set to ${value}.`, true);
+			mdLog(
+				target instanceof ShadowRoot
+					? (target.host as HTMLElement)
+					: target,
+				`Material design card type set to ${value}.`,
+				true,
+			);
 		} else {
 			if (id == undefined) {
 				await unsetCardType();
@@ -97,5 +106,5 @@ export async function unsetCardType() {
 			document.removeChild(style);
 		}
 	}
-	mdLog('Material design card type unset.', true);
+	mdLog(targets[0], 'Material design card type unset.', true);
 }

@@ -107,6 +107,7 @@ export async function setTheme(target: HTMLElement, id?: string) {
 					}
 				}
 				mdLog(
+					target,
 					`Material design system colors updated.\nBase Color - ${values.base_color} | Scheme - ${schemeInfo.label} | Contrast Level - ${values.contrast} | Specification Version - ${values.spec} | Platform - ${(values.platform as string)[0].toUpperCase()}${(values.platform as string).slice(1)}`,
 					true,
 				);
@@ -163,7 +164,7 @@ export async function unsetTheme() {
 			target?.style.removeProperty(`--md-sys-color-${token}-dark`);
 		}
 	}
-	mdLog('Material design system colors removed.', true);
+	mdLog(targets[0], 'Material design system colors removed.', true);
 }
 
 /** Call setTheme on all valid available targets */

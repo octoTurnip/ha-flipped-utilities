@@ -22,7 +22,10 @@ async function main() {
 	// Do this before anything else because it's time sensitive
 	setStyles(window);
 
-	mdLog(`Material You Utilities v${packageInfo.version}`);
+	mdLog(
+		document.querySelector('html') as HTMLElement,
+		`Material You Utilities v${packageInfo.version}`,
+	);
 
 	// Apply colors and styles on iframe when it's added
 	const haMain = await getHomeAssistantMainAsync();

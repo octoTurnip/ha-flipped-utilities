@@ -1,13 +1,16 @@
 import { INPUT_BOOLEAN_PREFIX } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 
-export function mdLog(message: string, toast: boolean = false) {
-	const html = document.querySelector('html') as HTMLElement;
+export function mdLog(
+	target: HTMLElement,
+	message: string,
+	toast: boolean = false,
+) {
 	const background =
-		html.style.getPropertyValue('--md-sys-color-primary-light') ||
+		target?.style?.getPropertyValue('--md-sys-color-primary-light') ||
 		'#4c5c92';
 	const color =
-		html.style.getPropertyValue('--md-sys-color-on-primary-light') ||
+		target?.style?.getPropertyValue('--md-sys-color-on-primary-light') ||
 		'#ffffff';
 	const styles = `color: ${color}; background: ${background}; font-weight: bold; border-radius: 32px; padding: 0 8px;`;
 
