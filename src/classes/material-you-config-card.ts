@@ -730,7 +730,7 @@ export class MaterialYouConfigCard extends LitElement {
 
 		return html`
 			<ha-card .hass=${this.hass} .header=${title}>
-				${this.dataId
+				${this.personEntityId
 					? html`<div class="subtitle">ID: ${this.dataId}</div>`
 					: ''}
 				<div class="card-content">
