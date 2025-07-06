@@ -1,4 +1,5 @@
 /* Filled cards */
+:host,
 body {
 	--ha-card-background: var(--md-sys-color-surface-container-highest);
 	--ha-card-box-shadow: none;

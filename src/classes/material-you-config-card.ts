@@ -793,7 +793,7 @@ export class MaterialYouConfigCard extends LitElement {
 		// Initial color and style setup
 		setBaseColorFromImage(this.dataId ?? '');
 		setTheme(this, this.dataId ?? '');
-		setCardType(this, this.dataId ?? '');
+		setCardType(this.shadowRoot as ShadowRoot, this.dataId ?? '');
 
 		// Trigger updates on card
 		const setupSubscriptions = async () => {
@@ -834,7 +834,11 @@ export class MaterialYouConfigCard extends LitElement {
 						{ resubscribe: true },
 					);
 					this.hass.connection.subscribeMessage(
-						() => setCardType(this, this.dataId ?? ''),
+						() =>
+							setCardType(
+								this.shadowRoot as ShadowRoot,
+								this.dataId ?? '',
+							),
 						{
 							type: 'subscribe_trigger',
 							trigger: {
@@ -912,7 +916,10 @@ export class MaterialYouConfigCard extends LitElement {
 									console.error(msg.error);
 									debugToast(msg.error);
 								}
-								setCardType(this, this.dataId ?? '');
+								setCardType(
+									this.shadowRoot as ShadowRoot,
+									this.dataId ?? '',
+								);
 							},
 							{
 								type: 'render_template',

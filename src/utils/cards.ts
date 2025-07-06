@@ -6,7 +6,10 @@ import { debugToast, mdLog } from './logging';
 import { loadStyles } from './styles';
 
 /** Change ha-card styles to match the selected card type */
-export async function setCardType(target: HTMLElement, id?: string) {
+export async function setCardType(
+	target: HTMLElement | ShadowRoot,
+	id?: string,
+) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
@@ -65,12 +68,16 @@ export async function setCardType(target: HTMLElement, id?: string) {
 
 			mdLog(`Material design card type set to ${value}.`, true);
 		} else {
-			await unsetCardType();
+			if (id == undefined) {
+				await unsetCardType();
+			}
 		}
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
-		await unsetCardType();
+		if (id == undefined) {
+			await unsetCardType();
+		}
 	}
 }
 

@@ -1,4 +1,5 @@
 /* Elevated cards (default) */
+:host,
 body {
 	--ha-card-background: var(--md-sys-color-surface-container-low);
 	--ha-card-box-shadow: var(--md-sys-elevation-level1);

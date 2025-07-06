@@ -111,13 +111,17 @@ export async function setTheme(target: HTMLElement, id?: string) {
 					true,
 				);
 			} else {
-				await unsetTheme();
+				if (id == undefined) {
+					await unsetTheme();
+				}
 			}
 		}
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
-		await unsetTheme();
+		if (id == undefined) {
+			await unsetTheme();
+		}
 	}
 
 	// Update companion app app and navigation bar colors

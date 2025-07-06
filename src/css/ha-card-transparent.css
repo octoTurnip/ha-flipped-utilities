@@ -1,4 +1,5 @@
 /* Transparent cards */
+:host,
 body {
 	--ha-card-background: transparent;
 	--ha-card-box-shadow: none;
