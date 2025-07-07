@@ -19,6 +19,7 @@ import haMdListItem from './ha-md-list-item.css';
 import haMdMenuItem from './ha-md-menu-item.css';
 import haMenuButton from './ha-menu-button.css';
 import haMoreInfoInfo from './ha-more-info-info.css';
+import haSelectBox from './ha-select-box.css';
 import haSidebar from './ha-sidebar.css';
 import haSlider from './ha-slider.css';
 import haSwitch from './ha-switch.css';
@@ -57,6 +58,7 @@ export const elements: Record<string, string> = {
 	'ha-menu-button': haMenuButton,
 	'ha-more-info-info': haMoreInfoInfo,
 	'ha-drawer': haDrawer,
+	'ha-select-box': haSelectBox,
 	'ha-sidebar': haSidebar,
 	'ha-slider': haSlider,
 	'md-slider': haSlider,

@@ -1,0 +1,4 @@
+/* Fix text alignment */
+.option .content {
+	align-items: center;
+}
