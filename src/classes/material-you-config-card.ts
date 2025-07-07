@@ -1,9 +1,3 @@
-import {
-	argbFromHex,
-	blueFromArgb,
-	greenFromArgb,
-	redFromArgb,
-} from '@material/material-color-utilities';
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { schemes } from '../models/constants/colors';
@@ -218,36 +212,15 @@ export class MaterialYouConfigCard extends LitElement {
 		const entityId = getEntityId(field, this.dataId);
 		const state = this.hass.states[entityId]?.state;
 		let value: string | number | number[] | boolean;
-		switch (field) {
-			case 'base_color':
-				let argb: number;
-				try {
-					argb = argbFromHex(state);
-				} catch (e) {
-					console.error(e);
-					argb = argbFromHex(inputs.base_color.default as string);
-				}
-				value = [
-					redFromArgb(argb),
-					greenFromArgb(argb),
-					blueFromArgb(argb),
-				];
-				break;
-			case 'styles':
-			case 'navbar':
+		switch (inputs[field].domain) {
+			case 'input_boolean':
 				value = state == 'on';
 				break;
-			case 'image_url':
-			case 'scheme':
-			case 'spec':
-			case 'platform':
-			case 'card_type':
-			case 'contrast':
+			case 'input_text':
+			case 'input_number':
+			case 'input_select':
 			default:
-				value = state as string | number;
-				if (!value) {
-					value = inputs[field].default;
-				}
+				value = state ?? inputs[field].default;
 				break;
 		}
 
