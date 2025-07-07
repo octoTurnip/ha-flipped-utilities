@@ -2,7 +2,7 @@ import { elements } from '../css';
 import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { querySelectorAsync } from './async';
-import { getHomeAssistantMainAsync } from './common';
+import { getEntityId, getHomeAssistantMainAsync } from './common';
 
 // Theme check variables
 let theme = '';
@@ -23,9 +23,9 @@ function checkTheme() {
 		if (theme) {
 			shouldSetStyles =
 				theme.includes(THEME_NAME) &&
-				(ha?.hass.states[`${inputs.styles.input}_${ha?.hass.user?.id}`]
+				(ha?.hass.states[getEntityId('styles', ha?.hass.user?.id)]
 					?.state ??
-					ha?.hass.states[inputs.styles.input]?.state ??
+					ha?.hass.states[getEntityId('styles')]?.state ??
 					inputs.styles.default) == 'on';
 		}
 	}

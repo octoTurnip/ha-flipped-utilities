@@ -1,20 +1,20 @@
 import { HomeAssistant, IConfirmation } from '../models/interfaces';
-import { InputType } from '../models/interfaces/Panel';
+import { InputDomain } from '../models/interfaces/Panel';
 
 /**
  * Create an input entity
  * @param {HomeAssistant} hass Home Assistant HASS object
- * @param {InputType} type Input element type to create
+ * @param {InputDomain} type Input element type to create
  * @param {Record<string, any>} config Input helper init config
  * @returns {Promise<Record<string, any>>}  Input helper init config, with default values for fields not provided
  */
 export async function createInput(
 	hass: HomeAssistant,
-	type: InputType,
+	type: InputDomain,
 	config: Record<string, any>,
 ): Promise<Record<string, any>> {
 	return hass.callWS({
-		type: `input_${type}/create`,
+		type: `${type}/create`,
 		...config,
 	});
 }
@@ -22,19 +22,19 @@ export async function createInput(
 /**
  * Update an input entity
  * @param {HomeAssistant} hass Home Assistant HASS object
- * @param {InputType} type Input element type to create
+ * @param {InputDomain} type Input element type to create
  * @param {string} id Element ID, not including domain
  * @returns {Promise<Record<string, any>>}  Input helper update config, replaces current config
  */
 export async function updateInput(
 	hass: HomeAssistant,
-	type: InputType,
+	domain: InputDomain,
 	id: string,
 	config: Record<string, any>,
 ): Promise<Record<string, any>> {
 	return hass.callWS({
-		type: `input_${type}/update`,
-		[`input_${type}_id`]: id,
+		type: `${domain}/update`,
+		[`${domain}_id`]: id,
 		...config,
 	});
 }
@@ -42,17 +42,17 @@ export async function updateInput(
 /**
  * Delete an input entity
  * @param {HomeAssistant} hass Home Assistant HASS object
- * @param {InputType} type Input element type to create
+ * @param {InputDomain} type Input element type to create
  * @param {string} id Element ID, not including domain
  */
 export async function deleteInput(
 	hass: HomeAssistant,
-	type: InputType,
+	domain: InputDomain,
 	id: string,
 ) {
 	hass.callWS({
-		type: `input_${type}/delete`,
-		[`input_${type}_id`]: id,
+		type: `${domain}/delete`,
+		[`${domain}_id`]: id,
 	});
 }
 

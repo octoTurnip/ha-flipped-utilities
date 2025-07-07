@@ -13,7 +13,12 @@ import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Panel';
 import { querySelectorAsync } from './async';
-import { getHomeAssistantMainAsync, getSchemeInfo, getToken } from './common';
+import {
+	getEntityId,
+	getHomeAssistantMainAsync,
+	getSchemeInfo,
+	getToken,
+} from './common';
 import { debugToast, mdLog } from './logging';
 
 /* Generate and set theme colors based on user defined inputs */
@@ -63,7 +68,7 @@ export async function setTheme(target: HTMLElement, id?: string) {
 					}
 					values[field as InputField] =
 						hass.states[
-							`${inputs[field as InputField].input}${id ? `_${id}` : ''}`
+							getEntityId(field as InputField, id)
 						]?.state?.trim();
 				}
 			}

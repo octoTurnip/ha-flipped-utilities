@@ -7,7 +7,12 @@ import {
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { schemes } from '../models/constants/colors';
-import { inputs, THEME_NAME } from '../models/constants/inputs';
+import {
+	inputs,
+	services,
+	THEME,
+	THEME_NAME,
+} from '../models/constants/inputs';
 import {
 	HomeAssistant,
 	RenderTemplateError,
@@ -16,7 +21,7 @@ import {
 import { InputField } from '../models/interfaces/Panel';
 import { setCardType } from '../utils/cards';
 import { setTheme } from '../utils/colors';
-import { buildAlertBox } from '../utils/common';
+import { buildAlertBox, getEntityId } from '../utils/common';
 import { setBaseColorFromImage } from '../utils/image';
 import { debugToast, showToast } from '../utils/logging';
 import {
@@ -41,8 +46,6 @@ export class MaterialYouConfigCard extends LitElement {
 	darkMode?: boolean;
 
 	async handleDeleteHelpers(_e: MouseEvent) {
-		const idSuffix = this.dataId ? `_${this.dataId}` : '';
-
 		if (
 			!(await handleConfirmation(this, {
 				text: 'Are you sure you want to delete these helpers?',
@@ -52,11 +55,11 @@ export class MaterialYouConfigCard extends LitElement {
 		}
 
 		for (const field in inputs) {
-			const entityId = `${inputs[field as InputField].input}${idSuffix}`;
+			const entityId = getEntityId(field as InputField, this.dataId);
 			if (this.hass.states[entityId]) {
 				await deleteInput(
 					this.hass,
-					inputs[field as InputField].type,
+					inputs[field as InputField].domain,
 					entityId.split('.')[1],
 				);
 			}
@@ -87,189 +90,53 @@ export class MaterialYouConfigCard extends LitElement {
 
 	async handleCreateHelpers(_e: MouseEvent) {
 		// User ID and name checks
-		const idSuffix = this.dataId ? `_${this.dataId}` : '';
 		let name = '';
-		if (this.personEntityId) {
-			name = ` ${this.hass.states[this.personEntityId]?.attributes?.friendly_name ?? this.personEntityId ?? this.dataId}`;
+		if (this.dataId) {
+			name = ` ${this.hass.states[this.personEntityId ?? '']?.attributes?.friendly_name ?? this.personEntityId ?? this.dataId}`;
 		}
 
-		// Base Color
-		let entityId = `${inputs.base_color.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.base_color.icon,
-				min: 3,
-				max: 9,
-				pattern: '^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$',
-			};
-			await createInput(this.hass, 'text', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'text', id, {
-				name: `${inputs.base_color.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_text', 'set_value', {
-				value: inputs.base_color.default,
-				entity_id: entityId,
-			});
-		}
-
-		// Base Image URL
-		entityId = `${inputs.image_url.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.image_url.icon,
-				min: 0,
-				max: 255,
-			};
-			await createInput(this.hass, 'text', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'text', id, {
-				name: `${inputs.image_url.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_text', 'set_value', {
-				value: inputs.image_url.default,
-				entity_id: entityId,
-			});
-		}
-
-		// Scheme Name
-		entityId = `${inputs.scheme.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.scheme.icon,
-				options: [...schemes.map((scheme) => scheme.value)],
-			};
-			await createInput(this.hass, 'select', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.scheme.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_select', 'select_option', {
-				option: inputs.scheme.default,
-				entity_id: entityId,
-			});
-		}
-
-		// Contrast Level
-		entityId = `${inputs.contrast.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.contrast.icon,
-				min: -1,
-				max: 1,
-				step: 0.1,
-			};
-			await createInput(this.hass, 'number', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'number', id, {
-				name: `${inputs.contrast.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_number', 'set_value', {
-				value: 0,
-				entity_id: entityId,
-			});
-		}
-
-		// Spec Version
-		entityId = `${inputs.spec.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.spec.icon,
-				options: ['2021', '2025'],
-			};
-			await createInput(this.hass, 'select', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.spec.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_select', 'select_option', {
-				option: inputs.spec.default,
-				entity_id: entityId,
-			});
-		}
-
-		// Platform
-		entityId = `${inputs.platform.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.platform.icon,
-				options: ['phone', 'watch'],
-			};
-			await createInput(this.hass, 'select', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.platform.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_select', 'select_option', {
-				option: inputs.platform.default,
-				entity_id: entityId,
-			});
-		}
-
-		// Styles
-		entityId = `${inputs.styles.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.styles.icon,
-			};
-			await createInput(this.hass, 'boolean', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'boolean', id, {
-				name: `${inputs.styles.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_boolean', 'turn_on', {
-				entity_id: entityId,
-			});
-		}
-
-		// Card Type
-		entityId = `${inputs.card_type.input}${idSuffix}`;
-		if (!this.hass.states[entityId]) {
-			const id = entityId.split('.')[1];
-			const config = {
-				icon: inputs.card_type.icon,
-				options: ['elevated', 'filled', 'outlined', 'transparent'],
-			};
-			await createInput(this.hass, 'select', {
-				name: id,
-				...config,
-			});
-			await updateInput(this.hass, 'select', id, {
-				name: `${inputs.card_type.name}${name}`,
-				...config,
-			});
-			await this.hass.callService('input_select', 'select_option', {
-				option: inputs.card_type.default,
-				entity_id: entityId,
-			});
+		for (const field in inputs) {
+			const entityId = getEntityId(field as InputField, this.dataId);
+			if (!this.hass.states[entityId]) {
+				const id = entityId.split('.')[1];
+				await createInput(
+					this.hass,
+					inputs[field as InputField].domain,
+					{
+						name: id,
+						...inputs[field as InputField].config,
+					},
+				);
+				await updateInput(
+					this.hass,
+					inputs[field as InputField].domain,
+					id,
+					{
+						name: `${THEME_NAME} ${inputs[field as InputField].name}${name}`,
+						...inputs[field as InputField].config,
+					},
+				);
+				const domain = inputs[field as InputField].domain;
+				let service = services[domain];
+				const data: Record<string, any> = {
+					entity_id: entityId,
+				};
+				switch (domain) {
+					case 'input_text':
+					case 'input_number':
+						data.value = inputs[field as InputField].default;
+						break;
+					case 'input_select':
+						data.option = inputs[field as InputField].default;
+						break;
+					case 'input_boolean':
+						service = 'turn_on';
+						break;
+					default:
+						break;
+				}
+				await this.hass.callService(domain, service, data);
+			}
 		}
 
 		let message = 'Global input entities created';
@@ -317,9 +184,9 @@ export class MaterialYouConfigCard extends LitElement {
 		) as InputField;
 		let value = e.detail.value;
 
-		let [domain, service] = inputs[field].action.split('.');
+		const service = services[inputs[field].domain];
 		let data: Record<string, any> = {
-			entity_id: `${inputs[field].input}${this.dataId ? `_${this.dataId}` : ''}`,
+			entity_id: getEntityId(field, this.dataId),
 		};
 		switch (field) {
 			case 'base_color':
@@ -334,14 +201,11 @@ export class MaterialYouConfigCard extends LitElement {
 				data.option = value || inputs[field].default;
 				break;
 			case 'styles':
-				value ??= true;
-				service = `turn_${value ? 'on' : 'off'}`;
-				break;
 			default:
 				break;
 		}
 
-		await this.hass.callService(domain, service, data);
+		await this.hass.callService(inputs[field].domain, service, data);
 		this.requestUpdate();
 	}
 
@@ -354,14 +218,14 @@ export class MaterialYouConfigCard extends LitElement {
 		// https://github.com/home-assistant/frontend/tree/dev/src/components/ha-selector
 		// https://github.com/home-assistant/frontend/blob/dev/src/data/selector.ts
 
-		const entityId = `${inputs[field].input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const config = this.hass.states[entityId] ?? {};
+		const entityId = getEntityId(field, this.dataId);
+		const state = this.hass.states[entityId]?.state;
 		let value: string | number | number[] | boolean;
 		switch (field) {
 			case 'base_color':
 				let argb: number;
 				try {
-					argb = argbFromHex(config.state);
+					argb = argbFromHex(state);
 				} catch (e) {
 					console.error(e);
 					argb = argbFromHex(inputs.base_color.default as string);
@@ -373,7 +237,7 @@ export class MaterialYouConfigCard extends LitElement {
 				];
 				break;
 			case 'styles':
-				value = config.state == 'on';
+				value = state == 'on';
 				break;
 			case 'image_url':
 			case 'scheme':
@@ -382,7 +246,7 @@ export class MaterialYouConfigCard extends LitElement {
 			case 'card_type':
 			case 'contrast':
 			default:
-				value = config.state as string | number;
+				value = state as string | number;
 				if (!value) {
 					value = inputs[field].default;
 				}
@@ -433,9 +297,8 @@ export class MaterialYouConfigCard extends LitElement {
 			'field',
 		) as InputField;
 
-		const [domain, service] = inputs[field].action.split('.');
 		let data: Record<string, any> = {
-			entity_id: `${inputs[field].input}${this.dataId ? `_${this.dataId}` : ''}`,
+			entity_id: getEntityId(field, this.dataId),
 		};
 		switch (field) {
 			case 'base_color':
@@ -454,11 +317,15 @@ export class MaterialYouConfigCard extends LitElement {
 				break;
 		}
 
-		await this.hass.callService(domain, service, data);
+		await this.hass.callService(
+			inputs[field].domain,
+			services[inputs[field].domain],
+			data,
+		);
 		this.requestUpdate();
 	}
 
-	buildClearButton(field: InputField, id?: string) {
+	buildClearButton(field: InputField) {
 		return html`
 			<div class="clear button">
 				<ha-icon
@@ -477,7 +344,7 @@ export class MaterialYouConfigCard extends LitElement {
 			'field',
 		) as InputField;
 
-		const entityId = `${inputs[field].input}${this.dataId ? `_${this.dataId}` : ''}`;
+		const entityId = getEntityId(field, this.dataId);
 		const event = new Event('hass-more-info', {
 			bubbles: true,
 			cancelable: true,
@@ -488,9 +355,8 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	buildMoreInfoButton(field: InputField) {
-		const entityId = `${inputs[field].input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const icon =
-			this.hass.states[entityId]?.attributes.icon || inputs[field].icon;
+		const entityId = getEntityId(field, this.dataId);
+		const icon = this.hass.states[entityId]?.attributes.icon;
 
 		return html`
 			<div class="more-info button">
@@ -506,8 +372,9 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	buildBaseColorRow() {
-		const input = `${inputs.base_color.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'base_color';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
 		let timeout: ReturnType<typeof setTimeout>;
 		const handleChange = (e: Event) => {
@@ -521,10 +388,10 @@ export class MaterialYouConfigCard extends LitElement {
 			}, 100);
 		};
 
-		return this.hass.states[input]
+		return this.hass.states[entityId]
 			? html`<div class="column">
 					<disk-color-picker
-						field="base_color"
+						field="${field}"
 						value="${value}"
 						@change=${handleChange}
 						@keyup=${handleChange}
@@ -532,14 +399,14 @@ export class MaterialYouConfigCard extends LitElement {
 					></disk-color-picker>
 					<div class="subrow">
 						<div class="row">
-							${this.buildMoreInfoButton('base_color')}
-							<div class="label">Base Color</div>
+							${this.buildMoreInfoButton(field)}
+							<div class="label">${inputs[field].name}</div>
 						</div>
 						<div class="row">
 							<div class="label secondary">
-								${value || inputs.base_color.default}
+								${value || inputs[field].default}
 							</div>
-							${this.buildClearButton('base_color')}
+							${this.buildClearButton(field)}
 						</div>
 					</div>
 				</div>`
@@ -547,14 +414,15 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	buildImageUrlRow() {
-		const input = `${inputs.image_url.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'image_url';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('image_url')}
+		return this.hass.states[entityId]
+			? html`${this.buildMoreInfoButton(field)}
 				${this.buildSelector(
-					'Image URL',
-					'image_url',
+					inputs.image_url.name,
+					field,
 					{
 						text: {},
 					},
@@ -564,13 +432,14 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	buildSchemeRow() {
-		const input = `${inputs.image_url.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'scheme';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('scheme')}${this.buildSelector(
-					'Scheme Name',
-					'scheme',
+		return this.hass.states[entityId]
+			? html`${this.buildMoreInfoButton(field)}${this.buildSelector(
+					inputs[field].name,
+					field,
 					{
 						select: {
 							mode: 'dropdown',
@@ -583,19 +452,21 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	buildContrastRow() {
-		const input = `${inputs.image_url.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'contrast';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('contrast')}${this.buildSelector(
-					'Contrast Level',
-					'contrast',
+		return this.hass.states[entityId]
+			? html`${this.buildMoreInfoButton(field)}${this.buildSelector(
+					inputs[field].name,
+					field,
 					{
 						number: {
 							min: -1,
 							max: 1,
 							step:
-								this.hass.states[input].attributes.step ?? 0.1,
+								this.hass.states[entityId].attributes.step ??
+								0.1,
 							mode: 'slider',
 							slider_ticks: true,
 						},
@@ -606,14 +477,15 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	buildSpecRow() {
-		const input = `${inputs.image_url.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'spec';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('spec')}
+		return this.hass.states[entityId]
+			? html`${this.buildMoreInfoButton(field)}
 				${this.buildSelector(
-					'Specification Version',
-					'spec',
+					inputs[field].name,
+					field,
 					{
 						select: {
 							mode: 'box',
@@ -621,19 +493,20 @@ export class MaterialYouConfigCard extends LitElement {
 						},
 					},
 					value,
-				)}${this.buildClearButton('spec')}`
+				)}${this.buildClearButton(field)}`
 			: '';
 	}
 
 	buildPlatformRow() {
-		const input = `${inputs.image_url.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'platform';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('platform')}
+		return this.hass.states[entityId]
+			? html`${this.buildMoreInfoButton(field)}
 				${this.buildSelector(
-					'Platform',
-					'platform',
+					inputs[field].name,
+					field,
 					{
 						select: {
 							mode: 'box',
@@ -644,20 +517,21 @@ export class MaterialYouConfigCard extends LitElement {
 						},
 					},
 					value,
-				)}${this.buildClearButton('platform')}`
+				)}${this.buildClearButton(field)}`
 			: '';
 	}
 
 	buildStylesRow() {
-		const input = `${inputs.image_url.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'styles';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[input]
+		return this.hass.states[entityId]
 			? html`
-					${this.buildMoreInfoButton('styles')}
+					${this.buildMoreInfoButton(field)}
 					${this.buildSelector(
-						'Style Upgrades',
-						'styles',
+						inputs[field].name,
+						field,
 						{
 							boolean: {},
 						},
@@ -668,14 +542,15 @@ export class MaterialYouConfigCard extends LitElement {
 	}
 
 	buildCardTypeRow() {
-		const input = `${inputs.image_url.input}${this.dataId ? `_${this.dataId}` : ''}`;
-		const value = this.hass.states[input]?.state;
+		const field = 'card_type';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[input]
-			? html`${this.buildMoreInfoButton('card_type')}
+		return this.hass.states[entityId]
+			? html`${this.buildMoreInfoButton(field)}
 				${this.buildSelector(
-					'Card Type',
-					'card_type',
+					inputs[field].name,
+					field,
 					{
 						select: {
 							mode: 'dropdown',
@@ -757,10 +632,10 @@ export class MaterialYouConfigCard extends LitElement {
 					platform: this.buildPlatformRow(),
 				};
 
+				// Platform field is not available for 2021 spec
 				if (
-					this.hass.states[
-						`${inputs.spec.input}${this.dataId ? `_${this.dataId}` : ''}`
-					]?.state != '2025'
+					this.hass.states[getEntityId('spec', this.dataId)]?.state !=
+					'2025'
 				) {
 					delete rows.platform;
 				}
@@ -839,14 +714,18 @@ export class MaterialYouConfigCard extends LitElement {
 				// User inputs
 				const id = this.dataId ? `_${this.dataId}` : '';
 				const colorThemeInputs = [
-					`${inputs.base_color.input}${id}`,
-					`${inputs.scheme.input}${id}`,
-					`${inputs.contrast.input}${id}`,
-					`${inputs.spec.input}${id}`,
-					`${inputs.platform.input}${id}`,
+					`${inputs.base_color.domain}.${THEME}_base_color${id}`,
+					`${inputs.scheme.domain}.${THEME}_scheme${id}`,
+					`${inputs.contrast.domain}.${THEME}_contrast${id}`,
+					`${inputs.spec.domain}.${THEME}_spec${id}`,
+					`${inputs.platform.domain}.${THEME}_platform${id}`,
 				];
-				const imageUrlInputs = [`${inputs.image_url.input}${id}`];
-				const styleInputs = [`${inputs.card_type.input}${id}`];
+				const imageUrlInputs = [
+					`${inputs.image_url.domain}.${THEME}_image_url${id}`,
+				];
+				const styleInputs = [
+					`${inputs.card_type.domain}.${THEME}_style${id}`,
+				];
 
 				if (this.hass.user?.is_admin) {
 					this.hass.connection.subscribeMessage(
@@ -1141,6 +1020,7 @@ export class MaterialYouConfigCard extends LitElement {
 			.more-info {
 				height: var(--button-size);
 				width: var(--button-size);
+				min-width: var(--button-size);
 				margin: 8px 12px;
 				--color: var(--state-icon-color);
 				--button-size: 40px;

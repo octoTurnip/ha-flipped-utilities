@@ -2,12 +2,12 @@ import packageInfo from '../package.json';
 import { MaterialYouConfigCard } from './classes/material-you-config-card';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
-import { inputs, THEME_NAME } from './models/constants/inputs';
+import { THEME_NAME } from './models/constants/inputs';
 import { RenderTemplateError, RenderTemplateResult } from './models/interfaces';
 import { getAsync, querySelectorAsync } from './utils/async';
 import { setCardType, setCardTypeAll } from './utils/cards';
 import { setTheme, setThemeAll } from './utils/colors';
-import { getHomeAssistantMainAsync } from './utils/common';
+import { getEntityId, getHomeAssistantMainAsync } from './utils/common';
 import { setBaseColorFromImage } from './utils/image';
 import { debugToast, mdLog } from './utils/logging';
 import { setStyles } from './utils/styles';
@@ -91,37 +91,37 @@ async function main() {
 		if (hass.connection.connected && userId) {
 			// User inputs
 			const colorThemeInputs = [
-				inputs.base_color.input,
-				inputs.scheme.input,
-				inputs.contrast.input,
-				inputs.spec.input,
-				inputs.platform.input,
-				`${inputs.base_color.input}_${userId}`,
-				`${inputs.scheme.input}_${userId}`,
-				`${inputs.contrast.input}_${userId}`,
-				`${inputs.spec.input}_${userId}`,
-				`${inputs.platform.input}_${userId}`,
+				getEntityId('base_color'),
+				getEntityId('scheme'),
+				getEntityId('contrast'),
+				getEntityId('spec'),
+				getEntityId('platform'),
+				getEntityId('base_color', userId),
+				getEntityId('scheme', userId),
+				getEntityId('contrast', userId),
+				getEntityId('spec', userId),
+				getEntityId('platform', userId),
 			];
 			const imageUrlInputs = [
-				inputs.image_url.input,
-				`${inputs.image_url.input}_${userId}`,
+				getEntityId('image_url'),
+				getEntityId('image_url', userId),
 			];
 			const styleInputs = [
-				inputs.card_type.input,
-				`${inputs.card_type.input}_${userId}`,
+				getEntityId('card_type'),
+				getEntityId('card_type', userId),
 			];
 			if (deviceId) {
 				colorThemeInputs.push(
 					...[
-						`${inputs.base_color.input}_${deviceId}`,
-						`${inputs.scheme.input}_${deviceId}`,
-						`${inputs.contrast.input}_${deviceId}`,
-						`${inputs.spec.input}_${deviceId}`,
-						`${inputs.platform.input}_${deviceId}`,
+						getEntityId('base_color', deviceId),
+						getEntityId('scheme', deviceId),
+						getEntityId('contrast', deviceId),
+						getEntityId('spec', deviceId),
+						getEntityId('platform', deviceId),
 					],
 				);
-				imageUrlInputs.push(`${inputs.image_url.input}_${deviceId}`);
-				styleInputs.push(`${inputs.card_type.input}_${deviceId}`);
+				imageUrlInputs.push(getEntityId('image_url', deviceId));
+				styleInputs.push(getEntityId('card_type', deviceId));
 			}
 
 			if (hass.user?.is_admin) {

@@ -1,9 +1,14 @@
 import { html } from 'lit';
 import { schemes } from '../models/constants/colors';
-import { inputs } from '../models/constants/inputs';
+import { inputs, THEME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { InputField } from '../models/interfaces/Panel';
 import { IScheme } from '../models/interfaces/Scheme';
 import { getAsync, querySelectorAsync } from './async';
+
+export function getEntityId(field: InputField, id?: string): string {
+	return `${inputs[field as InputField].domain}.${THEME}_${field}${id ? `_${id}` : ''}`;
+}
 
 /**
  * Get scheme class and name using user input name

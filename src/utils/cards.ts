@@ -1,7 +1,8 @@
 import { cardTypes } from '../css';
-import { inputs, THEME_NAME } from '../models/constants/inputs';
+import { THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 import { getTargets } from './colors';
+import { getEntityId } from './common';
 import { debugToast, mdLog } from './logging';
 import { loadStyles } from './styles';
 
@@ -40,10 +41,7 @@ export async function setCardType(
 					continue;
 				}
 
-				value =
-					hass.states[
-						`${inputs.card_type.input}${id ? `_${id}` : ''}`
-					]?.state;
+				value = hass.states[getEntityId('card_type', id)]?.state;
 
 				if (value in cardTypes) {
 					break;

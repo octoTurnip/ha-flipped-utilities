@@ -3,8 +3,9 @@ import {
 	QuantizerCelebi,
 	Score,
 } from '@material/material-color-utilities';
-import { inputs, THEME_NAME } from '../models/constants/inputs';
+import { THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { getEntityId } from './common';
 import { debugToast } from './logging';
 
 /**
@@ -51,11 +52,8 @@ export async function setBaseColorFromImage(id?: string) {
 				if (id == undefined) {
 					continue;
 				}
-				output = `${inputs.base_color.input}${id ? `_${id}` : ''}`;
-				url =
-					hass.states[
-						`${inputs.image_url.input}${id ? `_${id}` : ''}`
-					]?.state?.trim();
+				output = getEntityId('base_color', id);
+				url = hass.states[getEntityId('image_url', id)]?.state?.trim();
 				if (url) {
 					break;
 				}

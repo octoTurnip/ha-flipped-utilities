@@ -6,7 +6,11 @@ export interface IUserPanelSettings {
 	stateObj?: HassEntity;
 }
 
-export type InputType = 'text' | 'select' | 'number' | 'boolean';
+export type InputDomain =
+	| 'input_text'
+	| 'input_select'
+	| 'input_number'
+	| 'input_boolean';
 
 export type InputField =
 	| 'base_color'
@@ -16,13 +20,12 @@ export type InputField =
 	| 'spec'
 	| 'platform'
 	| 'styles'
-	| 'card_type';
+	| 'card_type'
+	| 'navbar';
 
 export interface InputInfo {
-	type: InputType;
+	domain: InputDomain;
 	default: string | number;
 	name: string;
-	input: string;
-	action: string;
-	icon: string;
+	config: Record<string, any>;
 }
