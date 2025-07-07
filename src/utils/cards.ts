@@ -6,6 +6,8 @@ import { getEntityId } from './common';
 import { debugToast, mdLog } from './logging';
 import { loadStyles } from './styles';
 
+const styleId = 'material-you-card-type';
+
 /** Change ha-card styles to match the selected card type */
 export async function setCardType(
 	target: HTMLElement | ShadowRoot,
@@ -17,11 +19,11 @@ export async function setCardType(
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
 			let hasStyleTag = true;
-			let style = target.querySelector('#material-you-card-type');
+			let style = target.querySelector(`#${styleId}`);
 			if (!style) {
 				hasStyleTag = false;
 				style = document.createElement('style');
-				style.id = 'material-you-card-type';
+				style.id = styleId;
 			}
 
 			// Get value
@@ -42,7 +44,6 @@ export async function setCardType(
 				}
 
 				value = hass.states[getEntityId('card_type', id)]?.state;
-
 				if (value in cardTypes) {
 					break;
 				}
@@ -99,7 +100,7 @@ export async function setCardTypeAll() {
 export async function unsetCardType() {
 	const targets = await getTargets();
 	for (const target of targets) {
-		const style = target.querySelector('#material-you-card-type');
+		const style = target.querySelector(`#${styleId}`);
 		if (style) {
 			document.removeChild(style);
 		}

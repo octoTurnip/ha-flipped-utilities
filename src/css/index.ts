@@ -79,7 +79,7 @@ export const elements: Record<string, string> = {
 };
 
 /**
- * Card type styles to set on user input
+ * Card type variants
  */
 export const cardTypes: Record<string, string> = {
 	elevated: haCardElevated,
@@ -89,6 +89,6 @@ export const cardTypes: Record<string, string> = {
 };
 
 /**
- * Hide the navigation bar if disabled
+ * Hide the navigation bar
  */
 export const hideNavigationBar = huiRootHideSlTabGroup;

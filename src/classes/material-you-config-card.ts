@@ -234,6 +234,7 @@ export class MaterialYouConfigCard extends LitElement {
 				];
 				break;
 			case 'styles':
+			case 'navbar':
 				value = state == 'on';
 				break;
 			case 'image_url':
@@ -518,17 +519,15 @@ export class MaterialYouConfigCard extends LitElement {
 		const value = this.hass.states[entityId]?.state;
 
 		return this.hass.states[entityId]
-			? html`
-					${this.buildMoreInfoButton(field)}
-					${this.buildSelector(
-						inputs[field].name,
-						field,
-						{
-							boolean: {},
-						},
-						value == 'on',
-					)}
-				`
+			? html`${this.buildMoreInfoButton(field)}
+				${this.buildSelector(
+					inputs[field].name,
+					field,
+					{
+						boolean: {},
+					},
+					value == 'on',
+				)} `
 			: '';
 	}
 
@@ -555,6 +554,24 @@ export class MaterialYouConfigCard extends LitElement {
 					},
 					value,
 				)}`
+			: '';
+	}
+
+	buildShowNavbarRow() {
+		const field = 'navbar';
+		const entityId = getEntityId(field, this.dataId);
+		const value = this.hass.states[entityId]?.state;
+
+		return this.hass.states[entityId]
+			? html`${this.buildMoreInfoButton(field)}
+				${this.buildSelector(
+					inputs[field].name,
+					field,
+					{
+						boolean: {},
+					},
+					value == 'on',
+				)} `
 			: '';
 	}
 
@@ -610,6 +627,7 @@ export class MaterialYouConfigCard extends LitElement {
 				rows = {
 					styles: this.buildStylesRow(),
 					card_type: this.buildCardTypeRow(),
+					navbar: this.buildShowNavbarRow(),
 				};
 				break;
 			case 0:

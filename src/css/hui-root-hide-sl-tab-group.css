@@ -1,4 +1,4 @@
-/* Hide navigation bar when not in edit mode */
-:not(.edit-mode) > sl-tab-group {
-	display: none;
+/* Hide navigation bar */
+html {
+	--navbar-display: none;
 }

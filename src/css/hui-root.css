@@ -125,6 +125,11 @@ sl-tab-group:dir(rtl) {
 	pointer-events: all;
 }
 
+/* Option to hide navigation bar when not in edit mode */
+:not(.edit-tab-bar) > sl-tab-group {
+	display: var(--navbar-display, initial);
+}
+
 /* Make tabs full width*/
 sl-tab-group::part(tabs) {
 	justify-content: space-evenly;

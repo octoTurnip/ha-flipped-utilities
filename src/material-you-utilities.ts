@@ -10,6 +10,7 @@ import { setTheme, setThemeAll } from './utils/colors';
 import { getEntityId, getHomeAssistantMainAsync } from './utils/common';
 import { setBaseColorFromImage } from './utils/image';
 import { debugToast, mdLog } from './utils/logging';
+import { hideNavbar } from './utils/navbar';
 import { setStyles } from './utils/styles';
 
 async function main() {
@@ -79,6 +80,7 @@ async function main() {
 			await setBaseColorFromImage();
 			await setTheme(html);
 			await setCardType(html);
+			hideNavbar();
 		}
 	};
 	setOnFirstLoad(100);
@@ -89,6 +91,7 @@ async function main() {
 		const deviceId = window.browser_mod?.browserID?.replace(/-/g, '_');
 
 		if (hass.connection.connected && userId) {
+			// TODO - refactor all of this to be way less repetitive
 			// User inputs
 			const colorThemeInputs = [
 				getEntityId('base_color'),
@@ -106,9 +109,13 @@ async function main() {
 				getEntityId('image_url'),
 				getEntityId('image_url', userId),
 			];
-			const styleInputs = [
+			const cardTypeInputs = [
 				getEntityId('card_type'),
 				getEntityId('card_type', userId),
+			];
+			const hideNavbarInputs = [
+				getEntityId('navbar'),
+				getEntityId('navbar', userId),
 			];
 			if (deviceId) {
 				colorThemeInputs.push(
@@ -121,7 +128,8 @@ async function main() {
 					],
 				);
 				imageUrlInputs.push(getEntityId('image_url', deviceId));
-				styleInputs.push(getEntityId('card_type', deviceId));
+				cardTypeInputs.push(getEntityId('card_type', deviceId));
+				hideNavbarInputs.push(getEntityId('navbar', deviceId));
 			}
 
 			if (hass.user?.is_admin) {
@@ -154,7 +162,18 @@ async function main() {
 						type: 'subscribe_trigger',
 						trigger: {
 							platform: 'state',
-							entity_id: styleInputs,
+							entity_id: cardTypeInputs,
+						},
+					},
+					{ resubscribe: true },
+				);
+				hass.connection.subscribeMessage(
+					() => hideNavbar(),
+					{
+						type: 'subscribe_trigger',
+						trigger: {
+							platform: 'state',
+							entity_id: hideNavbarInputs,
 						},
 					},
 					{ resubscribe: true },
@@ -208,7 +227,7 @@ async function main() {
 						},
 					);
 				}
-				for (const entityId of styleInputs) {
+				for (const entityId of cardTypeInputs) {
 					hass.connection.subscribeMessage(
 						(msg: RenderTemplateResult | RenderTemplateError) => {
 							if ('error' in msg) {
@@ -216,6 +235,23 @@ async function main() {
 								debugToast(msg.error);
 							}
 							setCardTypeAll();
+						},
+						{
+							type: 'render_template',
+							template: `{{ states("${entityId}") }}`,
+							entity_ids: entityId,
+							report_errors: true,
+						},
+					);
+				}
+				for (const entityId of hideNavbarInputs) {
+					hass.connection.subscribeMessage(
+						(msg: RenderTemplateResult | RenderTemplateError) => {
+							if ('error' in msg) {
+								console.error(msg.error);
+								debugToast(msg.error);
+							}
+							hideNavbar();
 						},
 						{
 							type: 'render_template',
