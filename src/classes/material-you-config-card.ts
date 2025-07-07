@@ -282,6 +282,7 @@ export class MaterialYouConfigCard extends LitElement {
 				data.option = inputs[field].default;
 				break;
 			case 'input_boolean':
+				service = `turn_${inputs[field].default}`;
 			default:
 				break;
 		}
@@ -919,7 +920,7 @@ export class MaterialYouConfigCard extends LitElement {
 			.row {
 				display: flex;
 				align-items: flex-end;
-				margin-bottom: 16px;
+				margin-bottom: 20px;
 			}
 			.row:empty {
 				display: none;
@@ -1003,7 +1004,7 @@ export class MaterialYouConfigCard extends LitElement {
 				height: var(--button-size);
 				width: var(--button-size);
 				min-width: var(--button-size);
-				margin: 8px 12px;
+				margin: 8px 4px;
 				--color: var(--state-icon-color);
 				--button-size: 40px;
 				--mdc-icon-size: 24px;
