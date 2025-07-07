@@ -354,8 +354,8 @@ export class MaterialYouPanel extends LitElement {
 			}
 
 			sl-tab-group {
-				text-transform: capitalize;
 				width: var(--width);
+				text-transform: capitalize;
 			}
 			sl-tab {
 				flex: 1;

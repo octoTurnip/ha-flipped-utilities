@@ -927,8 +927,8 @@ export class MaterialYouConfigCard extends LitElement {
 			}
 
 			sl-tab-group {
+				width: 100%;
 				text-transform: capitalize;
-				width: var(--width);
 				position: relative;
 				z-index: 1;
 			}
