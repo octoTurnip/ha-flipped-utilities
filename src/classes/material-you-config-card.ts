@@ -184,28 +184,25 @@ export class MaterialYouConfigCard extends LitElement {
 		) as InputField;
 		let value = e.detail.value;
 
-		const service = services[inputs[field].domain];
+		const domain = inputs[field].domain;
+		let service = services[domain];
 		let data: Record<string, any> = {
 			entity_id: getEntityId(field, this.dataId),
 		};
-		switch (field) {
-			case 'base_color':
-			case 'image_url':
-			case 'contrast':
+		switch (domain) {
+			case 'input_text':
+			case 'input_number':
 				data.value = value || inputs[field].default;
 				break;
-			case 'scheme':
-			case 'spec':
-			case 'platform':
-			case 'card_type':
+			case 'input_select':
 				data.option = value || inputs[field].default;
 				break;
-			case 'styles':
+			case 'input_boolean':
 			default:
 				break;
 		}
 
-		await this.hass.callService(inputs[field].domain, service, data);
+		await this.hass.callService(domain, service, data);
 		this.requestUpdate();
 	}
 
@@ -297,31 +294,25 @@ export class MaterialYouConfigCard extends LitElement {
 			'field',
 		) as InputField;
 
+		const domain = inputs[field].domain;
+		let service = services[domain];
 		let data: Record<string, any> = {
 			entity_id: getEntityId(field, this.dataId),
 		};
-		switch (field) {
-			case 'base_color':
-			case 'image_url':
-			case 'contrast':
-			case 'styles':
+		switch (domain) {
+			case 'input_text':
+			case 'input_number':
 				data.value = inputs[field].default;
 				break;
-			case 'scheme':
-			case 'spec':
-			case 'platform':
-			case 'card_type':
+			case 'input_select':
 				data.option = inputs[field].default;
 				break;
+			case 'input_boolean':
 			default:
 				break;
 		}
 
-		await this.hass.callService(
-			inputs[field].domain,
-			services[inputs[field].domain],
-			data,
-		);
+		await this.hass.callService(domain, service, data);
 		this.requestUpdate();
 	}
 
