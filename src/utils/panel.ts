@@ -1,5 +1,5 @@
 import { HomeAssistant, IConfirmation } from '../models/interfaces';
-import { InputDomain } from '../models/interfaces/Panel';
+import { InputDomain } from '../models/interfaces/Input';
 
 /**
  * Create an input entity

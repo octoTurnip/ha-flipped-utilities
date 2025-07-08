@@ -5,6 +5,7 @@ import {
 } from '@material/material-color-utilities';
 import { THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { IHandlerArguments } from '../models/interfaces/Input';
 import { getEntityId } from './common';
 import { debugToast } from './logging';
 
@@ -29,29 +30,26 @@ function argbFromRgba(red: number, green: number, blue: number, alpha: number) {
 /**
  * Generate and set a theme base color from an image
  */
-export async function setBaseColorFromImage(id?: string) {
+export async function setBaseColorFromImage(args: IHandlerArguments) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
 			// Retrieve image URL
-			let ids: (string | undefined)[];
-			if (id) {
-				ids = [id];
-			} else {
-				ids = [
-					window.browser_mod?.browserID?.replace(/-/g, '_'),
-					hass.user?.id,
-					'',
-				];
-			}
+			const ids = [
+				args.id,
+				window.browser_mod?.browserID?.replace(/-/g, '_'),
+				hass.user?.id,
+				'',
+			];
 			let url = '';
 			let output = '';
 			for (const id of ids) {
 				if (id == undefined) {
 					continue;
 				}
+
 				output = getEntityId('base_color', id);
 				url = hass.states[getEntityId('image_url', id)]?.state?.trim();
 				if (url) {

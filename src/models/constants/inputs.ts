@@ -1,15 +1,21 @@
-import { InputDomain, InputField, InputInfo } from '../interfaces/Panel';
+import { setCardType } from '../../utils/cards';
+import { setTheme } from '../../utils/colors';
+import { setBaseColorFromImage } from '../../utils/image';
+import { hideNavbar } from '../../utils/navbar';
+import { IInputInfo, InputDomain, InputField } from '../interfaces/Input';
 import { schemes } from './colors';
 
 export const THEME_NAME = 'Material You';
-export const THEME = 'material_you';
+export const THEME = THEME_NAME.toLowerCase().replace(/ /g, '_');
 
-export const INPUT_TEXT_PREFIX = 'input_text.${THEME}';
-export const INPUT_SELECT_PREFIX = 'input_select.${THEME}';
-export const INPUT_NUMBER_PREFIX = 'input_number.${THEME}';
-export const INPUT_BOOLEAN_PREFIX = 'input_boolean.${THEME}';
+export const services: Record<InputDomain, string> = {
+	input_text: 'set_value',
+	input_number: 'set_value',
+	input_select: 'select_option',
+	input_boolean: 'toggle',
+};
 
-export const inputs: Record<InputField, InputInfo> = {
+export const inputs: Record<InputField, IInputInfo> = {
 	// Color options
 	base_color: {
 		domain: 'input_text',
@@ -20,6 +26,7 @@ export const inputs: Record<InputField, InputInfo> = {
 			min: 3,
 			max: 9,
 		},
+		handler: setTheme,
 	},
 	image_url: {
 		domain: 'input_text',
@@ -30,6 +37,7 @@ export const inputs: Record<InputField, InputInfo> = {
 			min: 0,
 			max: 255,
 		},
+		handler: setBaseColorFromImage,
 	},
 	scheme: {
 		domain: 'input_select',
@@ -39,6 +47,7 @@ export const inputs: Record<InputField, InputInfo> = {
 			icon: 'mdi:palette-advanced',
 			options: [...schemes.map((scheme) => scheme.value)],
 		},
+		handler: setTheme,
 	},
 	contrast: {
 		domain: 'input_number',
@@ -50,6 +59,7 @@ export const inputs: Record<InputField, InputInfo> = {
 			max: 1,
 			step: 0.1,
 		},
+		handler: setTheme,
 	},
 	spec: {
 		domain: 'input_select',
@@ -59,6 +69,7 @@ export const inputs: Record<InputField, InputInfo> = {
 			icon: 'mdi:calendar-multiple',
 			options: ['2021', '2025'],
 		},
+		handler: setTheme,
 	},
 	platform: {
 		domain: 'input_select',
@@ -68,6 +79,7 @@ export const inputs: Record<InputField, InputInfo> = {
 			icon: 'mdi:devices',
 			options: ['phone', 'watch'],
 		},
+		handler: setTheme,
 	},
 
 	// Style options
@@ -78,6 +90,7 @@ export const inputs: Record<InputField, InputInfo> = {
 		config: {
 			icon: 'mdi:material-design',
 		},
+		handler: async (_args) => {},
 	},
 	card_type: {
 		domain: 'input_select',
@@ -87,6 +100,7 @@ export const inputs: Record<InputField, InputInfo> = {
 			icon: 'mdi:card',
 			options: ['elevated', 'filled', 'outlined', 'transparent'],
 		},
+		handler: setCardType,
 	},
 	navbar: {
 		domain: 'input_boolean',
@@ -95,12 +109,6 @@ export const inputs: Record<InputField, InputInfo> = {
 		config: {
 			icon: 'mdi:navigation',
 		},
+		handler: hideNavbar,
 	},
-};
-
-export const services: Record<InputDomain, string> = {
-	input_text: 'set_value',
-	input_number: 'set_value',
-	input_select: 'select_option',
-	input_boolean: 'toggle',
 };

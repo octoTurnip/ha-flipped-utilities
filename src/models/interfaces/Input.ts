@@ -1,11 +1,3 @@
-import { HassEntity } from 'home-assistant-js-websocket';
-
-export interface IUserPanelSettings {
-	id: string;
-	settings: Record<InputField, string | number | undefined>;
-	stateObj?: HassEntity;
-}
-
 export type InputDomain =
 	| 'input_text'
 	| 'input_select'
@@ -23,9 +15,22 @@ export type InputField =
 	| 'card_type'
 	| 'navbar';
 
-export interface InputInfo {
+export interface IHandlerArguments {
+	targets?: HTMLElement[];
+	id?: string;
+}
+
+export type Handler = (args: IHandlerArguments) => Promise<void>;
+
+export interface IInputInfo {
 	domain: InputDomain;
 	default: string | number;
 	name: string;
 	config: Record<string, any>;
+	handler: Handler;
+}
+
+export interface ISubscription {
+	inputs: InputField[];
+	handler: Handler;
 }

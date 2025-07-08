@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { schemes } from '../models/constants/colors';
 import { inputs, THEME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
-import { InputField } from '../models/interfaces/Panel';
+import { InputField } from '../models/interfaces/Input';
 import { IScheme } from '../models/interfaces/Scheme';
 import { getAsync, querySelectorAsync } from './async';
 
@@ -36,7 +36,7 @@ export function getToken(color: string): string {
 
 /**
  * Wait for home-assistant-main shadow-root to load, then return home-assistant-main
- * @returns {ShadowRoot} home-assistant-main element
+ * @returns {HassElement} home-assistant-main element
  */
 export async function getHomeAssistantMainAsync(): Promise<HassElement> {
 	const ha = (await querySelectorAsync(

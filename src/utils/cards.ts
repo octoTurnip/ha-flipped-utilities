@@ -1,6 +1,7 @@
 import { cardTypes } from '../css';
 import { THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { IHandlerArguments } from '../models/interfaces/Input';
 import { getTargets } from './colors';
 import { getEntityId } from './common';
 import { debugToast, mdLog } from './logging';
@@ -9,35 +10,21 @@ import { loadStyles } from './styles';
 const styleId = 'material-you-card-type';
 
 /** Change ha-card styles to match the selected card type */
-export async function setCardType(
-	target: HTMLElement | ShadowRoot,
-	id?: string,
-) {
+export async function setCardType(args: IHandlerArguments) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
+	const targets = args.targets ?? (await getTargets());
 
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			let hasStyleTag = true;
-			let style = target.querySelector(`#${styleId}`);
-			if (!style) {
-				hasStyleTag = false;
-				style = document.createElement('style');
-				style.id = styleId;
-			}
-
 			// Get value
 			let value = '';
-			let ids: (string | undefined)[];
-			if (id != undefined) {
-				ids = [id];
-			} else {
-				ids = [
-					window.browser_mod?.browserID?.replace(/-/g, '_'),
-					hass.user?.id,
-					'',
-				];
-			}
+			const ids = [
+				args.id,
+				window.browser_mod?.browserID?.replace(/-/g, '_'),
+				hass.user?.id,
+				'',
+			];
 			for (const id of ids) {
 				if (id == undefined) {
 					continue;
@@ -50,50 +37,55 @@ export async function setCardType(
 			}
 
 			if (!(value in cardTypes)) {
-				if (hasStyleTag) {
-					target.removeChild(style);
-					mdLog(
-						target instanceof ShadowRoot
-							? (target.host as HTMLElement)
-							: target,
-						'Material design card type set to default (elevated).',
-						true,
-					);
+				for (const target0 of targets) {
+					const target = target0.shadowRoot || target0;
+
+					let style = target.querySelector(`#${styleId}`);
+					if (style) {
+						target.removeChild(style);
+						mdLog(
+							target,
+							'Material design card type set to default (elevated).',
+							true,
+						);
+					}
 				}
 				return;
 			}
 
-			style.textContent = loadStyles(cardTypes[value]);
-			if (!hasStyleTag) {
-				target.appendChild(style);
+			for (const target0 of targets) {
+				const target = target0.shadowRoot || target0;
+
+				let hasStyleTag = true;
+				let style = target.querySelector(`#${styleId}`);
+				if (!style) {
+					hasStyleTag = false;
+					style = document.createElement('style');
+					style.id = styleId;
+				}
+
+				style.textContent = loadStyles(cardTypes[value]);
+				if (!hasStyleTag) {
+					target.appendChild(style);
+				}
 			}
 
 			mdLog(
-				target instanceof ShadowRoot
-					? (target.host as HTMLElement)
-					: target,
+				targets[0],
 				`Material design card type set to ${value}.`,
 				true,
 			);
 		} else {
-			if (id == undefined) {
+			if (args.id == undefined) {
 				await unsetCardType();
 			}
 		}
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
-		if (id == undefined) {
+		if (args.id == undefined) {
 			await unsetCardType();
 		}
-	}
-}
-
-/** Call setCardType on all valid available targets */
-export async function setCardTypeAll() {
-	const targets = await getTargets();
-	for (const target of targets) {
-		setCardType(target);
 	}
 }
 

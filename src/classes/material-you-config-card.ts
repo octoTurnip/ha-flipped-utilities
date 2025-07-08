@@ -1,29 +1,21 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { schemes } from '../models/constants/colors';
-import {
-	inputs,
-	services,
-	THEME,
-	THEME_NAME,
-} from '../models/constants/inputs';
-import {
-	HomeAssistant,
-	RenderTemplateError,
-	RenderTemplateResult,
-} from '../models/interfaces';
-import { InputField } from '../models/interfaces/Panel';
+import { inputs, services, THEME_NAME } from '../models/constants/inputs';
+import { HomeAssistant } from '../models/interfaces';
+import { InputField } from '../models/interfaces/Input';
 import { setCardType } from '../utils/cards';
 import { setTheme } from '../utils/colors';
 import { buildAlertBox, getEntityId } from '../utils/common';
 import { setBaseColorFromImage } from '../utils/image';
-import { debugToast, showToast } from '../utils/logging';
+import { showToast } from '../utils/logging';
 import {
 	createInput,
 	deleteInput,
 	handleConfirmation,
 	updateInput,
 } from '../utils/panel';
+import { setupSubscriptions } from '../utils/subscriptions';
 if (!customElements.get('disk-color-picker')) {
 	// HACS install causes this module to be defined twice, this squashes the error
 	require('disk-color-picker');
@@ -38,6 +30,8 @@ export class MaterialYouConfigCard extends LitElement {
 
 	personEntityId?: string;
 	darkMode?: boolean;
+
+	unsubscribers: (() => Promise<void>)[] = [];
 
 	async handleDeleteHelpers(_e: MouseEvent) {
 		if (
@@ -687,155 +681,17 @@ export class MaterialYouConfigCard extends LitElement {
 		applyTheme();
 
 		// Initial color and style setup
-		setBaseColorFromImage(this.dataId ?? '');
-		setTheme(this, this.dataId ?? '');
-		setCardType(this.shadowRoot as ShadowRoot, this.dataId ?? '');
+		setBaseColorFromImage({ id: this.dataId ?? '' });
+		setTheme({ targets: [this], id: this.dataId ?? '' });
+		setCardType({ targets: [this], id: this.dataId ?? '' });
 
 		// Trigger updates on card
-		const setupSubscriptions = async () => {
-			if (this.hass.connection.connected && this.hass.user?.id) {
-				// User inputs
-				const id = this.dataId ? `_${this.dataId}` : '';
-				const colorThemeInputs = [
-					`${inputs.base_color.domain}.${THEME}_base_color${id}`,
-					`${inputs.scheme.domain}.${THEME}_scheme${id}`,
-					`${inputs.contrast.domain}.${THEME}_contrast${id}`,
-					`${inputs.spec.domain}.${THEME}_spec${id}`,
-					`${inputs.platform.domain}.${THEME}_platform${id}`,
-				];
-				const imageUrlInputs = [
-					`${inputs.image_url.domain}.${THEME}_image_url${id}`,
-				];
-				const styleInputs = [
-					`${inputs.card_type.domain}.${THEME}_style${id}`,
-				];
-
-				if (this.hass.user?.is_admin) {
-					this.hass.connection.subscribeMessage(
-						() => setTheme(this, this.dataId ?? ''),
-						{
-							type: 'subscribe_trigger',
-							trigger: {
-								platform: 'state',
-								entity_id: colorThemeInputs,
-							},
-						},
-						{ resubscribe: true },
-					);
-					this.hass.connection.subscribeMessage(
-						() => setBaseColorFromImage(this.dataId ?? ''),
-						{
-							type: 'subscribe_trigger',
-							trigger: {
-								platform: 'state',
-								entity_id: imageUrlInputs,
-							},
-						},
-						{ resubscribe: true },
-					);
-					this.hass.connection.subscribeMessage(
-						() =>
-							setCardType(
-								this.shadowRoot as ShadowRoot,
-								this.dataId ?? '',
-							),
-						{
-							type: 'subscribe_trigger',
-							trigger: {
-								platform: 'state',
-								entity_id: styleInputs,
-							},
-						},
-						{ resubscribe: true },
-					);
-
-					// Trigger on theme changed event
-					this.hass.connection.subscribeEvents(
-						() => setTheme(this, this.dataId ?? ''),
-						'themes_updated',
-					);
-
-					// Trigger on set theme service call
-					this.hass.connection.subscribeEvents(
-						(e: Record<string, any>) => {
-							if (e?.data?.service == 'set_theme') {
-								setTimeout(
-									() => setTheme(this, this.dataId ?? ''),
-									1000,
-								);
-							}
-						},
-						'call_service',
-					);
-				} else {
-					// Trigger on input change using templates
-					for (const entityId of colorThemeInputs) {
-						this.hass.connection.subscribeMessage(
-							(
-								msg: RenderTemplateResult | RenderTemplateError,
-							) => {
-								if ('error' in msg) {
-									console.error(msg.error);
-									debugToast(msg.error);
-								}
-								setTheme(this, this.dataId ?? '');
-							},
-							{
-								type: 'render_template',
-								template: `{{ states("${entityId}") }}`,
-								entity_ids: entityId,
-								report_errors: true,
-							},
-						);
-					}
-					for (const entityId of imageUrlInputs) {
-						this.hass.connection.subscribeMessage(
-							(
-								msg: RenderTemplateResult | RenderTemplateError,
-							) => {
-								if ('error' in msg) {
-									console.error(msg.error);
-									debugToast(msg.error);
-								}
-								setBaseColorFromImage();
-							},
-							{
-								type: 'render_template',
-								template: `{{ states("${entityId}") }}`,
-								entity_ids: entityId,
-								report_errors: true,
-							},
-						);
-					}
-					for (const entityId of styleInputs) {
-						this.hass.connection.subscribeMessage(
-							(
-								msg: RenderTemplateResult | RenderTemplateError,
-							) => {
-								if ('error' in msg) {
-									console.error(msg.error);
-									debugToast(msg.error);
-								}
-								setCardType(
-									this.shadowRoot as ShadowRoot,
-									this.dataId ?? '',
-								);
-							},
-							{
-								type: 'render_template',
-								template: `{{ states("${entityId}") }}`,
-								entity_ids: entityId,
-								report_errors: true,
-							},
-						);
-					}
-				}
-				return;
-			}
-
-			setTimeout(() => setupSubscriptions(), 100);
-		};
-		setupSubscriptions();
+		setupSubscriptions({
+			targets: [this],
+			id: this.dataId ?? '',
+		}).then((unsubscribers) => {
+			this.unsubscribers = unsubscribers;
+		});
 	}
 
 	updated() {
@@ -871,6 +727,12 @@ export class MaterialYouConfigCard extends LitElement {
 				colorPicker.shadowRoot?.appendChild(style);
 			}
 		}
+	}
+
+	disconnectedCallback() {
+		this.unsubscribers.forEach(async (unsubscriber) => {
+			unsubscriber();
+		});
 	}
 
 	static get styles() {

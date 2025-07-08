@@ -2,7 +2,6 @@ import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import packageInfo from '../../package.json';
 import { HomeAssistant } from '../models/interfaces';
-import { IUserPanelSettings } from '../models/interfaces/Panel';
 import './material-you-config-card';
 
 import { THEME_NAME } from '../models/constants/inputs';
@@ -13,12 +12,6 @@ export class MaterialYouPanel extends LitElement {
 	@property() narrow!: boolean;
 	@property() route!: object;
 	@property() panel!: object;
-
-	globalSettings!: IUserPanelSettings;
-	currentUserSettings!: IUserPanelSettings;
-	otherUserSettings: Record<string, IUserPanelSettings> = {};
-	currentDeviceSettings!: IUserPanelSettings;
-	otherDeviceSettings: Record<string, IUserPanelSettings> = {};
 
 	@state() tabBarIndex: number = 0;
 	tabs = ['you', 'everyone', 'devices'];

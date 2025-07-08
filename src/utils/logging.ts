@@ -1,11 +1,14 @@
-import { INPUT_BOOLEAN_PREFIX } from '../models/constants/inputs';
+import { THEME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
 
 export function mdLog(
-	target: HTMLElement,
+	target: HTMLElement | ShadowRoot,
 	message: string,
 	toast: boolean = false,
 ) {
+	target =
+		target instanceof ShadowRoot ? (target.host as HTMLElement) : target;
+
 	const background =
 		target?.style?.getPropertyValue('--md-sys-color-primary-light') ||
 		'#4c5c92';
@@ -39,7 +42,7 @@ export function showToast(node: Node, message: string) {
 export async function debugToast(message: string) {
 	const ha = document.querySelector('home-assistant') as HassElement;
 	const hass = ha.hass;
-	if (hass.states[`${INPUT_BOOLEAN_PREFIX}_debug_toast`]?.state == 'on') {
+	if (hass.states[`input_boolean.${THEME}_debug_toast`]?.state == 'on') {
 		showToast(ha, message);
 	}
 }

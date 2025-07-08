@@ -1,6 +1,7 @@
 import { hideNavigationBar } from '../css';
 import { THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
+import { IHandlerArguments } from '../models/interfaces/Input';
 import { getEntityId } from './common';
 import { debugToast, mdLog } from './logging';
 import { loadStyles } from './styles';
@@ -8,7 +9,7 @@ import { loadStyles } from './styles';
 const styleId = 'material-you-navbar';
 
 /** Hide the navigation bar */
-export function hideNavbar() {
+export async function hideNavbar(args: IHandlerArguments) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	try {
@@ -17,6 +18,7 @@ export function hideNavbar() {
 			// Get value
 			let value = '';
 			const ids = [
+				args.id,
 				window.browser_mod?.browserID?.replace(/-/g, '_'),
 				hass.user?.id,
 				'',

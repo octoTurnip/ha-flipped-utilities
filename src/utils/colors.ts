@@ -11,7 +11,7 @@ import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/col
 import { colors } from '../models/constants/colors';
 import { inputs, THEME_NAME } from '../models/constants/inputs';
 import { HassElement } from '../models/interfaces';
-import { InputField } from '../models/interfaces/Panel';
+import { IHandlerArguments, InputField } from '../models/interfaces/Input';
 import { querySelectorAsync } from './async';
 import {
 	getEntityId,
@@ -22,8 +22,9 @@ import {
 import { debugToast, mdLog } from './logging';
 
 /* Generate and set theme colors based on user defined inputs */
-export async function setTheme(target: HTMLElement, id?: string) {
+export async function setTheme(args: IHandlerArguments) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
+	const targets = args.targets ?? (await getTargets());
 
 	try {
 		const html = await querySelectorAsync(document, 'html');
@@ -44,16 +45,12 @@ export async function setTheme(target: HTMLElement, id?: string) {
 				spec: '',
 				platform: '',
 			};
-			let ids: (string | undefined)[];
-			if (id != undefined) {
-				ids = [id];
-			} else {
-				ids = [
-					window.browser_mod?.browserID?.replace(/-/g, '_'),
-					hass.user?.id,
-					'',
-				];
-			}
+			const ids = [
+				args.id,
+				window.browser_mod?.browserID?.replace(/-/g, '_'),
+				hass.user?.id,
+				'',
+			];
 			for (const id of ids) {
 				if (id == undefined) {
 					continue;
@@ -105,19 +102,21 @@ export async function setTheme(target: HTMLElement, id?: string) {
 							).getArgb(scheme),
 						);
 						const token = getToken(color);
-						target.style.setProperty(
-							`--md-sys-color-${token}-${mode}`,
-							hex,
-						);
+						for (const target of targets) {
+							target.style.setProperty(
+								`--md-sys-color-${token}-${mode}`,
+								hex,
+							);
+						}
 					}
 				}
 				mdLog(
-					target,
+					targets[0] as HTMLElement,
 					`Material design system colors updated.\nBase Color - ${values.base_color} | Scheme - ${schemeInfo.label} | Contrast Level - ${values.contrast} | Specification Version - ${values.spec} | Platform - ${(values.platform as string)[0].toUpperCase()}${(values.platform as string).slice(1)}`,
 					true,
 				);
 			} else {
-				if (id == undefined) {
+				if (args.id == undefined) {
 					await unsetTheme();
 				}
 			}
@@ -125,7 +124,7 @@ export async function setTheme(target: HTMLElement, id?: string) {
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
-		if (id == undefined) {
+		if (args.id == undefined) {
 			await unsetTheme();
 		}
 	}
@@ -170,12 +169,4 @@ export async function unsetTheme() {
 		}
 	}
 	mdLog(targets[0], 'Material design system colors removed.', true);
-}
-
-/** Call setTheme on all valid available targets */
-export async function setThemeAll() {
-	const targets = await getTargets();
-	for (const target of targets) {
-		setTheme(target);
-	}
 }
