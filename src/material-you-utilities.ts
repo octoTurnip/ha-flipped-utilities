@@ -85,18 +85,19 @@ async function main() {
 	};
 	setOnFirstLoad(100);
 
+	setupSubscriptions({});
+
 	const setupThemeChangeSubscriptions = async () => {
 		const hass = (await getHomeAssistantMainAsync()).hass;
 		const userId = hass.user?.id;
 
 		if (hass.connection.connected && userId) {
+			// Trigger on theme changed event
+			hass.connection.subscribeEvents(
+				() => setTheme({}),
+				'themes_updated',
+			);
 			if (hass.user?.is_admin) {
-				// Trigger on theme changed event
-				hass.connection.subscribeEvents(
-					() => setTheme({}),
-					'themes_updated',
-				);
-
 				// Trigger on set theme service call
 				hass.connection.subscribeEvents((e: Record<string, any>) => {
 					if (e?.data?.service == 'set_theme') {
@@ -108,8 +109,6 @@ async function main() {
 		}
 		setTimeout(() => setupThemeChangeSubscriptions(), 100);
 	};
-
-	setupSubscriptions({});
 	setupThemeChangeSubscriptions();
 }
 
