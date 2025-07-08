@@ -17,7 +17,12 @@ import { debugToast } from './logging';
  * @param {number} alpha
  * @returns {number}
  */
-function argbFromRgba(red: number, green: number, blue: number, alpha: number) {
+function argbFromRgba(
+	red: number,
+	green: number,
+	blue: number,
+	alpha: number,
+): number {
 	return (
 		((alpha << 24) |
 			((red & 255) << 16) |
