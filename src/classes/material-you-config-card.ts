@@ -384,9 +384,7 @@ export class MaterialYouConfigCard extends LitElement {
 			config.min = this.hass.states[entityId]?.attributes?.min ?? -1;
 			config.max = this.hass.states[entityId]?.attributes?.max ?? 1;
 			config.step = this.hass.states[entityId]?.attributes?.step ?? 0.01;
-		}
-
-		if (inputs[field].domain == 'input_boolean') {
+		} else if (inputs[field].domain == 'input_boolean') {
 			value = value == 'on';
 		}
 
