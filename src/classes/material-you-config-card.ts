@@ -333,46 +333,6 @@ export class MaterialYouConfigCard extends LitElement {
 		`;
 	}
 
-	buildBaseColorRow() {
-		const field = 'base_color';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
-
-		let timeout: ReturnType<typeof setTimeout>;
-		const handleChange = (e: Event) => {
-			clearTimeout(timeout);
-			const target = e.target as EventTarget & Record<'value', string>;
-			const value = target.value;
-			timeout = setTimeout(() => {
-				const event = new Event('value-changed');
-				event.detail = { value };
-				target.dispatchEvent(event);
-			}, 100);
-		};
-
-		return html`<div class="column">
-			<disk-color-picker
-				field="${field}"
-				value="${value}"
-				@change=${handleChange}
-				@keyup=${handleChange}
-				@value-changed=${this.handleSelectorChange}
-			></disk-color-picker>
-			<div class="subrow">
-				<div class="row">
-					${this.buildMoreInfoButton(field)}
-					<div class="label">${inputs[field].name}</div>
-				</div>
-				<div class="row">
-					<div class="label secondary">
-						${value || inputs[field].default}
-					</div>
-					${this.buildClearButton(field)}
-				</div>
-			</div>
-		</div>`;
-	}
-
 	buildRow(field: InputField) {
 		const entityId = getEntityId(field, this.dataId);
 
@@ -380,8 +340,43 @@ export class MaterialYouConfigCard extends LitElement {
 			return '';
 		}
 
+		let value: string | number | boolean =
+			this.hass.states[entityId]?.state;
 		if (field == 'base_color') {
-			return this.buildBaseColorRow();
+			let timeout: ReturnType<typeof setTimeout>;
+			const handleChange = (e: Event) => {
+				clearTimeout(timeout);
+				const target = e.target as EventTarget &
+					Record<'value', string>;
+				const value = target.value;
+				timeout = setTimeout(() => {
+					const event = new Event('value-changed');
+					event.detail = { value };
+					target.dispatchEvent(event);
+				}, 100);
+			};
+
+			return html`<div class="column">
+				<disk-color-picker
+					field="${field}"
+					value="${value}"
+					@change=${handleChange}
+					@keyup=${handleChange}
+					@value-changed=${this.handleSelectorChange}
+				></disk-color-picker>
+				<div class="subrow">
+					<div class="row">
+						${this.buildMoreInfoButton(field)}
+						<div class="label">${inputs[field].name}</div>
+					</div>
+					<div class="row">
+						<div class="label secondary">
+							${value || inputs[field].default}
+						</div>
+						${this.buildClearButton(field)}
+					</div>
+				</div>
+			</div>`;
 		}
 
 		let config = inputs[field].card.config;
@@ -391,8 +386,6 @@ export class MaterialYouConfigCard extends LitElement {
 			config.step = this.hass.states[entityId]?.attributes?.step ?? 0.01;
 		}
 
-		let value: string | number | boolean =
-			this.hass.states[entityId]?.state;
 		if (inputs[field].domain == 'input_boolean') {
 			value = value == 'on';
 		}
