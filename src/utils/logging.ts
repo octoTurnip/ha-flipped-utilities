@@ -1,4 +1,4 @@
-import { THEME } from '../models/constants/inputs';
+import { THEME } from '../models/constants/theme';
 import { HassElement } from '../models/interfaces';
 
 export function mdLog(

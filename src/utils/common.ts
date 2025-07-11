@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import { schemes } from '../models/constants/colors';
-import { inputs, THEME } from '../models/constants/inputs';
+import { inputs } from '../models/constants/inputs';
+import { THEME } from '../models/constants/theme';
 import { HassElement } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
 import { IScheme } from '../models/interfaces/Scheme';

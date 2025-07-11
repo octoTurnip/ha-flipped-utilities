@@ -10,7 +10,8 @@ import {
 import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
 import { getEntityIdAndValue } from '.';
 import { colors } from '../../models/constants/colors';
-import { inputs, THEME_NAME } from '../../models/constants/inputs';
+import { inputs } from '../../models/constants/inputs';
+import { THEME_NAME } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments, InputField } from '../../models/interfaces/Input';
 import { querySelectorAsync } from '../async';

@@ -1,6 +1,6 @@
 import { getEntityIdAndValue } from '.';
 import { elements } from '../../css';
-import { THEME_NAME, THEME_TOKEN } from '../../models/constants/inputs';
+import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { querySelectorAsync } from '../async';
 import { getHomeAssistantMainAsync } from '../common';

@@ -1,12 +1,8 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { schemes } from '../models/constants/colors';
-import {
-	inputs,
-	services,
-	THEME_NAME,
-	THEME_TOKEN,
-} from '../models/constants/inputs';
+import { inputs, services } from '../models/constants/inputs';
+import { THEME_NAME, THEME_TOKEN } from '../models/constants/theme';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
 import { buildAlertBox, getEntityId } from '../utils/common';

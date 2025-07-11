@@ -1,6 +1,6 @@
 import { getEntityIdAndValue } from '.';
 import { cardTypes } from '../../css';
-import { THEME_NAME, THEME_TOKEN } from '../../models/constants/inputs';
+import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';

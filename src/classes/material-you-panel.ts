@@ -4,7 +4,7 @@ import packageInfo from '../../package.json';
 import { HomeAssistant } from '../models/interfaces';
 import './material-you-config-card';
 
-import { THEME_NAME } from '../models/constants/inputs';
+import { THEME_NAME } from '../models/constants/theme';
 import { buildAlertBox } from '../utils/common';
 
 export class MaterialYouPanel extends LitElement {

@@ -4,7 +4,7 @@ import {
 	Score,
 } from '@material/material-color-utilities';
 import { getEntityIdAndValue } from '.';
-import { THEME_NAME } from '../../models/constants/inputs';
+import { THEME_NAME } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast } from '../logging';

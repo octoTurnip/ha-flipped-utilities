@@ -2,7 +2,7 @@ import packageInfo from '../package.json';
 import { MaterialYouConfigCard } from './classes/material-you-config-card';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
-import { THEME_NAME, THEME_TOKEN } from './models/constants/inputs';
+import { THEME_NAME, THEME_TOKEN } from './models/constants/theme';
 import { getAsync, querySelectorAsync } from './utils/async';
 import { getHomeAssistantMainAsync } from './utils/common';
 import { setCardType } from './utils/handlers/cards';
