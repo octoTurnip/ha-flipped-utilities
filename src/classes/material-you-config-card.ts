@@ -1,6 +1,5 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { schemes } from '../models/constants/colors';
 import { inputs, services } from '../models/constants/inputs';
 import { THEME_NAME, THEME_TOKEN } from '../models/constants/theme';
 import { HomeAssistant } from '../models/interfaces';
@@ -95,7 +94,7 @@ export class MaterialYouConfigCard extends LitElement {
 					inputs[field as InputField].domain,
 					{
 						name: id,
-						...inputs[field as InputField].config,
+						...inputs[field as InputField].init.config,
 					},
 				);
 				await updateInput(
@@ -104,7 +103,7 @@ export class MaterialYouConfigCard extends LitElement {
 					id,
 					{
 						name: `${THEME_NAME} ${inputs[field as InputField].name}${name}`,
-						...inputs[field as InputField].config,
+						...inputs[field as InputField].init.config,
 					},
 				);
 				const domain = inputs[field as InputField].domain;
@@ -351,199 +350,56 @@ export class MaterialYouConfigCard extends LitElement {
 			}, 100);
 		};
 
-		return this.hass.states[entityId]
-			? html`<div class="column">
-					<disk-color-picker
-						field="${field}"
-						value="${value}"
-						@change=${handleChange}
-						@keyup=${handleChange}
-						@value-changed=${this.handleSelectorChange}
-					></disk-color-picker>
-					<div class="subrow">
-						<div class="row">
-							${this.buildMoreInfoButton(field)}
-							<div class="label">${inputs[field].name}</div>
-						</div>
-						<div class="row">
-							<div class="label secondary">
-								${value || inputs[field].default}
-							</div>
-							${this.buildClearButton(field)}
-						</div>
+		return html`<div class="column">
+			<disk-color-picker
+				field="${field}"
+				value="${value}"
+				@change=${handleChange}
+				@keyup=${handleChange}
+				@value-changed=${this.handleSelectorChange}
+			></disk-color-picker>
+			<div class="subrow">
+				<div class="row">
+					${this.buildMoreInfoButton(field)}
+					<div class="label">${inputs[field].name}</div>
+				</div>
+				<div class="row">
+					<div class="label secondary">
+						${value || inputs[field].default}
 					</div>
-				</div>`
-			: '';
+					${this.buildClearButton(field)}
+				</div>
+			</div>
+		</div>`;
 	}
 
-	buildImageUrlRow() {
-		const field = 'image_url';
+	buildRow(field: InputField) {
 		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
 
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}
-				${this.buildSelector(
-					inputs.image_url.name,
-					field,
-					{
-						text: {},
-					},
-					value,
-				)}`
-			: '';
-	}
+		if (!this.hass.states[entityId]) {
+			return '';
+		}
 
-	buildSchemeRow() {
-		const field = 'scheme';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
+		if (field == 'base_color') {
+			return this.buildBaseColorRow();
+		}
 
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}${this.buildSelector(
-					inputs[field].name,
-					field,
-					{
-						select: {
-							mode: 'dropdown',
-							options: schemes,
-						},
-					},
-					value,
-				)}`
-			: '';
-	}
+		let config = inputs[field].card.config;
+		if (inputs[field].domain == 'input_number') {
+			config.min = this.hass.states[entityId]?.attributes?.min ?? -1;
+			config.max = this.hass.states[entityId]?.attributes?.max ?? 1;
+			config.step = this.hass.states[entityId]?.attributes?.step ?? 0.01;
+		}
 
-	buildContrastRow() {
-		const field = 'contrast';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
+		let value: string | number | boolean =
+			this.hass.states[entityId]?.state;
+		if (inputs[field].domain == 'input_boolean') {
+			value = value == 'on';
+		}
 
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}${this.buildSelector(
-					inputs[field].name,
-					field,
-					{
-						number: {
-							min: -1,
-							max: 1,
-							step:
-								this.hass.states[entityId].attributes.step ??
-								0.1,
-							mode: 'slider',
-							slider_ticks: true,
-						},
-					},
-					value,
-				)}`
-			: '';
-	}
-
-	buildSpecRow() {
-		const field = 'spec';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
-
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}
-				${this.buildSelector(
-					inputs[field].name,
-					field,
-					{
-						select: {
-							mode: 'box',
-							options: ['2021', '2025'],
-						},
-					},
-					value,
-				)}${this.buildClearButton(field)}`
-			: '';
-	}
-
-	buildPlatformRow() {
-		const field = 'platform';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
-
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}
-				${this.buildSelector(
-					inputs[field].name,
-					field,
-					{
-						select: {
-							mode: 'box',
-							options: [
-								{ value: 'phone', label: 'Phone' },
-								{ value: 'watch', label: 'Watch' },
-							],
-						},
-					},
-					value,
-				)}${this.buildClearButton(field)}`
-			: '';
-	}
-
-	buildStylesRow() {
-		const field = 'styles';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
-
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}
-				${this.buildSelector(
-					inputs[field].name,
-					field,
-					{
-						boolean: {},
-					},
-					value == 'on',
-				)} `
-			: '';
-	}
-
-	buildCardTypeRow() {
-		const field = 'card_type';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
-
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}
-				${this.buildSelector(
-					inputs[field].name,
-					field,
-					{
-						select: {
-							mode: 'dropdown',
-							options: [
-								{ value: 'elevated', label: 'Elevated' },
-								{ value: 'filled', label: 'Filled' },
-								{ value: 'outlined', label: 'Outlined' },
-								{ value: 'transparent', label: 'Transparent' },
-							],
-						},
-					},
-					value,
-				)}`
-			: '';
-	}
-
-	buildShowNavbarRow() {
-		const field = 'navbar';
-		const entityId = getEntityId(field, this.dataId);
-		const value = this.hass.states[entityId]?.state;
-
-		return this.hass.states[entityId]
-			? html`${this.buildMoreInfoButton(field)}
-				${this.buildSelector(
-					inputs[field].name,
-					field,
-					{
-						boolean: {},
-					},
-					value == 'on',
-				)} `
-			: '';
+		return html`${this.buildMoreInfoButton(field)}
+		${this.buildSelector(inputs[field].name, field, config, value)}
+		${inputs[field].card.clearButton ? this.buildClearButton(field) : ''}`;
 	}
 
 	setupIds() {
@@ -592,42 +448,39 @@ export class MaterialYouConfigCard extends LitElement {
 				this.dataId;
 		}
 
-		let rows: Partial<Record<InputField, TemplateResult | string>>;
+		let rowNames: InputField[];
 		switch (this.tabBarIndex) {
 			case 1:
-				rows = {
-					styles: this.buildStylesRow(),
-					card_type: this.buildCardTypeRow(),
-					navbar: this.buildShowNavbarRow(),
-				};
+				rowNames = ['styles', 'card_type', 'navbar'];
 				break;
 			case 0:
 			default:
-				rows = {
-					base_color: this.buildBaseColorRow(),
-					image_url: this.buildImageUrlRow(),
-					scheme: this.buildSchemeRow(),
-					contrast: this.buildContrastRow(),
-					spec: this.buildSpecRow(),
-					platform: this.buildPlatformRow(),
-				};
+				rowNames = [
+					'base_color',
+					'image_url',
+					'scheme',
+					'contrast',
+					'spec',
+					'platform',
+				];
 
 				// Platform field is not available for 2021 spec
 				if (
 					this.hass.states[getEntityId('spec', this.dataId)]?.state !=
 					'2025'
 				) {
-					delete rows.platform;
+					rowNames = rowNames.filter((name) => name != 'platform');
 				}
-
 				break;
 		}
+		let rows: Partial<Record<InputField, TemplateResult | string>> = {};
+		for (const field of rowNames) {
+			rows[field as InputField] = this.buildRow(field as InputField);
+		}
 
-		let missingRows = false;
 		for (const name in rows) {
 			if (!rows[name as InputField]) {
 				delete rows[name as InputField];
-				missingRows = true;
 			}
 		}
 
@@ -642,7 +495,7 @@ export class MaterialYouConfigCard extends LitElement {
 					this.tabs,
 				)}
 				<div class="card-content">
-					${missingRows
+					${Object.keys(rows).length != rowNames.length
 						? buildAlertBox(
 								this.hass.user?.is_admin
 									? 'Press Create Helpers to create and initialize inputs.'

@@ -26,7 +26,13 @@ export interface IInputInfo {
 	domain: InputDomain;
 	default: string | number;
 	name: string;
-	config: Record<string, any>;
+	init: {
+		config: Record<string, any>;
+	};
+	card: {
+		config: Record<string, any>;
+		clearButton?: boolean;
+	};
 	handler: Handler;
 }
 

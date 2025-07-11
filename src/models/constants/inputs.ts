@@ -18,21 +18,31 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_text',
 		default: '#4C5C92',
 		name: 'Base Color',
-		config: {
-			icon: 'mdi:palette',
-			min: 3,
-			max: 9,
+		init: {
+			config: {
+				icon: 'mdi:palette',
+				min: 3,
+				max: 9,
+			},
 		},
+		card: { config: {}, clearButton: true },
 		handler: setTheme,
 	},
 	image_url: {
 		domain: 'input_text',
 		default: '',
 		name: 'Image URL',
-		config: {
-			icon: 'mdi:image',
-			min: 0,
-			max: 255,
+		init: {
+			config: {
+				icon: 'mdi:image',
+				min: 0,
+				max: 255,
+			},
+		},
+		card: {
+			config: {
+				text: {},
+			},
 		},
 		handler: setBaseColorFromImage,
 	},
@@ -40,9 +50,19 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: 'tonalspot',
 		name: 'Scheme Name',
-		config: {
-			icon: 'mdi:palette-advanced',
-			options: [...schemes.map((scheme) => scheme.value)],
+		init: {
+			config: {
+				icon: 'mdi:palette-advanced',
+				options: [...schemes.map((scheme) => scheme.value)],
+			},
+		},
+		card: {
+			config: {
+				select: {
+					mode: 'dropdown',
+					options: schemes,
+				},
+			},
 		},
 		handler: setTheme,
 	},
@@ -50,11 +70,24 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_number',
 		default: 0,
 		name: 'Contrast Level',
-		config: {
-			icon: 'mdi:contrast-circle',
-			min: -1,
-			max: 1,
-			step: 0.1,
+		init: {
+			config: {
+				icon: 'mdi:contrast-circle',
+				min: -1,
+				max: 1,
+				step: 0.1,
+			},
+		},
+		card: {
+			config: {
+				number: {
+					min: -1,
+					max: 1,
+					step: 0.1,
+					mode: 'slider',
+					slider_ticks: true,
+				},
+			},
 		},
 		handler: setTheme,
 	},
@@ -62,9 +95,20 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: '2021',
 		name: 'Specification Version',
-		config: {
-			icon: 'mdi:calendar-multiple',
-			options: ['2021', '2025'],
+		init: {
+			config: {
+				icon: 'mdi:calendar-multiple',
+				options: ['2021', '2025'],
+			},
+		},
+		card: {
+			config: {
+				select: {
+					mode: 'box',
+					options: ['2021', '2025'],
+				},
+			},
+			clearButton: true,
 		},
 		handler: setTheme,
 	},
@@ -72,9 +116,23 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: 'phone',
 		name: 'Platform',
-		config: {
-			icon: 'mdi:devices',
-			options: ['phone', 'watch'],
+		init: {
+			config: {
+				icon: 'mdi:devices',
+				options: ['phone', 'watch'],
+			},
+		},
+		card: {
+			config: {
+				select: {
+					mode: 'box',
+					options: [
+						{ value: 'phone', label: 'Phone' },
+						{ value: 'watch', label: 'Watch' },
+					],
+				},
+			},
+			clearButton: true,
 		},
 		handler: setTheme,
 	},
@@ -84,8 +142,15 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_boolean',
 		default: 'on',
 		name: 'Style Upgrades',
-		config: {
-			icon: 'mdi:material-design',
+		init: {
+			config: {
+				icon: 'mdi:material-design',
+			},
+		},
+		card: {
+			config: {
+				boolean: {},
+			},
 		},
 		handler: async (_args) => {},
 	},
@@ -93,9 +158,24 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: 'elevated',
 		name: 'Card Type',
-		config: {
-			icon: 'mdi:card',
-			options: ['elevated', 'filled', 'outlined', 'transparent'],
+		init: {
+			config: {
+				icon: 'mdi:card',
+				options: ['elevated', 'filled', 'outlined', 'transparent'],
+			},
+		},
+		card: {
+			config: {
+				select: {
+					mode: 'dropdown',
+					options: [
+						{ value: 'elevated', label: 'Elevated' },
+						{ value: 'filled', label: 'Filled' },
+						{ value: 'outlined', label: 'Outlined' },
+						{ value: 'transparent', label: 'Transparent' },
+					],
+				},
+			},
 		},
 		handler: setCardType,
 	},
@@ -103,8 +183,15 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_boolean',
 		default: 'on',
 		name: 'Show Navigation Bar',
-		config: {
-			icon: 'mdi:navigation',
+		init: {
+			config: {
+				icon: 'mdi:navigation',
+			},
+		},
+		card: {
+			config: {
+				boolean: {},
+			},
 		},
 		handler: hideNavbar,
 	},
