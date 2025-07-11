@@ -4,13 +4,13 @@ import { MaterialYouPanel } from './classes/material-you-panel';
 
 import { THEME_NAME } from './models/constants/inputs';
 import { getAsync, querySelectorAsync } from './utils/async';
-import { setCardType } from './utils/cards';
-import { setTheme } from './utils/colors';
 import { getHomeAssistantMainAsync } from './utils/common';
-import { setBaseColorFromImage } from './utils/image';
+import { setCardType } from './utils/handlers/cards';
+import { setTheme } from './utils/handlers/colors';
+import { setBaseColorFromImage } from './utils/handlers/image';
+import { hideNavbar } from './utils/handlers/navbar';
+import { setStyles } from './utils/handlers/styles';
 import { mdLog } from './utils/logging';
-import { hideNavbar } from './utils/navbar';
-import { setStyles } from './utils/styles';
 import { setupSubscriptions } from './utils/subscriptions';
 
 async function main() {

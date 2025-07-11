@@ -1,10 +1,10 @@
-import { cardTypes } from '../css';
-import { THEME_NAME } from '../models/constants/inputs';
-import { HassElement } from '../models/interfaces';
-import { IHandlerArguments } from '../models/interfaces/Input';
+import { getEntityIdAndValue } from '.';
+import { cardTypes } from '../../css';
+import { THEME_NAME } from '../../models/constants/inputs';
+import { HassElement } from '../../models/interfaces';
+import { IHandlerArguments } from '../../models/interfaces/Input';
+import { debugToast, mdLog } from '../logging';
 import { getTargets } from './colors';
-import { getEntityId } from './common';
-import { debugToast, mdLog } from './logging';
 import { loadStyles } from './styles';
 
 const styleId = 'material-you-card-type';
@@ -17,25 +17,7 @@ export async function setCardType(args: IHandlerArguments) {
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			// Get value
-			let value = '';
-			const ids = [
-				args.id,
-				window.browser_mod?.browserID?.replace(/-/g, '_'),
-				hass.user?.id,
-				'',
-			];
-			for (const id of ids) {
-				if (id == undefined) {
-					continue;
-				}
-
-				value = hass.states[getEntityId('card_type', id)]?.state;
-				if (value in cardTypes) {
-					break;
-				}
-			}
-
+			const value = getEntityIdAndValue('card_type', args.id)[1];
 			if (!(value in cardTypes)) {
 				for (const target0 of targets) {
 					const target = target0.shadowRoot || target0;

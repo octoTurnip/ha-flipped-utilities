@@ -1,8 +1,9 @@
-import { elements } from '../css';
-import { inputs, THEME_NAME } from '../models/constants/inputs';
-import { HassElement } from '../models/interfaces';
-import { querySelectorAsync } from './async';
-import { getEntityId, getHomeAssistantMainAsync } from './common';
+import { getEntityIdAndValue } from '.';
+import { elements } from '../../css';
+import { THEME_NAME } from '../../models/constants/inputs';
+import { HassElement } from '../../models/interfaces';
+import { querySelectorAsync } from '../async';
+import { getHomeAssistantMainAsync } from '../common';
 
 // Theme check variables
 let theme = '';
@@ -23,10 +24,7 @@ function checkTheme() {
 		if (theme) {
 			shouldSetStyles =
 				theme.includes(THEME_NAME) &&
-				(ha?.hass.states[getEntityId('styles', ha?.hass.user?.id)]
-					?.state ??
-					ha?.hass.states[getEntityId('styles')]?.state ??
-					inputs.styles.default) == 'on';
+				getEntityIdAndValue('styles')[1] == 'on';
 		}
 	}
 }
@@ -125,9 +123,12 @@ function observeThenApplyStyles(element: HTMLElement) {
  */
 function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
 	setTimeout(() => {
-		// If the shadow-root exists but styles do not, apply styles
-		if (element.shadowRoot?.children.length && !hasStyles(element)) {
-			applyStyles(element);
+		// If the shadow-root exists, exit
+		if (element.shadowRoot?.children.length) {
+			// Apply styles if not present
+			if (!hasStyles(element)) {
+				applyStyles(element);
+			}
 			return;
 		}
 

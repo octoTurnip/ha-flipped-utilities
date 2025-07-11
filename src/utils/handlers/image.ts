@@ -3,11 +3,11 @@ import {
 	QuantizerCelebi,
 	Score,
 } from '@material/material-color-utilities';
-import { THEME_NAME } from '../models/constants/inputs';
-import { HassElement } from '../models/interfaces';
-import { IHandlerArguments } from '../models/interfaces/Input';
-import { getEntityId } from './common';
-import { debugToast } from './logging';
+import { getEntityIdAndValue } from '.';
+import { THEME_NAME } from '../../models/constants/inputs';
+import { HassElement } from '../../models/interfaces';
+import { IHandlerArguments } from '../../models/interfaces/Input';
+import { debugToast } from '../logging';
 
 /**
  * Convert RGBA 8-bit values to ARGB integer
@@ -41,28 +41,8 @@ export async function setBaseColorFromImage(args: IHandlerArguments) {
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			// Retrieve image URL
-			const ids = [
-				args.id,
-				window.browser_mod?.browserID?.replace(/-/g, '_'),
-				hass.user?.id,
-				'',
-			];
-			let url = '';
-			let output = '';
-			for (const id of ids) {
-				if (id == undefined) {
-					continue;
-				}
-
-				output = getEntityId('base_color', id);
-				url = hass.states[getEntityId('image_url', id)]?.state?.trim();
-				if (url) {
-					break;
-				}
-			}
-
 			// Do not fetch if no image URL is set
+			let [input, url] = getEntityIdAndValue('image_url', args.id)[1];
 			if (!url) {
 				return;
 			}
@@ -128,6 +108,7 @@ export async function setBaseColorFromImage(args: IHandlerArguments) {
 
 			// Set base color
 			const baseColor = hexFromArgb(colors[i]);
+			const output = input.replace('image_url', 'base_color');
 			hass.callService('input_text', 'set_value', {
 				entity_id: output,
 				value: baseColor,

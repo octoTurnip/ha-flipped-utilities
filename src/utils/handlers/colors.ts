@@ -8,18 +8,14 @@ import {
 } from '@material/material-color-utilities';
 
 import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
-import { colors } from '../models/constants/colors';
-import { inputs, THEME_NAME } from '../models/constants/inputs';
-import { HassElement } from '../models/interfaces';
-import { IHandlerArguments, InputField } from '../models/interfaces/Input';
-import { querySelectorAsync } from './async';
-import {
-	getEntityId,
-	getHomeAssistantMainAsync,
-	getSchemeInfo,
-	getToken,
-} from './common';
-import { debugToast, mdLog } from './logging';
+import { getEntityIdAndValue } from '.';
+import { colors } from '../../models/constants/colors';
+import { inputs, THEME_NAME } from '../../models/constants/inputs';
+import { HassElement } from '../../models/interfaces';
+import { IHandlerArguments, InputField } from '../../models/interfaces/Input';
+import { querySelectorAsync } from '../async';
+import { getHomeAssistantMainAsync, getSchemeInfo, getToken } from '../common';
+import { debugToast, mdLog } from '../logging';
 
 /* Generate and set theme colors based on user defined inputs */
 export async function setTheme(args: IHandlerArguments) {
@@ -45,29 +41,11 @@ export async function setTheme(args: IHandlerArguments) {
 				spec: '',
 				platform: '',
 			};
-			const ids = [
-				args.id,
-				window.browser_mod?.browserID?.replace(/-/g, '_'),
-				hass.user?.id,
-				'',
-			];
-			for (const id of ids) {
-				if (id == undefined) {
-					continue;
-				}
-
-				for (const field in values) {
-					if (
-						values[field as InputField] ||
-						values[field as InputField] === 0
-					) {
-						continue;
-					}
-					values[field as InputField] =
-						hass.states[
-							getEntityId(field as InputField, id)
-						]?.state?.trim();
-				}
+			for (const field in values) {
+				values[field as InputField] = getEntityIdAndValue(
+					field as InputField,
+					args.id,
+				)[1];
 			}
 
 			// Only update if one of the inputs is set

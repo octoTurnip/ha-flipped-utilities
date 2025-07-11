@@ -1,9 +1,9 @@
-import { hideNavigationBar } from '../css';
-import { THEME_NAME } from '../models/constants/inputs';
-import { HassElement } from '../models/interfaces';
-import { IHandlerArguments } from '../models/interfaces/Input';
-import { getEntityId } from './common';
-import { debugToast, mdLog } from './logging';
+import { getEntityIdAndValue } from '.';
+import { hideNavigationBar } from '../../css';
+import { THEME_NAME } from '../../models/constants/inputs';
+import { HassElement } from '../../models/interfaces';
+import { IHandlerArguments } from '../../models/interfaces/Input';
+import { debugToast, mdLog } from '../logging';
 import { loadStyles } from './styles';
 
 const styleId = 'material-you-navbar';
@@ -15,25 +15,7 @@ export async function hideNavbar(args: IHandlerArguments) {
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			// Get value
-			let value = '';
-			const ids = [
-				args.id,
-				window.browser_mod?.browserID?.replace(/-/g, '_'),
-				hass.user?.id,
-				'',
-			];
-			for (const id of ids) {
-				if (id == undefined) {
-					continue;
-				}
-
-				value = hass.states[getEntityId('navbar', id)]?.state;
-				if (value) {
-					break;
-				}
-			}
-
+			const value = getEntityIdAndValue('navbar', args.id)[1];
 			if ((value ?? 'on') == 'on') {
 				showNavbar();
 				return;

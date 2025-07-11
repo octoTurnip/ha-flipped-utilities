@@ -1,7 +1,7 @@
-import { setCardType } from '../../utils/cards';
-import { setTheme } from '../../utils/colors';
-import { setBaseColorFromImage } from '../../utils/image';
-import { hideNavbar } from '../../utils/navbar';
+import { setCardType } from '../../utils/handlers/cards';
+import { setTheme } from '../../utils/handlers/colors';
+import { setBaseColorFromImage } from '../../utils/handlers/image';
+import { hideNavbar } from '../../utils/handlers/navbar';
 import { IInputInfo, InputDomain, InputField } from '../interfaces/Input';
 import { schemes } from './colors';
 

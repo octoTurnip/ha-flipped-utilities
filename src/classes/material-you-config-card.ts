@@ -4,10 +4,10 @@ import { schemes } from '../models/constants/colors';
 import { inputs, services, THEME_NAME } from '../models/constants/inputs';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
-import { setCardType } from '../utils/cards';
-import { setTheme } from '../utils/colors';
 import { buildAlertBox, getEntityId } from '../utils/common';
-import { setBaseColorFromImage } from '../utils/image';
+import { setCardType } from '../utils/handlers/cards';
+import { setTheme } from '../utils/handlers/colors';
+import { setBaseColorFromImage } from '../utils/handlers/image';
 import { showToast } from '../utils/logging';
 import {
 	createInput,
