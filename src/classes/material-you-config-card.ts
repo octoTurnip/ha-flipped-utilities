@@ -519,6 +519,42 @@ export class MaterialYouConfigCard extends LitElement {
 		setBaseColorFromImage({ id: this.dataId ?? '' });
 		setTheme({ targets: [this], id: this.dataId ?? '' });
 		setCardType({ targets: [this], id: this.dataId ?? '' });
+	}
+
+	updated() {
+		// Apply theme mode
+		this.applyThemeMode();
+
+		// Disk color picker style tweaks
+		const colorPicker = this.shadowRoot?.querySelector('disk-color-picker');
+		if (colorPicker && !colorPicker.shadowRoot?.getElementById(styleId)) {
+			const style = document.createElement('style');
+			style.id = styleId;
+			style.textContent = `
+				/* Shift color picker down */
+				:host {
+					height: 248px;
+					translate: 0 -16px;
+				}
+
+				/* Scale the disk color picker relative to saturation arc */
+				#diskPanel {
+					scale: 1.25;
+				}
+
+				/* Fix ugly square tap shadows */
+				#diskTarget,
+				#diskThumb,
+				#wheelThumb {
+					-webkit-tap-highlight-color: transparent;
+				}
+			`;
+			colorPicker.shadowRoot?.appendChild(style);
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
 
 		// Trigger updates on card
 		setupSubscriptions({
@@ -529,42 +565,10 @@ export class MaterialYouConfigCard extends LitElement {
 		});
 	}
 
-	updated() {
-		// Apply theme mode
-		this.applyThemeMode();
-
-		// Disk color picker style tweaks
-		const colorPickers =
-			this.shadowRoot?.querySelectorAll('disk-color-picker') ?? [];
-		for (const colorPicker of colorPickers) {
-			if (!colorPicker.shadowRoot?.getElementById(styleId)) {
-				const style = document.createElement('style');
-				style.id = styleId;
-				style.textContent = `
-					/* Shift color picker down */
-					:host {
-						height: 248px;
-						translate: 0 -16px;
-					}
-	
-					/* Scale the disk color picker relative to saturation arc */
-					#diskPanel {
-						scale: 1.25;
-					}
-	
-					/* Fix ugly square tap shadows */
-					#diskTarget,
-					#diskThumb,
-					#wheelThumb {
-						-webkit-tap-highlight-color: transparent;
-					}
-				`;
-				colorPicker.shadowRoot?.appendChild(style);
-			}
-		}
-	}
-
 	disconnectedCallback() {
+		super.disconnectedCallback();
+
+		// Unsubscribe from theme update subscriptions
 		this.unsubscribers.forEach(async (unsubscriber) => {
 			unsubscriber();
 		});
