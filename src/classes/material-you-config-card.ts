@@ -439,31 +439,19 @@ export class MaterialYouConfigCard extends LitElement {
 				this.dataId;
 		}
 
-		let rowNames: InputField[];
-		switch (this.tabBarIndex) {
-			case 1:
-				rowNames = ['styles', 'card_type', 'navbar'];
-				break;
-			case 0:
-			default:
-				rowNames = [
-					'base_color',
-					'image_url',
-					'scheme',
-					'contrast',
-					'spec',
-					'platform',
-				];
+		let rowNames = Object.keys(inputs).filter(
+			(field) =>
+				inputs[field as InputField].card.tabBarIndex ==
+				this.tabBarIndex,
+		) as InputField[];
 
-				// Platform field is not available for 2021 spec
-				if (
-					this.hass.states[getEntityId('spec', this.dataId)]?.state !=
-					'2025'
-				) {
-					rowNames = rowNames.filter((name) => name != 'platform');
-				}
-				break;
+		// Platform field is not available for 2021 spec
+		if (
+			this.hass.states[getEntityId('spec', this.dataId)]?.state != '2025'
+		) {
+			rowNames = rowNames.filter((name) => name != 'platform');
 		}
+
 		let rows: Partial<Record<InputField, TemplateResult | string>> = {};
 		for (const field of rowNames) {
 			rows[field as InputField] = this.buildRow(field as InputField);

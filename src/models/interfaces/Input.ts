@@ -30,6 +30,7 @@ export interface IInputInfo {
 		config: Record<string, any>;
 	};
 	card: {
+		tabBarIndex: number;
 		config: Record<string, any>;
 		clearButton?: boolean;
 	};
