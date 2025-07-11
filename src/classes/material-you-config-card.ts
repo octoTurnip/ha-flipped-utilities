@@ -1,7 +1,12 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { schemes } from '../models/constants/colors';
-import { inputs, services, THEME_NAME } from '../models/constants/inputs';
+import {
+	inputs,
+	services,
+	THEME_NAME,
+	THEME_TOKEN,
+} from '../models/constants/inputs';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
 import { buildAlertBox, getEntityId } from '../utils/common';
@@ -20,6 +25,8 @@ if (!customElements.get('disk-color-picker')) {
 	// HACS install causes this module to be defined twice, this squashes the error
 	require('disk-color-picker');
 }
+
+const styleId = `${THEME_TOKEN}-theme`;
 
 export class MaterialYouConfigCard extends LitElement {
 	@property() hass!: HomeAssistant;
@@ -557,7 +564,7 @@ export class MaterialYouConfigCard extends LitElement {
 		if (this.darkMode != this.hass.themes?.darkMode) {
 			this.darkMode = this.hass.themes?.darkMode;
 
-			const style = this.shadowRoot?.getElementById('material-you-theme');
+			const style = this.shadowRoot?.getElementById(styleId);
 			if (style) {
 				const styles: string[] = [];
 				for (const [key, value] of Object.entries(
@@ -660,7 +667,7 @@ export class MaterialYouConfigCard extends LitElement {
 						</div>`
 					: ''}
 			</ha-card>
-			<style id="material-you-theme"></style>
+			<style id="${styleId}"></style>
 		`;
 	}
 
@@ -702,9 +709,9 @@ export class MaterialYouConfigCard extends LitElement {
 		const colorPickers =
 			this.shadowRoot?.querySelectorAll('disk-color-picker') ?? [];
 		for (const colorPicker of colorPickers) {
-			if (!colorPicker.shadowRoot?.getElementById('material-you')) {
+			if (!colorPicker.shadowRoot?.getElementById(styleId)) {
 				const style = document.createElement('style');
-				style.id = 'material-you';
+				style.id = styleId;
 				style.textContent = `
 					/* Shift color picker down */
 					:host {

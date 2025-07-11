@@ -7,6 +7,7 @@ import { schemes } from './colors';
 
 export const THEME_NAME = 'Material You';
 export const THEME = THEME_NAME.toLowerCase().replace(/ /g, '_');
+export const THEME_TOKEN = THEME_NAME.replace(/_/g, '-');
 
 export const services: Record<InputDomain, string> = {
 	input_text: 'set_value',

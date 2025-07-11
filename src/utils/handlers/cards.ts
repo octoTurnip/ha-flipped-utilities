@@ -1,13 +1,13 @@
 import { getEntityIdAndValue } from '.';
 import { cardTypes } from '../../css';
-import { THEME_NAME } from '../../models/constants/inputs';
+import { THEME_NAME, THEME_TOKEN } from '../../models/constants/inputs';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';
 import { getTargets } from './colors';
 import { loadStyles } from './styles';
 
-const styleId = 'material-you-card-type';
+const styleId = `${THEME_TOKEN}-card-type`;
 
 /** Change ha-card styles to match the selected card type */
 export async function setCardType(args: IHandlerArguments) {

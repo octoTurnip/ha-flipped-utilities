@@ -1,6 +1,6 @@
 import { getEntityIdAndValue } from '.';
 import { elements } from '../../css';
-import { THEME_NAME } from '../../models/constants/inputs';
+import { THEME_NAME, THEME_TOKEN } from '../../models/constants/inputs';
 import { HassElement } from '../../models/interfaces';
 import { querySelectorAsync } from '../async';
 import { getHomeAssistantMainAsync } from '../common';
@@ -35,9 +35,7 @@ function checkTheme() {
  * @returns {HTMLStyleElement}
  */
 function hasStyles(element: HTMLElement): HTMLStyleElement {
-	return element.shadowRoot?.getElementById(
-		'material-you',
-	) as HTMLStyleElement;
+	return element.shadowRoot?.getElementById(THEME_TOKEN) as HTMLStyleElement;
 }
 
 /**
@@ -78,7 +76,7 @@ function applyStyles(element: HTMLElement) {
 	const shadowRoot = element.shadowRoot;
 	if (shouldSetStyles && shadowRoot && !hasStyles(element)) {
 		const style = document.createElement('style');
-		style.id = 'material-you';
+		style.id = THEME_TOKEN;
 		style.textContent = loadStyles(
 			elements[element.nodeName.toLowerCase()],
 		);

@@ -2,7 +2,7 @@ import packageInfo from '../package.json';
 import { MaterialYouConfigCard } from './classes/material-you-config-card';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
-import { THEME_NAME } from './models/constants/inputs';
+import { THEME_NAME, THEME_TOKEN } from './models/constants/inputs';
 import { getAsync, querySelectorAsync } from './utils/async';
 import { getHomeAssistantMainAsync } from './utils/common';
 import { setCardType } from './utils/handlers/cards';
@@ -25,7 +25,7 @@ async function main() {
 
 	mdLog(
 		document.querySelector('html') as HTMLElement,
-		`Material You Utilities v${packageInfo.version}`,
+		`${THEME_NAME} Utilities v${packageInfo.version}`,
 	);
 
 	// Apply colors and styles on iframe when it's added
@@ -58,8 +58,8 @@ async function main() {
 	});
 
 	// Define Material You Panel custom element
-	customElements.define('material-you-config-card', MaterialYouConfigCard);
-	customElements.define('material-you-panel', MaterialYouPanel);
+	customElements.define(`${THEME_TOKEN}-config-card`, MaterialYouConfigCard);
+	customElements.define(`${THEME_TOKEN}-panel`, MaterialYouPanel);
 
 	// Set user theme colors and card type
 	const setOnFirstLoad = async (ms: number) => {

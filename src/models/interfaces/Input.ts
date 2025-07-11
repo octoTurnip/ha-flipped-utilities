@@ -16,7 +16,6 @@ export type InputField =
 	| 'navbar';
 
 export interface IHandlerArguments {
-	field?: InputField;
 	targets?: HTMLElement[];
 	id?: string;
 }
