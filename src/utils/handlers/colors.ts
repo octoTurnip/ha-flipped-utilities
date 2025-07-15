@@ -35,14 +35,15 @@ export async function setTheme(args: IHandlerArguments) {
 			);
 
 			// Setup input values
-			const values: Partial<Record<InputField, string | number>> = {
-				base_color: '',
-				scheme: '',
-				contrast: '',
-				spec: '',
-				platform: '',
-			};
-			for (const field in values) {
+			const fields = [
+				'base_color',
+				'scheme',
+				'contrast',
+				'spec',
+				'platform',
+			];
+			const values: Partial<Record<InputField, string | number>> = {};
+			for (const field of fields) {
 				values[field as InputField] = getEntityIdAndValue(
 					field as InputField,
 					args.id,
@@ -51,17 +52,12 @@ export async function setTheme(args: IHandlerArguments) {
 
 			// Only update if one of the inputs is set
 			if (
-				values.base_color ||
-				values.scheme ||
-				values.contrast ||
-				values.spec ||
-				values.platform
+				fields.some((field) => values[field as InputField] != undefined)
 			) {
-				values.base_color ||= inputs.base_color.default as string;
-				values.scheme ||= inputs.scheme.default as string;
-				values.contrast ??= inputs.contrast.default as number;
-				values.spec ||= inputs.spec.default as string;
-				values.platform ||= inputs.platform.default as string;
+				for (const field in values) {
+					values[field as InputField] ??=
+						inputs[field as InputField].default;
+				}
 
 				const schemeInfo = getSchemeInfo(values.scheme as string);
 
