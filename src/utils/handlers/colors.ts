@@ -134,7 +134,7 @@ export async function getTargets(): Promise<HTMLElement[]> {
 }
 
 /* Remove theme colors */
-export async function unsetTheme() {
+async function unsetTheme() {
 	const targets = await getTargets();
 	for (const color of colors) {
 		for (const target of targets) {

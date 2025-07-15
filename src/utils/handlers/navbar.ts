@@ -41,7 +41,7 @@ export async function hideNavbar(args: IHandlerArguments) {
 	}
 }
 
-export async function showNavbar() {
+async function showNavbar() {
 	const html = document.querySelector('html') as HTMLElement;
 	const style = html?.querySelector(`#${styleId}`);
 	if (style) {

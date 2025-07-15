@@ -7,6 +7,7 @@ import { getAsync, querySelectorAsync } from './utils/async';
 import { getHomeAssistantMainAsync } from './utils/common';
 import { setCardType } from './utils/handlers/cards';
 import { setTheme } from './utils/handlers/colors';
+import { setCSSFromFile } from './utils/handlers/css';
 import { setBaseColorFromImage } from './utils/handlers/image';
 import { hideNavbar } from './utils/handlers/navbar';
 import { setStyles } from './utils/handlers/styles';
@@ -46,8 +47,9 @@ async function main() {
 
 					const document = await getAsync(contentWindow, 'document');
 					const body = await querySelectorAsync(document, 'body');
-					setTheme({ targets: [body] });
-					setCardType({ targets: [body] });
+					await setTheme({ targets: [body] });
+					await setCardType({ targets: [body] });
+					await setCSSFromFile({ targets: [body] });
 				}
 			}
 		}
@@ -80,6 +82,7 @@ async function main() {
 			await setBaseColorFromImage({});
 			await setTheme({ targets: [html] });
 			await setCardType({ targets: [html] });
+			await setCSSFromFile({ targets: [html] });
 			hideNavbar({});
 		}
 	};

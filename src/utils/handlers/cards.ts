@@ -71,13 +71,18 @@ export async function setCardType(args: IHandlerArguments) {
 	}
 }
 
-export async function unsetCardType() {
+async function unsetCardType() {
 	const targets = await getTargets();
-	for (const target of targets) {
+	let log = false;
+	for (const target0 of targets) {
+		const target = target0.shadowRoot || target0;
 		const style = target.querySelector(`#${styleId}`);
 		if (style) {
-			document.removeChild(style);
+			log = true;
+			target.removeChild(style);
 		}
 	}
-	mdLog(targets[0], 'Material design card type unset.', true);
+	if (log) {
+		mdLog(targets[0], 'Material design card type unset.', true);
+	}
 }

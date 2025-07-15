@@ -1,5 +1,6 @@
 import { setCardType } from '../../utils/handlers/cards';
 import { setTheme } from '../../utils/handlers/colors';
+import { setCSSFromFile } from '../../utils/handlers/css';
 import { setBaseColorFromImage } from '../../utils/handlers/image';
 import { hideNavbar } from '../../utils/handlers/navbar';
 import { IInputInfo, InputDomain, InputField } from '../interfaces/Input';
@@ -47,27 +48,6 @@ export const inputs: Record<InputField, IInputInfo> = {
 		},
 		handler: setBaseColorFromImage,
 	},
-	scheme: {
-		domain: 'input_select',
-		default: 'tonalspot',
-		name: 'Scheme Name',
-		init: {
-			config: {
-				icon: 'mdi:palette-advanced',
-				options: [...schemes.map((scheme) => scheme.value)],
-			},
-		},
-		card: {
-			config: {
-				select: {
-					mode: 'dropdown',
-					options: schemes,
-				},
-			},
-			tabBarIndex: 0,
-		},
-		handler: setTheme,
-	},
 	contrast: {
 		domain: 'input_number',
 		default: 0,
@@ -94,6 +74,27 @@ export const inputs: Record<InputField, IInputInfo> = {
 		},
 		handler: setTheme,
 	},
+	scheme: {
+		domain: 'input_select',
+		default: 'tonalspot',
+		name: 'Scheme Name',
+		init: {
+			config: {
+				icon: 'mdi:palette-advanced',
+				options: [...schemes.map((scheme) => scheme.value)],
+			},
+		},
+		card: {
+			config: {
+				select: {
+					mode: 'dropdown',
+					options: schemes,
+				},
+			},
+			tabBarIndex: 1,
+		},
+		handler: setTheme,
+	},
 	spec: {
 		domain: 'input_select',
 		default: '2021',
@@ -111,7 +112,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 					options: ['2021', '2025'],
 				},
 			},
-			tabBarIndex: 0,
+			tabBarIndex: 1,
 			clearButton: true,
 		},
 		handler: setTheme,
@@ -136,7 +137,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 					],
 				},
 			},
-			tabBarIndex: 0,
+			tabBarIndex: 1,
 			clearButton: true,
 		},
 		handler: setTheme,
@@ -156,7 +157,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 			config: {
 				boolean: {},
 			},
-			tabBarIndex: 1,
+			tabBarIndex: 2,
 		},
 		handler: async (_args) => {},
 	},
@@ -182,9 +183,28 @@ export const inputs: Record<InputField, IInputInfo> = {
 					],
 				},
 			},
-			tabBarIndex: 1,
+			tabBarIndex: 2,
 		},
 		handler: setCardType,
+	},
+	css_file: {
+		domain: 'input_text',
+		default: '',
+		name: 'Custom CSS File',
+		init: {
+			config: {
+				icon: 'mdi:language-css3',
+				min: 0,
+				max: 255,
+			},
+		},
+		card: {
+			config: {
+				text: {},
+			},
+			tabBarIndex: 2,
+		},
+		handler: setCSSFromFile,
 	},
 	navbar: {
 		domain: 'input_boolean',
@@ -199,7 +219,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 			config: {
 				boolean: {},
 			},
-			tabBarIndex: 1,
+			tabBarIndex: 2,
 		},
 		handler: hideNavbar,
 	},

@@ -13,6 +13,7 @@ export type InputField =
 	| 'platform'
 	| 'styles'
 	| 'card_type'
+	| 'css_file'
 	| 'navbar';
 
 export interface IHandlerArguments {

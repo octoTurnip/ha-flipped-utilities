@@ -7,6 +7,7 @@ import { InputField } from '../models/interfaces/Input';
 import { buildAlertBox, getEntityId } from '../utils/common';
 import { setCardType } from '../utils/handlers/cards';
 import { setTheme } from '../utils/handlers/colors';
+import { setCSSFromFile } from '../utils/handlers/css';
 import { setBaseColorFromImage } from '../utils/handlers/image';
 import { showToast } from '../utils/logging';
 import {
@@ -28,7 +29,7 @@ export class MaterialYouConfigCard extends LitElement {
 	@property() dataId?: string;
 
 	@state() tabBarIndex: number = 0;
-	tabs = ['colors', 'styles'];
+	tabs = ['color', 'scheme', 'styles'];
 
 	personEntityId?: string;
 	darkMode?: boolean;
@@ -519,6 +520,7 @@ export class MaterialYouConfigCard extends LitElement {
 		setBaseColorFromImage({ id: this.dataId ?? '' });
 		setTheme({ targets: [this], id: this.dataId ?? '' });
 		setCardType({ targets: [this], id: this.dataId ?? '' });
+		setCSSFromFile({ targets: [this], id: this.dataId ?? '' });
 	}
 
 	updated() {
@@ -584,6 +586,7 @@ export class MaterialYouConfigCard extends LitElement {
 				display: flex;
 				flex-direction: column;
 				padding: 16px;
+				margin: 0;
 			}
 			.subtitle {
 				margin-top: -24px;
@@ -602,7 +605,8 @@ export class MaterialYouConfigCard extends LitElement {
 			}
 
 			sl-tab-group {
-				width: 100%;
+				width: calc(100% - 50px);
+				margin: auto;
 				text-transform: capitalize;
 				position: relative;
 				z-index: 1;

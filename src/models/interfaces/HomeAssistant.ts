@@ -46,7 +46,7 @@ export interface HomeAssistant {
 	moreInfoEntityId: string | null;
 	user?: CurrentUser;
 	// userData?: CoreFrontendUserData | null;
-	// hassUrl(path?): string;
+	hassUrl(path?: string): string;
 	callService(
 		domain: ServiceCallRequest['domain'],
 		service: ServiceCallRequest['service'],
