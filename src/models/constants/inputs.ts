@@ -32,7 +32,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 	image_url: {
 		domain: 'input_text',
 		default: '',
-		name: 'Image URL',
+		name: 'Image Path/URL',
 		init: {
 			config: {
 				icon: 'mdi:image',
@@ -190,7 +190,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 	css_file: {
 		domain: 'input_text',
 		default: '',
-		name: 'Custom CSS File',
+		name: 'CSS Path/URL',
 		init: {
 			config: {
 				icon: 'mdi:language-css3',
