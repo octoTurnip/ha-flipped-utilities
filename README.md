@@ -63,13 +63,13 @@ While this module should be automatically updated through HACS after initial ins
 
 # The Configuration Panel
 
-This module comes with it's own configuration panel! If you are the Home Assistant server administrator, you can use this panel to create and set input helper entities for all users and global defaults. If you are not the administrator you can set the input helper entities for yourself, but an administrator must create them first.
+This module comes with its own configuration panel! If you are the Home Assistant server administrator, you can use this panel to create and set input helper entities for all users, devices, and global defaults. If you are not the administrator you can set style options for yourself and your current device after an administrator creates them.
 
 <img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/configuration-panel.png" width="750"/>
 
-The settings for every user, device, and the global settings are all the same. If a user does not have helpers setup, then the global settings are used.
+Device settings are prioritized over all other settings, followed by user settings and then global settings.
 
-To create input helper entities for a user, click on `Create Helpers` in their settings card. Similarly, you can delete input helper entities for a user by clicking `Delete Helpers`. After creating helpers, you or their non-admin user can modify them from the configuration panel or open their more info dialog using the buttons to their left.
+To create input helper entities for a user, device, or globally, click on `Create Helpers` in their settings card. Similarly, you can delete input helper entities for a user by clicking `Delete Helpers`. After creating helpers, you or the non-admin user can modify them from the configuration panel or open their more info dialog using the buttons to their left.
 
 ## You, Everyone, and Devices
 
@@ -79,15 +79,17 @@ The second tab is for everyone else. This includes all other users on the Home A
 
 The third tab is for device specific settings. You can setup input helpers specific to a user-browser-device combination. The current device settings appears at the top of this tab. These settings require [Browser Mod](https://github.com/thomasloven/hass-browser_mod) to keep track of user-browser-device IDs.
 
-## Dynamic Color Theme
+## Settings Cards
 
-You can use the configuration panel to setup the dynamic color theme and to modify some style options.
+Each settings card has the same fields for users, devices, and global settings. Setting are divided into three tabs - color, scheme, and styles.
 
-### Base Color
+### Color
+
+#### Base Color
 
 Material color themes are built around a base color, from which all other theme colors are derived depending on the scheme rules. This color defaults to `#4C5C92` (a shade of blue), but can be set to any other color using the color wheel.
 
-#### Home Assistant Android App Color Sensor
+##### Home Assistant Android App Color Sensor
 
 If you are using the Home Assistant Android companion app, you can enable the accent color sensor in the companion app settings to use your phones Material Design accent color as the theme base color:
 
@@ -115,15 +117,21 @@ actions:
       entity_id: input_text.material_you_base_color
 ```
 
-### Image URL
+#### Image URL
 
 Instead of explicitly defining your theme base color, you can instead provide an image. This image can be hosted on your Home Assistant server in the `config/www` folder or be from an external website ([with CORS approval](https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/CORS_enabled_image)). A set of up to four possible base colors will be derived from this image from you to choose from and set to the base color field. You can choose between the possible options by appending the query string `?i=` to the end of your image URL, setting i to a number between 0 and 3 inclusive.
 
 Note that changing image file by itself but not changing the name will not trigger a color theme update. Color theme generation triggers on first page load, when an input's value changes, or (admin only) when a set theme action is called.
 
-### Color Schemes
+#### Contrast Level
 
-By default, this theme will use the `Tonal Spot` color scheme. This scheme is the default color scheme used by Android 12.
+The contrast level is a number from -1 to 1 which defines how much colors in the theme will differ and how bright they are.
+
+### Scheme
+
+#### Scheme Name
+
+The scheme defines the color palette used to generate your theme. By default, this theme will use the `Tonal Spot` color scheme. This scheme is the default color scheme used by Android 12.
 
 In addition to the modern Android color scheme, [Material Color Utilities](https://github.com/material-foundation/material-color-utilities) offers several alternate schemes.
 
@@ -139,33 +147,33 @@ In addition to the modern Android color scheme, [Material Color Utilities](https
 | Neutral     | A Dynamic Color theme that is near grayscale.                                                                                                                                                                                                                                                                                                                                                                           |
 | Monochrome  | A Dynamic Color theme that is grayscale.                                                                                                                                                                                                                                                                                                                                                                                |
 
-If an invalid or no scheme is provided, it will default to `Tonal Spot` or the globally set scheme.
-
-### Contrast Level
-
-Each scheme can also be provided with a custom contrast from -1 to 1. Value outside of this range are clamped to it. If an invalid or no value is provided it will default to `0`.
-
-### Specification Version
+#### Specification Version
 
 With the Material Expressive update, Material Design 3 now has new specifications for color themes. You can choose between the original `2021` color specification, or the updated `2025` specification. Combine the `2025` specification with the `Expressive` scheme to use the new Material Expressive palette.
 
-### Platform
+#### Platform
 
-Material Expressive also comes with two platform options when using the 2025 color specification - `Phone` and `Watch`. While you probably want to keep this at the default `Phone` setting, you have the ability to choose.
+Material Expressive also comes with two platform options when using the 2025 color specification - `Phone` and `Watch`. While you probably want to keep this at the default `Phone` setting, you have the ability to choose. Note that the `Watch` platform does not work well with light mode.
 
-## Style Options
+### Styles
 
-A refresh is required for style options to apply.
+#### Style Upgrades
 
-### Style Upgrades
+If you want to disable the Material Design 3 component upgrades, toggle Style Upgrades off. Doing so will still allow you to set all other options. A refresh is required for this to apply.
 
-If you want to disable the Material Design 3 component upgrades, toggle Style Upgrades off. Doing so will still allow you to set custom color themes and card types.
-
-### Card Type
+#### Card Type
 
 The Material Design 3 specification has [three different card type style variations](https://m3.material.io/components/cards/overview#ccabd69f-a01a-4b55-868f-9428f244c4bd). You can choose which one will be used as the default card style here. You can also choose to make cards transparent.
 
 Some cards, like those found in the configuration pages, already have the attribute `outlined`. This attribute will supersede the default `elevated` card style or user chosen card type.
+
+#### Custom CSS File
+
+You can choose to provide your own CSS styles in a file and then set the local path or external URL here. This is useful for applying more in depth custom themes created using [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/), or if you just want to override certain theme values.
+
+#### Show Navigation Bar
+
+You can choose to disable the navigation bar shown in views by toggling this setting off. This is useful if you want to use an alternate view navigation system such as [Navbar Card](https://github.com/joseluis9595/lovelace-navbar-card). Note that this does not disable navigation bar styles and restore the default view tabs, it hides them entirely.
 
 ## Theme Mode FAB
 
@@ -173,7 +181,7 @@ For your convenience, you can click on the floating action button on the bottom 
 
 # Material Design 3 Components
 
-In addition to the CSS custom properties in the theme YAML, this themes companion module modifies the lifecycle methods styles of many Home Assistant component constructors to inject additional CSS styles to make the components follow the Material Design 3 specification.
+In addition to generating custom material color themes, this module modifies the lifecycle methods styles of many Home Assistant component constructors to inject additional CSS styles to make the components follow the Material Design 3 specification.
 
 ## Navigation
 

@@ -47,9 +47,11 @@ async function main() {
 
 					const document = await getAsync(contentWindow, 'document');
 					const body = await querySelectorAsync(document, 'body');
-					await setTheme({ targets: [body] });
-					await setCardType({ targets: [body] });
-					await setCSSFromFile({ targets: [body] });
+					const args = { targets: [body] };
+					const handlers = [setTheme, setCardType, setCSSFromFile];
+					for (const handler of handlers) {
+						await handler(args);
+					}
 				}
 			}
 		}
@@ -79,11 +81,17 @@ async function main() {
 
 		if (theme.includes(THEME_NAME)) {
 			const html = await querySelectorAsync(document, 'html');
-			await setBaseColorFromImage({});
-			await setTheme({ targets: [html] });
-			await setCardType({ targets: [html] });
-			await setCSSFromFile({ targets: [html] });
-			hideNavbar({});
+			const args = { targets: [html] };
+			const handlers = [
+				setBaseColorFromImage,
+				setTheme,
+				setCardType,
+				setCSSFromFile,
+				hideNavbar,
+			];
+			for (const handler of handlers) {
+				await handler(args);
+			}
 		}
 	};
 	setOnFirstLoad(100);

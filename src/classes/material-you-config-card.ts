@@ -29,7 +29,7 @@ export class MaterialYouConfigCard extends LitElement {
 	@property() dataId?: string;
 
 	@state() tabBarIndex: number = 0;
-	tabs = ['color', 'scheme', 'styles'];
+	tabs = ['color', 'scheme', 'style'];
 
 	personEntityId?: string;
 	darkMode?: boolean;
@@ -516,11 +516,17 @@ export class MaterialYouConfigCard extends LitElement {
 		};
 		applyTheme();
 
-		// Initial color and style setup
-		setBaseColorFromImage({ id: this.dataId ?? '' });
-		setTheme({ targets: [this], id: this.dataId ?? '' });
-		setCardType({ targets: [this], id: this.dataId ?? '' });
-		setCSSFromFile({ targets: [this], id: this.dataId ?? '' });
+		// Initial handler calls
+		const args = { targets: [this], id: this.dataId ?? '' };
+		const handlers = [
+			setBaseColorFromImage,
+			setTheme,
+			setCardType,
+			setCSSFromFile,
+		];
+		for (const handler of handlers) {
+			handler(args);
+		}
 	}
 
 	updated() {
