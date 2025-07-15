@@ -29,16 +29,6 @@
 	border-radius: 0;
 }
 
-/* Add curve to handle if min or max value, which must be defined in parent */
-input[min='1'][aria-valuetext='1'] ~ .handleContainerPadded .handleNub {
-	border-radius: var(--md-slider-end-handle-shape, 0) 0 0
-		var(--md-slider-end-handle-shape, 0);
-}
-input[max='100'][aria-valuetext='100'] ~ .handleContainerPadded .handleNub {
-	border-radius: 0 var(--md-slider-end-handle-shape, 0)
-		var(--md-slider-end-handle-shape, 0) 0;
-}
-
 /* Actual handle */
 .handleNub::after {
 	content: '';

@@ -1,5 +1,5 @@
 /* Move number input down to unhide tooltip, because I cannnot figure out why its hidden otherwise */
 .container[data-domain='input_number'],
 .container[data-domain='number'] {
-	padding-top: 25px;
+	padding-top: 26px;
 }
