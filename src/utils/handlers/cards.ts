@@ -19,19 +19,7 @@ export async function setCardType(args: IHandlerArguments) {
 		if (themeName.includes(THEME_NAME)) {
 			const value = getEntityIdAndValue('card_type', args.id)[1];
 			if (!(value in cardTypes)) {
-				for (const target0 of targets) {
-					const target = target0.shadowRoot || target0;
-
-					let style = target.querySelector(`#${styleId}`);
-					if (style) {
-						target.removeChild(style);
-						mdLog(
-							target,
-							'Material design card type set to default (elevated).',
-							true,
-						);
-					}
-				}
+				unsetCardType(args);
 				return;
 			}
 
@@ -58,21 +46,17 @@ export async function setCardType(args: IHandlerArguments) {
 				true,
 			);
 		} else {
-			if (args.id == undefined) {
-				await unsetCardType();
-			}
+			await unsetCardType(args);
 		}
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
-		if (args.id == undefined) {
-			await unsetCardType();
-		}
+		await unsetCardType(args);
 	}
 }
 
-async function unsetCardType() {
-	const targets = await getTargets();
+async function unsetCardType(args: IHandlerArguments) {
+	const targets = args.targets ?? (await getTargets());
 	let log = false;
 	for (const target0 of targets) {
 		const target = target0.shadowRoot || target0;

@@ -41,7 +41,7 @@ export async function setBaseColorFromImage(args: IHandlerArguments) {
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			// Do not fetch if no image URL is set
+			// Do not fetch if no path/url is set
 			let [input, url] = getEntityIdAndValue('image_url', args.id)[1];
 			if (!url) {
 				return;

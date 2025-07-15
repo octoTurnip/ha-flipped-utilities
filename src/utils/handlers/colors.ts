@@ -92,7 +92,7 @@ export async function setTheme(args: IHandlerArguments) {
 				);
 			} else {
 				if (args.id == undefined) {
-					await unsetTheme();
+					await unsetTheme(args);
 				}
 			}
 		}
@@ -100,7 +100,7 @@ export async function setTheme(args: IHandlerArguments) {
 		console.error(e);
 		debugToast(String(e));
 		if (args.id == undefined) {
-			await unsetTheme();
+			await unsetTheme(args);
 		}
 	}
 
@@ -134,8 +134,8 @@ export async function getTargets(): Promise<HTMLElement[]> {
 }
 
 /* Remove theme colors */
-async function unsetTheme() {
-	const targets = await getTargets();
+async function unsetTheme(args: IHandlerArguments) {
+	const targets = args.targets ?? (await getTargets());
 	for (const color of colors) {
 		for (const target of targets) {
 			const token = getToken(color);

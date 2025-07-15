@@ -2,7 +2,7 @@ import { getEntityIdAndValue, loadStyles } from '.';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
-import { mdLog } from '../logging';
+import { debugToast, mdLog } from '../logging';
 import { getTargets } from './colors';
 
 const styleId = `${THEME_TOKEN}-user-styles`;
@@ -14,10 +14,10 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			// Do not fetch if no image URL is set
+			// Do not fetch if no path/url is set
 			let url = getEntityIdAndValue('css_file', args.id)[1];
 			if (!url) {
-				unsetCSSFromFile();
+				unsetCSSFromFile(args);
 				return;
 			}
 
@@ -50,20 +50,17 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 				}
 			}
 		} else {
-			if (args.id == undefined) {
-				unsetCSSFromFile();
-			}
+			unsetCSSFromFile(args);
 		}
 	} catch (e) {
-		console.error('Error setting CSS from file:', e);
-		if (args.id == undefined) {
-			unsetCSSFromFile();
-		}
+		console.error(e);
+		debugToast(String(e));
+		unsetCSSFromFile(args);
 	}
 }
 
-async function unsetCSSFromFile() {
-	const targets = await getTargets();
+async function unsetCSSFromFile(args: IHandlerArguments) {
+	const targets = args.targets ?? (await getTargets());
 	let log = false;
 	for (const target0 of targets) {
 		const target = target0.shadowRoot || target0;
@@ -74,6 +71,6 @@ async function unsetCSSFromFile() {
 		}
 	}
 	if (log) {
-		mdLog(targets[0], 'User CSS Styles removed.', true);
+		mdLog(targets[0], 'CSS styles from file removed.', true);
 	}
 }
