@@ -24,9 +24,9 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 			// Get full URL if local path given
 			let r: Response;
 			if (url.includes('://')) {
-				r = await hass.fetchWithAuth(url, { mode: 'cors' });
-			} else {
 				r = await fetch(url, { mode: 'cors' });
+			} else {
+				r = await hass.fetchWithAuth(url, { mode: 'cors' });
 			}
 			const styles = loadStyles(await r.text());
 
