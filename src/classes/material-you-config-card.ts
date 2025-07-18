@@ -29,7 +29,7 @@ export class MaterialYouConfigCard extends LitElement {
 	@property() dataId?: string;
 
 	@state() tabBarIndex: number = 0;
-	tabs = ['color', 'scheme', 'style'];
+	tabs = ['colors', 'styles'];
 
 	personEntityId?: string;
 	darkMode?: boolean;
