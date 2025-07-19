@@ -611,11 +611,16 @@ export class MaterialYouConfigCard extends LitElement {
 			}
 
 			sl-tab-group {
-				width: calc(100% - 50px);
+				width: 100%;
 				margin: auto;
 				text-transform: capitalize;
 				position: relative;
 				z-index: 1;
+
+				--sl-spacing-x-large: 0;
+			}
+			sl-tab-group::part(scroll-button) {
+				display: none;
 			}
 			sl-tab {
 				flex: 1;
