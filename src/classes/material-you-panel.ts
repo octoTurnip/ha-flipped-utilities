@@ -153,7 +153,10 @@ export class MaterialYouPanel extends LitElement {
 			case 2:
 				page = html`
 					${window.browser_mod
-						? html`${this.buildSectionHeader(
+						? html`${buildAlertBox(
+									'Remember to register devices with Brower Mod!',
+								)}
+								${this.buildSectionHeader(
 									'This Device',
 									'Your settings for this device, prioritized over all other settings.',
 								)}
@@ -163,7 +166,7 @@ export class MaterialYouPanel extends LitElement {
 								></material-you-config-card>
 								${this.buildSectionHeader(
 									'Other Devices',
-									'Other devices on this Home Assistant instance registered with Browser Mod, for both you and other users.',
+									'Other devices registered with Browser Mod.',
 								)}
 								${this.devices.map(
 									(id) => html`
@@ -183,7 +186,7 @@ export class MaterialYouPanel extends LitElement {
 				page = html`
 					${this.buildSectionHeader(
 						'Everyone!',
-						'Default settings for all users. Used if a user or device does not have its own settings.',
+						'Default settings for all users and devices.',
 					)}
 					<material-you-config-card
 						.hass=${this.hass}
@@ -218,7 +221,7 @@ export class MaterialYouPanel extends LitElement {
 						? html`
 								${this.buildSectionHeader(
 									'This Device',
-									'Your settings for this device.',
+									'Settings for this device.',
 								)}
 								<material-you-config-card
 									.hass=${this.hass}

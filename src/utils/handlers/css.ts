@@ -1,9 +1,10 @@
-import { getEntityIdAndValue, loadStyles } from '.';
+import { getEntityIdAndValue } from '.';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';
 import { getTargets } from './colors';
+import { loadStyles } from './styles';
 
 const styleId = `${THEME_TOKEN}-user-styles`;
 
