@@ -81,9 +81,9 @@ The third tab is for device specific settings. You can setup input helpers speci
 
 ## Settings Cards
 
-Each settings card has the same fields for users, devices, and global settings. Setting are divided into three tabs - color, scheme, and styles.
+Each settings card has the same fields for users, devices, and global settings. Setting are divided into two tabs - colors and styles.
 
-### Color
+### Colors
 
 #### Base Color
 
@@ -126,8 +126,6 @@ Note that changing image file by itself but not changing the name will not trigg
 #### Contrast Level
 
 The contrast level is a number from -1 to 1 which defines how much colors in the theme will differ and how bright they are.
-
-### Scheme
 
 #### Scheme Name
 
