@@ -35,5 +35,9 @@ export function getEntityIdAndValue(
 		}
 	}
 
+	if (value == undefined) {
+		value = '';
+	}
+
 	return [entityId, value];
 }
