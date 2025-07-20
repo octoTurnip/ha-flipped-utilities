@@ -55,7 +55,7 @@ export async function setTheme(args: IHandlerArguments) {
 				fields.some((field) => values[field as InputField] != undefined)
 			) {
 				for (const field in values) {
-					values[field as InputField] ??=
+					values[field as InputField] ||=
 						inputs[field as InputField].default;
 				}
 
