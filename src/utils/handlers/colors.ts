@@ -44,21 +44,16 @@ export async function setTheme(args: IHandlerArguments) {
 			];
 			const values: Partial<Record<InputField, string | number>> = {};
 			for (const field of fields) {
-				values[field as InputField] = getEntityIdAndValue(
-					field as InputField,
-					args.id,
-				)[1];
+				values[field as InputField] =
+					(getEntityIdAndValue(field as InputField, args.id).value as
+						| string
+						| number) || inputs[field as InputField].default;
 			}
 
 			// Only update if one of the inputs is set
 			if (
 				fields.some((field) => values[field as InputField] != undefined)
 			) {
-				for (const field in values) {
-					values[field as InputField] ||=
-						inputs[field as InputField].default;
-				}
-
 				const schemeInfo = getSchemeInfo(values.scheme as string);
 
 				for (const mode of ['light', 'dark']) {

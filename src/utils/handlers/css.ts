@@ -16,7 +16,7 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
 			// Do not fetch if no path/url is set
-			let url = getEntityIdAndValue('css_file', args.id)[1];
+			let url = getEntityIdAndValue('css_file', args.id).value as string;
 			if (!url) {
 				unsetCSSFromFile(args);
 				return;

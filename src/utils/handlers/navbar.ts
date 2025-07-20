@@ -15,8 +15,8 @@ export async function hideNavbar(args: IHandlerArguments) {
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			const value = getEntityIdAndValue('navbar', args.id)[1];
-			if ((value || 'on') == 'on') {
+			const value = getEntityIdAndValue('navbar', args.id).value || 'on';
+			if (value == 'on') {
 				showNavbar();
 				return;
 			}

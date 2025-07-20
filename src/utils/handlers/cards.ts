@@ -17,7 +17,8 @@ export async function setCardType(args: IHandlerArguments) {
 	try {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
-			const value = getEntityIdAndValue('card_type', args.id)[1];
+			const value = getEntityIdAndValue('card_type', args.id)
+				.value as string;
 			if (!(value in cardTypes)) {
 				unsetCardType(args);
 				return;

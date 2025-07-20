@@ -42,7 +42,8 @@ export async function setBaseColorFromImage(args: IHandlerArguments) {
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
 			// Do not fetch if no path/url is set
-			let [input, url] = getEntityIdAndValue('image_url', args.id)[1];
+			const info = getEntityIdAndValue('image_url', args.id);
+			let url = info.value as string;
 			if (!url) {
 				return;
 			}
@@ -108,7 +109,7 @@ export async function setBaseColorFromImage(args: IHandlerArguments) {
 
 			// Set base color
 			const baseColor = hexFromArgb(colors[i]);
-			const output = input.replace('image_url', 'base_color');
+			const output = info.entityId.replace('image_url', 'base_color');
 			hass.callService('input_text', 'set_value', {
 				entity_id: output,
 				value: baseColor,

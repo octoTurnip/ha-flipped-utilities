@@ -24,7 +24,7 @@ function checkTheme() {
 		if (theme) {
 			shouldSetStyles =
 				theme.includes(THEME_NAME) &&
-				(getEntityIdAndValue('styles')[1] || 'on') == 'on';
+				(getEntityIdAndValue('styles').value || 'on') == 'on';
 		}
 	}
 }

@@ -11,7 +11,7 @@ export * from './styles';
 export function getEntityIdAndValue(
 	field: InputField,
 	id?: string,
-): [string, string] {
+): { entityId: string; value: string | number | boolean } {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
 
 	const ids = [
@@ -20,24 +20,24 @@ export function getEntityIdAndValue(
 		hass.user?.id,
 		'',
 	];
-	let entityId = '';
-	let value = '';
+	const result = {
+		entityId: '',
+		value: '',
+	};
 	for (const id of ids) {
 		if (id == undefined) {
 			continue;
 		}
 
-		entityId = getEntityId(field as InputField, id);
-		value = hass.states[entityId]?.state?.trim();
+		const entityId = getEntityId(field, id);
+		const value = hass.states[entityId]?.state?.trim();
 
 		if (value != undefined) {
+			result.entityId = entityId;
+			result.value = value;
 			break;
 		}
 	}
 
-	if (value == undefined) {
-		value = '';
-	}
-
-	return [entityId, value];
+	return result;
 }
