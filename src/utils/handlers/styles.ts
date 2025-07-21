@@ -142,14 +142,12 @@ function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
 
 /**
  * Explicitly apply styles to top level elements
+ * @param {number} ms
  */
-async function applyExplicitStyles() {
+async function applyExplicitStyles(ms: number = 10) {
 	checkTheme();
-	if (!theme) {
-		setTimeout(() => applyExplicitStyles(), 100);
-		return;
-	}
 
+	// Theme detected and should set styles
 	if (theme && shouldSetStyles) {
 		const haMain = await getHomeAssistantMainAsync();
 		const ha = await querySelectorAsync(document, 'home-assistant');
@@ -160,6 +158,17 @@ async function applyExplicitStyles() {
 		applyStyles(ha);
 		applyStyles(haMain);
 		applyStyles(haDrawer);
+	}
+
+	// Quit if delay is more than 20 seconds
+	if (ms > 20000) {
+		return;
+	}
+
+	// Recall the function with a longer timeout
+	if (!theme) {
+		setTimeout(() => applyExplicitStyles(ms * 2), ms);
+		return;
 	}
 }
 
