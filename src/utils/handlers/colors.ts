@@ -44,16 +44,19 @@ export async function setTheme(args: IHandlerArguments) {
 			];
 			const values: Partial<Record<InputField, string | number>> = {};
 			for (const field of fields) {
-				values[field as InputField] =
-					(getEntityIdAndValue(field as InputField, args.id).value as
-						| string
-						| number) || inputs[field as InputField].default;
+				values[field as InputField] = getEntityIdAndValue(
+					field as InputField,
+					args.id,
+				).value as string | number;
 			}
 
 			// Only update if one of the inputs is set
-			if (
-				fields.some((field) => values[field as InputField] != undefined)
-			) {
+			if (fields.some((field) => values[field as InputField] != '')) {
+				for (const field in values) {
+					values[field as InputField] ||=
+						inputs[field as InputField].default;
+				}
+
 				const schemeInfo = getSchemeInfo(values.scheme as string);
 
 				for (const mode of ['light', 'dark']) {
@@ -86,17 +89,13 @@ export async function setTheme(args: IHandlerArguments) {
 					true,
 				);
 			} else {
-				if (args.id == undefined) {
-					await unsetTheme(args);
-				}
+				await unsetTheme(args);
 			}
 		}
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
-		if (args.id == undefined) {
-			await unsetTheme(args);
-		}
+		await unsetTheme(args);
 	}
 
 	// Update companion app app and navigation bar colors
@@ -131,12 +130,18 @@ export async function getTargets(): Promise<HTMLElement[]> {
 /* Remove theme colors */
 async function unsetTheme(args: IHandlerArguments) {
 	const targets = args.targets ?? (await getTargets());
-	for (const color of colors) {
-		for (const target of targets) {
-			const token = getToken(color);
-			target?.style.removeProperty(`--md-sys-color-${token}-light`);
-			target?.style.removeProperty(`--md-sys-color-${token}-dark`);
+	if (
+		targets.some((target) =>
+			target.style.getPropertyValue('--md-sys-color-primary-light'),
+		)
+	) {
+		for (const color of colors) {
+			for (const target of targets) {
+				const token = getToken(color);
+				target?.style.removeProperty(`--md-sys-color-${token}-light`);
+				target?.style.removeProperty(`--md-sys-color-${token}-dark`);
+			}
 		}
+		mdLog(targets[0], 'Material design system colors removed.', true);
 	}
-	mdLog(targets[0], 'Material design system colors removed.', true);
 }
