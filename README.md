@@ -151,7 +151,11 @@ With the Material Expressive update, Material Design 3 now has new specification
 
 #### Platform
 
-Material Expressive also comes with two platform options when using the 2025 color specification - `Phone` and `Watch`. While you probably want to keep this at the default `Phone` setting, you have the ability to choose. Note that the `Watch` platform does not work well with light mode.
+The 2025 color specification has two platform options - `Phone` and `Watch`. While you probably want to keep this at the default `Phone` setting, you have the ability to choose. Note that the `Watch` platform does not work well with light mode.
+
+### Harmonize Semantic Colors
+
+Semantic colors, such as red, orange, warning, info, etc., are normally static and can appear visually displeasing with certain theme palettes. Enabling this option will hue shift semantic colors towards the theme primary color, helping them better match the theme.
 
 ### Styles
 
