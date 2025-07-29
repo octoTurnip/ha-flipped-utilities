@@ -56,6 +56,10 @@ export async function setBaseColorFromImage(args: IHandlerArguments) {
 				img.src = url;
 			} else {
 				const r = await hass.fetchWithAuth(url, { mode: 'cors' });
+				if (!r.ok) {
+					throw new Error(await r.text());
+				}
+
 				const blob = await r.blob();
 				img.src = URL.createObjectURL(blob);
 				url = r.url;

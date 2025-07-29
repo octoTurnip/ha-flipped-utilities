@@ -17,6 +17,7 @@ import { IHandlerArguments, InputField } from '../../models/interfaces/Input';
 import { querySelectorAsync } from '../async';
 import { getHomeAssistantMainAsync, getSchemeInfo, getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
+import { harmonize } from './harmonize';
 
 /* Generate and set theme colors based on user defined inputs */
 export async function setTheme(args: IHandlerArguments) {
@@ -83,11 +84,14 @@ export async function setTheme(args: IHandlerArguments) {
 						}
 					}
 				}
+
 				mdLog(
 					targets[0] as HTMLElement,
 					`Material design system colors updated.\nBase Color - ${values.base_color} | Scheme - ${schemeInfo.label} | Contrast Level - ${values.contrast} | Specification Version - ${values.spec} | Platform - ${(values.platform as string)[0].toUpperCase()}${(values.platform as string).slice(1)}`,
 					true,
 				);
+
+				harmonize(args);
 			} else {
 				await unsetTheme(args);
 			}

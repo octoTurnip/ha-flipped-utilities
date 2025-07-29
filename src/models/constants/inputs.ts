@@ -1,6 +1,7 @@
 import { setCardType } from '../../utils/handlers/cards';
 import { setTheme } from '../../utils/handlers/colors';
 import { setCSSFromFile } from '../../utils/handlers/css';
+import { harmonize } from '../../utils/handlers/harmonize';
 import { setBaseColorFromImage } from '../../utils/handlers/image';
 import { hideNavbar } from '../../utils/handlers/navbar';
 import { IInputInfo, InputDomain, InputField } from '../interfaces/Input';
@@ -141,6 +142,23 @@ export const inputs: Record<InputField, IInputInfo> = {
 			clearButton: true,
 		},
 		handler: setTheme,
+	},
+	harmonize: {
+		domain: 'input_boolean',
+		default: 'off',
+		name: 'Harmonize Semantic Colors',
+		init: {
+			config: {
+				icon: 'mdi:palette-swatch',
+			},
+		},
+		card: {
+			config: {
+				boolean: {},
+			},
+			tabBarIndex: 0,
+		},
+		handler: harmonize,
 	},
 
 	// Style options

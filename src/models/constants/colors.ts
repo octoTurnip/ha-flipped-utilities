@@ -67,6 +67,41 @@ export const colors: (keyof typeof MaterialDynamicColors)[] = [
 	'scrim',
 ];
 
+export const semanticColors: Record<string, string> = {
+	warning: '#ffa600',
+	success: '#43a047',
+	info: '#039be5',
+	energyGridConsumption: '#488fc2',
+	energyGridReturn: '#8353d1',
+	energySolar: '#ff9800',
+	energyNonFossil: '#0f9d58',
+	energyBatteryOut: '#4db6ac',
+	energyBatteryIn: '#f06292',
+	energyGas: '#8e021b',
+	energyWater: '#00bcd4',
+	red: '#f44336',
+	pink: '#e91e63',
+	purple: '#926bc7',
+	deepPurple: '#6e41ab',
+	indigo: '#3f51b5',
+	blue: '#2196f3',
+	lightBlue: '#03a9f4',
+	cyan: '#00bcd4',
+	teal: '#009688',
+	green: '#4caf50',
+	lightGreen: '#8bc34a',
+	lime: '#cddc39',
+	yellow: '#ffeb3b',
+	amber: '#ffc107',
+	orange: '#ff9800',
+	deepOrange: '#ff6f22',
+	brown: '#795548',
+	lightGrey: '#bdbdbd',
+	grey: '#9e9e9e',
+	darkGrey: '#606060',
+	blueGrey: '#607d8b',
+};
+
 export const schemes: IScheme[] = [
 	{
 		value: 'tonalspot',

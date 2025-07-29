@@ -11,6 +11,7 @@ export type InputField =
 	| 'contrast'
 	| 'spec'
 	| 'platform'
+	| 'harmonize'
 	| 'styles'
 	| 'card_type'
 	| 'css_file'

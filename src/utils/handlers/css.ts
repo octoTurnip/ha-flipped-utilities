@@ -4,6 +4,7 @@ import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';
 import { getTargets } from './colors';
+import { harmonize } from './harmonize';
 import { loadStyles } from './styles';
 
 const styleId = `${THEME_TOKEN}-user-styles`;
@@ -29,6 +30,9 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 			} else {
 				r = await hass.fetchWithAuth(url, { mode: 'cors' });
 			}
+			if (!r.ok) {
+				throw new Error(await r.text());
+			}
 			const styles = loadStyles(await r.text());
 
 			// Add style link to targets
@@ -50,6 +54,14 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 					target.appendChild(style);
 				}
 			}
+
+			// Harmonize if styles includes changes to primary color
+			if (
+				styles.includes('--primary-color') ||
+				styles.includes('--md-sys-color-primary')
+			) {
+				harmonize(args);
+			}
 		} else {
 			unsetCSSFromFile(args);
 		}
@@ -65,13 +77,14 @@ async function unsetCSSFromFile(args: IHandlerArguments) {
 	let log = false;
 	for (const target0 of targets) {
 		const target = target0.shadowRoot || target0;
-		const link = target.querySelector(`#${styleId}`);
-		if (link) {
+		const style = target.querySelector(`#${styleId}`);
+		if (style) {
 			log = true;
-			target.removeChild(link);
+			target.removeChild(style);
 		}
 	}
 	if (log) {
 		mdLog(targets[0], 'CSS styles from file removed.', true);
 	}
+	harmonize(args);
 }

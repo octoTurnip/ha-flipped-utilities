@@ -121,7 +121,7 @@ export class MaterialYouConfigCard extends LitElement {
 						data.option = inputs[field as InputField].default;
 						break;
 					case 'input_boolean':
-						service = 'turn_on';
+						service = `turn_${inputs[field as InputField].default}`;
 						break;
 					default:
 						break;
