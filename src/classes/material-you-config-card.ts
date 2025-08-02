@@ -322,6 +322,7 @@ export class MaterialYouConfigCard extends LitElement {
 		const icon = this.hass.states[entityId]?.attributes.icon;
 
 		return html`
+			<pre class="description">${inputs[field].description}</pre>
 			<div class="more-info button">
 				<ha-icon
 					@click=${this.handleMoreInfoClick}
@@ -587,6 +588,7 @@ export class MaterialYouConfigCard extends LitElement {
 		return css`
 			:host {
 				width: var(--width);
+				font-family: var(--font-family);
 			}
 
 			.card-content {
@@ -683,6 +685,7 @@ export class MaterialYouConfigCard extends LitElement {
 				align-items: center;
 				color: var(--color);
 				cursor: pointer;
+				user-select: none;
 				-webkit-tap-highlight-color: transparent;
 			}
 			.button::after {
@@ -747,6 +750,43 @@ export class MaterialYouConfigCard extends LitElement {
 			}
 			.delete {
 				--color: var(--error-color);
+			}
+
+			.description {
+				position: absolute;
+				translate: 40px -40px;
+				background: var(--md-sys-color-surface-container, #1e1f25);
+				box-shadow: var(--md-sys-elevation-level2);
+				border-radius: var(--md-sys-shape-corner-medium, 12px);
+				color: var(--md-sys-color-on-surface-variant, #c6c6d0);
+				font-family: var(--font-family);
+				font-size: var(--md-sys-typescale-body-medium-size, 14px);
+				font-weight: var(--md-sys-typescale-body-medium-weight, 400);
+				line-height: var(
+					--md-sys-typescale-body-medium-line-height,
+					20px
+				);
+				letter-spacing: var(
+					--md-sys-typescale-body-medium-tracking,
+					0.25px
+				);
+				margin: 0;
+				padding: 12px 16px 8px;
+				max-width: calc(var(--width) - 64px);
+				white-space: pre-wrap;
+				z-index: 2;
+				pointer-events: none;
+				opacity: 0;
+				transition: opacity 150ms linear;
+			}
+			.description:has(+ .more-info:hover) {
+				opacity: 1;
+			}
+			@media (width < 450px) {
+				.description {
+					translate: 0 -40px;
+					max-width: calc(var(--width) - 24px);
+				}
 			}
 		`;
 	}

@@ -28,6 +28,7 @@ export interface IInputInfo {
 	domain: InputDomain;
 	default: string | number;
 	name: string;
+	description: string;
 	init: {
 		config: Record<string, any>;
 	};

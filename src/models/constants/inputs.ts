@@ -20,6 +20,8 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_text',
 		default: '#4C5C92',
 		name: 'Base Color',
+		description: `The color from which the theme is derived.
+It usually does not appear in the theme itself.`,
 		init: {
 			config: {
 				icon: 'mdi:palette',
@@ -34,6 +36,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_number',
 		default: 0,
 		name: 'Contrast Level',
+		description: 'The contrast/brightness of the theme colors.',
 		init: {
 			config: {
 				icon: 'mdi:contrast-circle',
@@ -60,6 +63,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: 'tonalspot',
 		name: 'Scheme Name',
+		description: 'The color palette used to generate the theme.',
 		init: {
 			config: {
 				icon: 'mdi:palette-advanced',
@@ -81,6 +85,9 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: '2021',
 		name: 'Specification Version',
+		description: `The palette rules to use for the scheme.
+2021 is the original Material You palettes.
+2025 is the Material Expressive palettes.`,
 		init: {
 			config: {
 				icon: 'mdi:calendar-multiple',
@@ -102,6 +109,8 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: 'phone',
 		name: 'Platform',
+		description: `The target platform for the theme.
+Not available for the 2021 spec.`,
 		init: {
 			config: {
 				icon: 'mdi:devices',
@@ -128,6 +137,8 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_boolean',
 		default: 'on',
 		name: 'Style Upgrades',
+		description:
+			'Enable global style upgrades for components to follow the Material Design 3 specifications.',
 		init: {
 			config: {
 				icon: 'mdi:material-design',
@@ -145,6 +156,8 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_select',
 		default: 'elevated',
 		name: 'Card Type',
+		description: `Which card variant to use as the default for Home Assistant cards.
+Does not apply to cards that are explicitly set to outlined like in settings.`,
 		init: {
 			config: {
 				icon: 'mdi:card',
@@ -171,6 +184,8 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_boolean',
 		default: 'on',
 		name: 'Show Navigation Bar',
+		description: `Show/hide the navigation bar at the bottom of views.
+Does not restore the default Home Assistant navigation bar.`,
 		init: {
 			config: {
 				icon: 'mdi:navigation',
@@ -190,6 +205,8 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_boolean',
 		default: 'off',
 		name: 'Harmonize Semantic Colors',
+		description:
+			'Adjust static/semantic colors to be closer in hue to the theme primary color.',
 		init: {
 			config: {
 				icon: 'mdi:palette-swatch',
@@ -207,6 +224,8 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_text',
 		default: '',
 		name: 'Base Color Source Image Path/URL',
+		description: `Path/URL to an image to extract the base color from.
+Use a query string like ?i=1 (between 0 and 3 inclusive) to choose alternate color options.`,
 		init: {
 			config: {
 				icon: 'mdi:image',
@@ -226,6 +245,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 		domain: 'input_text',
 		default: '',
 		name: 'CSS Path/URL',
+		description: `Path/URL to a CSS file to apply to the page and iframe roots for defining custom properties.`,
 		init: {
 			config: {
 				icon: 'mdi:language-css3',
