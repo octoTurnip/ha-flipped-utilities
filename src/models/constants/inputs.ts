@@ -15,7 +15,7 @@ export const services: Record<InputDomain, string> = {
 };
 
 export const inputs: Record<InputField, IInputInfo> = {
-	// Color options
+	// Theme options
 	base_color: {
 		domain: 'input_text',
 		default: '#4C5C92',
@@ -27,52 +27,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 				max: 9,
 			},
 		},
-		card: { config: {}, tabBarIndex: 0, clearButton: true },
-		handler: setTheme,
-	},
-	image_url: {
-		domain: 'input_text',
-		default: '',
-		name: 'Image Path/URL',
-		init: {
-			config: {
-				icon: 'mdi:image',
-				min: 0,
-				max: 255,
-			},
-		},
-		card: {
-			config: {
-				text: {},
-			},
-			tabBarIndex: 0,
-		},
-		handler: setBaseColorFromImage,
-	},
-	contrast: {
-		domain: 'input_number',
-		default: 0,
-		name: 'Contrast Level',
-		init: {
-			config: {
-				icon: 'mdi:contrast-circle',
-				min: -1,
-				max: 1,
-				step: 0.1,
-			},
-		},
-		card: {
-			config: {
-				number: {
-					min: -1,
-					max: 1,
-					step: 0.1,
-					mode: 'slider',
-					slider_ticks: true,
-				},
-			},
-			tabBarIndex: 0,
-		},
+		card: { config: {}, tabBarIndex: 0, resetButton: true },
 		handler: setTheme,
 	},
 	scheme: {
@@ -114,7 +69,6 @@ export const inputs: Record<InputField, IInputInfo> = {
 				},
 			},
 			tabBarIndex: 0,
-			clearButton: true,
 		},
 		handler: setTheme,
 	},
@@ -139,26 +93,34 @@ export const inputs: Record<InputField, IInputInfo> = {
 				},
 			},
 			tabBarIndex: 0,
-			clearButton: true,
 		},
 		handler: setTheme,
 	},
-	harmonize: {
-		domain: 'input_boolean',
-		default: 'off',
-		name: 'Harmonize Semantic Colors',
+	contrast: {
+		domain: 'input_number',
+		default: 0,
+		name: 'Contrast Level',
 		init: {
 			config: {
-				icon: 'mdi:palette-swatch',
+				icon: 'mdi:contrast-circle',
+				min: -1,
+				max: 1,
+				step: 0.1,
 			},
 		},
 		card: {
 			config: {
-				boolean: {},
+				number: {
+					min: -1,
+					max: 1,
+					step: 0.1,
+					mode: 'slider',
+					slider_ticks: true,
+				},
 			},
 			tabBarIndex: 0,
 		},
-		handler: harmonize,
+		handler: setTheme,
 	},
 
 	// Style options
@@ -205,25 +167,6 @@ export const inputs: Record<InputField, IInputInfo> = {
 		},
 		handler: setCardType,
 	},
-	css_file: {
-		domain: 'input_text',
-		default: '',
-		name: 'CSS Path/URL',
-		init: {
-			config: {
-				icon: 'mdi:language-css3',
-				min: 0,
-				max: 255,
-			},
-		},
-		card: {
-			config: {
-				text: {},
-			},
-			tabBarIndex: 1,
-		},
-		handler: setCSSFromFile,
-	},
 	navbar: {
 		domain: 'input_boolean',
 		default: 'on',
@@ -240,5 +183,62 @@ export const inputs: Record<InputField, IInputInfo> = {
 			tabBarIndex: 1,
 		},
 		handler: hideNavbar,
+	},
+
+	// Color options
+	harmonize: {
+		domain: 'input_boolean',
+		default: 'off',
+		name: 'Harmonize Semantic Colors',
+		init: {
+			config: {
+				icon: 'mdi:palette-swatch',
+			},
+		},
+		card: {
+			config: {
+				boolean: {},
+			},
+			tabBarIndex: 2,
+		},
+		handler: harmonize,
+	},
+	image_url: {
+		domain: 'input_text',
+		default: '',
+		name: 'Base Color Source Image Path/URL',
+		init: {
+			config: {
+				icon: 'mdi:image',
+				min: 0,
+				max: 255,
+			},
+		},
+		card: {
+			config: {
+				text: {},
+			},
+			tabBarIndex: 2,
+		},
+		handler: setBaseColorFromImage,
+	},
+	css_file: {
+		domain: 'input_text',
+		default: '',
+		name: 'CSS Path/URL',
+		init: {
+			config: {
+				icon: 'mdi:language-css3',
+				min: 0,
+				max: 255,
+			},
+		},
+		card: {
+			config: {
+				text: {},
+			},
+			tabBarIndex: 2,
+		},
+		handler: setCSSFromFile,
 	},
 };

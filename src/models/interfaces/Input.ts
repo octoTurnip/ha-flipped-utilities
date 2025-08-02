@@ -6,16 +6,16 @@ export type InputDomain =
 
 export type InputField =
 	| 'base_color'
-	| 'image_url'
 	| 'scheme'
-	| 'contrast'
 	| 'spec'
 	| 'platform'
-	| 'harmonize'
+	| 'contrast'
 	| 'styles'
 	| 'card_type'
-	| 'css_file'
-	| 'navbar';
+	| 'navbar'
+	| 'harmonize'
+	| 'image_url'
+	| 'css_file';
 
 export interface IHandlerArguments {
 	targets?: HTMLElement[];
@@ -34,7 +34,7 @@ export interface IInputInfo {
 	card: {
 		tabBarIndex: number;
 		config: Record<string, any>;
-		clearButton?: boolean;
+		resetButton?: boolean;
 	};
 	handler: Handler;
 }

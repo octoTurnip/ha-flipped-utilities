@@ -29,7 +29,7 @@ export class MaterialYouConfigCard extends LitElement {
 	@property() dataId?: string;
 
 	@state() tabBarIndex: number = 0;
-	tabs = ['colors', 'styles'];
+	tabs = ['theme', 'styles', 'other'];
 
 	personEntityId?: string;
 	darkMode?: boolean;
@@ -243,8 +243,8 @@ export class MaterialYouConfigCard extends LitElement {
 				.replace('button', '')
 				.trim();
 			switch (className) {
-				case 'clear':
-					handler = this.handleClearClick;
+				case 'reset':
+					handler = this.handleResetClick;
 					break;
 				case 'more-info':
 				default:
@@ -260,7 +260,7 @@ export class MaterialYouConfigCard extends LitElement {
 		}
 	}
 
-	async handleClearClick(e: MouseEvent, target?: HTMLElement) {
+	async handleResetClick(e: MouseEvent, target?: HTMLElement) {
 		const field = ((e.target as HTMLElement) ?? target).getAttribute(
 			'field',
 		) as InputField;
@@ -288,15 +288,15 @@ export class MaterialYouConfigCard extends LitElement {
 		this.requestUpdate();
 	}
 
-	buildClearButton(field: InputField) {
+	buildResetButton(field: InputField) {
 		return html`
-			<div class="clear button">
+			<div class="reset button">
 				<ha-icon
-					@click=${this.handleClearClick}
+					@click=${this.handleResetClick}
 					@keydown=${this.handleKeyDown}
 					tabindex="0"
 					field="${field}"
-					.icon="${'mdi:close'}"
+					.icon="${'mdi:restore'}"
 				></ha-icon>
 			</div>
 		`;
@@ -374,7 +374,7 @@ export class MaterialYouConfigCard extends LitElement {
 						<div class="label secondary">
 							${value || inputs[field].default}
 						</div>
-						${this.buildClearButton(field)}
+						${this.buildResetButton(field)}
 					</div>
 				</div>
 			</div>`;
@@ -391,7 +391,7 @@ export class MaterialYouConfigCard extends LitElement {
 
 		return html`${this.buildMoreInfoButton(field)}
 		${this.buildSelector(inputs[field].name, field, config, value)}
-		${inputs[field].card.clearButton ? this.buildClearButton(field) : ''}`;
+		${inputs[field].card.resetButton ? this.buildResetButton(field) : ''}`;
 	}
 
 	setupIds() {
@@ -547,7 +547,8 @@ export class MaterialYouConfigCard extends LitElement {
 
 				/* Scale the disk color picker relative to saturation arc */
 				#diskPanel {
-					scale: 1.25;
+					scale: 1.3;
+					top: 4px;
 				}
 
 				/* Fix ugly square tap shadows */
@@ -593,6 +594,7 @@ export class MaterialYouConfigCard extends LitElement {
 				flex-direction: column;
 				padding: 16px;
 				margin: 0;
+				gap: 20px;
 			}
 			.subtitle {
 				margin-top: -24px;
@@ -636,7 +638,6 @@ export class MaterialYouConfigCard extends LitElement {
 			.row {
 				display: flex;
 				align-items: flex-end;
-				margin-bottom: 20px;
 			}
 			.row:empty {
 				display: none;
@@ -708,7 +709,7 @@ export class MaterialYouConfigCard extends LitElement {
 			.button:has(ha-icon:focus-visible)::after {
 				opacity: var(--mdc-ripple-hover-opacity, 0.04);
 			}
-			.clear {
+			.reset {
 				height: var(--button-size);
 				width: var(--button-size);
 				margin: 10px;
@@ -726,7 +727,7 @@ export class MaterialYouConfigCard extends LitElement {
 				--mdc-icon-size: 24px;
 			}
 			.more-info::after,
-			.clear::after {
+			.reset::after {
 				width: var(--button-size);
 			}
 			.create,
