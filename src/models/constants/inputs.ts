@@ -30,6 +30,32 @@ export const inputs: Record<InputField, IInputInfo> = {
 		card: { config: {}, tabBarIndex: 0, resetButton: true },
 		handler: setTheme,
 	},
+	contrast: {
+		domain: 'input_number',
+		default: 0,
+		name: 'Contrast Level',
+		init: {
+			config: {
+				icon: 'mdi:contrast-circle',
+				min: -1,
+				max: 1,
+				step: 0.1,
+			},
+		},
+		card: {
+			config: {
+				number: {
+					min: -1,
+					max: 1,
+					step: 0.1,
+					mode: 'slider',
+					slider_ticks: true,
+				},
+			},
+			tabBarIndex: 0,
+		},
+		handler: setTheme,
+	},
 	scheme: {
 		domain: 'input_select',
 		default: 'tonalspot',
@@ -90,32 +116,6 @@ export const inputs: Record<InputField, IInputInfo> = {
 						{ value: 'phone', label: 'Phone' },
 						{ value: 'watch', label: 'Watch' },
 					],
-				},
-			},
-			tabBarIndex: 0,
-		},
-		handler: setTheme,
-	},
-	contrast: {
-		domain: 'input_number',
-		default: 0,
-		name: 'Contrast Level',
-		init: {
-			config: {
-				icon: 'mdi:contrast-circle',
-				min: -1,
-				max: 1,
-				step: 0.1,
-			},
-		},
-		card: {
-			config: {
-				number: {
-					min: -1,
-					max: 1,
-					step: 0.1,
-					mode: 'slider',
-					slider_ticks: true,
 				},
 			},
 			tabBarIndex: 0,
