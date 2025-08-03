@@ -381,6 +381,36 @@ export class MaterialYouConfigCard extends LitElement {
 			</div>`;
 		}
 
+		let extra: TemplateResult | string = '';
+		if (field == 'harmonize') {
+			extra = html`<div class="row semantic-colors">
+				${[
+					'pink',
+					'red',
+					'deep-orange',
+					'orange',
+					'amber',
+					'yellow',
+					'lime',
+					'light-green',
+					'green',
+					'teal',
+					'cyan',
+					'light-blue',
+					'blue',
+					'indigo',
+					'deep-purple',
+					'purple',
+				].map(
+					(color) =>
+						html`<div
+							class="semantic-color"
+							style="background: var(--${color}-color)"
+						></div>`,
+				)}
+			</div>`;
+		}
+
 		let config = inputs[field].card.config;
 		if (inputs[field].domain == 'input_number') {
 			config.min = this.hass.states[entityId]?.attributes?.min ?? -1;
@@ -391,7 +421,7 @@ export class MaterialYouConfigCard extends LitElement {
 		}
 
 		return html`${this.buildMoreInfoButton(field)}
-		${this.buildSelector(inputs[field].name, field, config, value)}
+		${this.buildSelector(inputs[field].name, field, config, value)}${extra}
 		${inputs[field].card.resetButton ? this.buildResetButton(field) : ''}`;
 	}
 
@@ -770,7 +800,6 @@ export class MaterialYouConfigCard extends LitElement {
 					--md-sys-typescale-body-medium-tracking,
 					0.25px
 				);
-				margin: 0;
 				padding: 12px 16px 8px;
 				max-width: calc(var(--width) - 64px);
 				white-space: pre-wrap;
@@ -787,6 +816,19 @@ export class MaterialYouConfigCard extends LitElement {
 					translate: 0 -40px;
 					max-width: calc(var(--width) - 24px);
 				}
+			}
+
+			.semantic-colors {
+				position: absolute;
+				width: calc(100% - 44px);
+				margin: 0 12px;
+				translate: 0 12px;
+				border-radius: 4px;
+				overflow: hidden;
+			}
+			.semantic-color {
+				flex: 1;
+				height: 20px;
 			}
 		`;
 	}
