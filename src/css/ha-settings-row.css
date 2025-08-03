@@ -1,0 +1,4 @@
+/* Fix slot size for switches */
+.content {
+	min-width: min-content;
+}
