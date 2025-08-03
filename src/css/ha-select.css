@@ -1,0 +1,4 @@
+/* Fix top corners */
+.mdc-select__anchor {
+	border-radius: var(--md-sys-shape-corner-extra-small-top);
+}

@@ -1,9 +1,9 @@
-/* Soften corners on textbox */
-.mdc-text-field__input {
-	border-radius: var(--md-sys-shape-corner-extra-small);
+/* Fix top corners */
+.mdc-text-field {
+	border-radius: var(--md-sys-shape-corner-extra-small-top);
 }
 
-/* Fix ha-textfield cursor when used for color */
+/* Fix cursor when used for color */
 :host([type='color']) label,
 :host([type='color']) .mdc-text-field__input {
 	cursor: pointer;
