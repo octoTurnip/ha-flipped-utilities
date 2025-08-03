@@ -81,7 +81,7 @@ The third tab is for device specific settings. You can setup input helpers speci
 
 ## Settings Cards
 
-Each settings card has the same fields for users, devices, and global settings. Setting are divided into two tabs - colors and styles.
+Each settings card has the same fields for users, devices, and global settings. Setting are divided into three tabs - theme, styles, and other.
 
 ### Colors
 
@@ -117,12 +117,6 @@ actions:
       entity_id: input_text.material_you_base_color
 ```
 
-#### Image Path/URL
-
-Instead of explicitly defining your theme base color, you can instead provide the local path or external URL to an image in this input. This image can be hosted on your Home Assistant server in the `config/www` folder or be from an external website ([with CORS approval](https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/CORS_enabled_image)). A set of up to four possible base colors will be derived from this image from you to choose from and set to the base color field. You can choose between the possible options by appending the query string `?i=` to the end of your image path or URL, setting i to a number between 0 and 3 inclusive.
-
-Note that changing image file by itself but not changing the name will not trigger a color theme update. Color theme generation triggers on first page load, when an input's value changes, or (admin only) when a set theme action is called.
-
 #### Contrast Level
 
 The contrast level is a number from -1 to 1 which defines how much colors in the theme will differ and how bright they are.
@@ -153,10 +147,6 @@ With the Material Expressive update, Material Design 3 now has new specification
 
 The 2025 color specification has two platform options - `Phone` and `Watch`. While you probably want to keep this at the default `Phone` setting, you have the ability to choose. Note that the `Watch` platform does not work well with light mode.
 
-### Harmonize Semantic Colors
-
-Semantic colors, such as red, orange, warning, info, etc., are normally static and can appear visually displeasing with certain theme palettes. Enabling this option will hue shift semantic colors towards the theme primary color, helping them better match the theme.
-
 ### Styles
 
 #### Style Upgrades
@@ -169,13 +159,25 @@ The Material Design 3 specification has [three different card type style variati
 
 Some cards, like those found in the configuration pages, already have the attribute `outlined`. This attribute will supersede the default `elevated` card style or user chosen card type.
 
-#### CSS Path/URL
-
-You can choose to provide your own CSS styles in a file and then provide the local path or external URL in this input. This CSS file can be hosted on your Home Assistant server in the `config/www` folder or be from an external website. This is useful for applying more in depth custom themes created using [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/), or if you just want to override certain theme values.
-
 #### Show Navigation Bar
 
 You can choose to disable the navigation bar shown in views by toggling this setting off. This is useful if you want to use an alternate view navigation system such as [Navbar Card](https://github.com/joseluis9595/lovelace-navbar-card). Note that this does not disable navigation bar styles and restore the default view tabs, it hides them entirely.
+
+### Other
+
+#### Harmonize Semantic Colors
+
+Semantic colors, such as red, orange, warning, info, etc., are normally static and can appear visually displeasing with certain theme palettes. Enabling this option will hue shift semantic colors towards the theme primary color, helping them better match the theme.
+
+#### Base Color Source Image Path/URL
+
+Instead of explicitly defining your theme base color, you can instead provide the local path or external URL to an image in this input. This image can be hosted on your Home Assistant server in the `config/www` folder or be from an external website ([with CORS approval](https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/CORS_enabled_image)). A set of up to four possible base colors will be derived from this image from you to choose from and set to the base color field. You can choose between the possible options by appending the query string `?i=` to the end of your image path or URL, setting i to a number between 0 and 3 inclusive.
+
+Note that changing image file by itself but not changing the name will not trigger a color theme update. Color theme generation triggers on first page load, when an input's value changes, or (admin only) when a set theme action is called.
+
+#### CSS Path/URL
+
+You can choose to provide your own CSS styles in a file and then provide the local path or external URL in this input. This CSS file can be hosted on your Home Assistant server in the `config/www` folder or be from an external website. This is useful for applying more in depth custom themes created using [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/), or if you just want to override certain theme values.
 
 ## Theme Mode FAB
 
