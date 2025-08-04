@@ -32,7 +32,7 @@ export function getEntityIdAndValue(
 		const entityId = getEntityId(field, id);
 		const value = hass.states[entityId]?.state?.trim();
 
-		if (value != undefined) {
+		if (value != undefined && value != 'unknown') {
 			result.entityId = entityId;
 			result.value = value;
 			break;
