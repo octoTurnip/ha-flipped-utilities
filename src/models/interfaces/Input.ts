@@ -44,3 +44,41 @@ export interface ISubscription {
 	inputs: InputField[];
 	handler: Handler;
 }
+
+interface RegistryEntry {
+	created_at: number;
+	modified_at: number;
+}
+
+export interface LabelRegistryEntryMutableParams {
+	name: string;
+	icon?: string;
+	color?: string;
+	description?: string;
+}
+export interface LabelRegistryEntry
+	extends RegistryEntry,
+		LabelRegistryEntryMutableParams {
+	label_id: string;
+}
+
+export interface EntityRegistryEntryUpdateParams {
+	name?: string;
+	icon?: string;
+	device_class?: string;
+	area_id?: string;
+	disabled_by?: string;
+	hidden_by: string;
+	new_entity_id?: string;
+	options_domain?: string;
+	// options?:
+	// 	| SensorEntityOptions
+	// 	| NumberEntityOptions
+	// 	| LockEntityOptions
+	// 	| AlarmControlPanelEntityOptions
+	// 	| WeatherEntityOptions
+	// 	| LightEntityOptions;
+	aliases?: string[];
+	labels?: string[];
+	categories?: Record<string, string | null>;
+}

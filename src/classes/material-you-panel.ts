@@ -4,8 +4,9 @@ import packageInfo from '../../package.json';
 import { HomeAssistant } from '../models/interfaces';
 import './material-you-config-card';
 
-import { THEME_NAME } from '../models/constants/theme';
+import { THEME, THEME_NAME } from '../models/constants/theme';
 import { buildAlertBox } from '../utils/common';
+import { createLabelRegistryEntry, fetchLabelRegistry } from '../utils/panel';
 
 export class MaterialYouPanel extends LitElement {
 	@property() hass!: HomeAssistant;
@@ -21,6 +22,7 @@ export class MaterialYouPanel extends LitElement {
 
 	people: string[] = [];
 	devices: string[] = [];
+	labelSetup: boolean = false;
 
 	buildHeader() {
 		const moduleVersion = packageInfo.version;
@@ -121,8 +123,24 @@ export class MaterialYouPanel extends LitElement {
 		}
 	}
 
+	async setupLabel() {
+		if (!this.labelSetup) {
+			this.labelSetup = true;
+			const labels = await fetchLabelRegistry(this.hass.connection);
+			if (!labels.some((label) => label.label_id == THEME)) {
+				createLabelRegistryEntry(this.hass, {
+					name: 'Material You',
+					icon: 'mdi:material-design',
+					color: 'indigo',
+					description: `Input helpers for ${THEME_NAME} Utilities.`,
+				});
+			}
+		}
+	}
+
 	render() {
 		this.setupIds();
+		this.setupLabel();
 
 		if (!this.hass.user?.is_admin) {
 			this.tabBarIndex = 0;

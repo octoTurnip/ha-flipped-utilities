@@ -1,5 +1,11 @@
+import { Connection } from 'home-assistant-js-websocket';
 import { HomeAssistant, IConfirmation } from '../models/interfaces';
-import { InputDomain } from '../models/interfaces/Input';
+import {
+	EntityRegistryEntryUpdateParams,
+	InputDomain,
+	LabelRegistryEntry,
+	LabelRegistryEntryMutableParams,
+} from '../models/interfaces/Input';
 
 /**
  * Create an input entity
@@ -13,7 +19,7 @@ export async function createInput(
 	type: InputDomain,
 	config: Record<string, any>,
 ): Promise<Record<string, any>> {
-	return hass.callWS({
+	return await hass.callWS({
 		type: `${type}/create`,
 		...config,
 	});
@@ -32,7 +38,7 @@ export async function updateInput(
 	id: string,
 	config: Record<string, any>,
 ): Promise<Record<string, any>> {
-	return hass.callWS({
+	return await hass.callWS({
 		type: `${domain}/update`,
 		[`${domain}_id`]: id,
 		...config,
@@ -50,9 +56,57 @@ export async function deleteInput(
 	domain: InputDomain,
 	id: string,
 ) {
-	hass.callWS({
+	await hass.callWS({
 		type: `${domain}/delete`,
 		[`${domain}_id`]: id,
+	});
+}
+
+/**
+ * Fetch label registry
+ * @param {Connection} conn
+ * @returns {LabelRegistryEntry[]} labels
+ */
+export async function fetchLabelRegistry(
+	conn: Connection,
+): Promise<LabelRegistryEntry[]> {
+	const labels = (await conn.sendMessagePromise({
+		type: 'config/label_registry/list',
+	})) as LabelRegistryEntry[];
+	labels.sort((ent1, ent2) => ent1.name.localeCompare(ent2.name));
+	return labels;
+}
+
+/**
+ * Create label registry entry
+ * @param {HomeAssistant} hass
+ * @param {LabelRegistryEntryMutableParams} values
+ */
+export async function createLabelRegistryEntry(
+	hass: HomeAssistant,
+	values: LabelRegistryEntryMutableParams,
+) {
+	await hass.callWS({
+		type: 'config/label_registry/create',
+		...values,
+	});
+}
+
+/**
+ * Update entity registry entry
+ * @param {HomeAssistant} hass
+ * @param {string} entityId
+ * @param {Partial<EntityRegistryEntryUpdateParams} updates
+ */
+export async function updateEntityRegistryEntry(
+	hass: HomeAssistant,
+	entityId: string,
+	updates: Partial<EntityRegistryEntryUpdateParams>,
+) {
+	await hass.callWS({
+		type: 'config/entity_registry/update',
+		entity_id: entityId,
+		...updates,
 	});
 }
 

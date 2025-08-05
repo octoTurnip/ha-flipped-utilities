@@ -23,8 +23,6 @@ export async function harmonize(args: IHandlerArguments) {
 	const targets = args.targets ?? (await getTargets());
 
 	try {
-		const html = document.querySelector('html');
-
 		const themeName = hass?.themes?.theme ?? '';
 		if (themeName.includes(THEME_NAME)) {
 			const value =
@@ -37,7 +35,7 @@ export async function harmonize(args: IHandlerArguments) {
 
 			// Get base color
 			const baseColorHex =
-				getComputedStyle(html as HTMLElement).getPropertyValue(
+				getComputedStyle(targets[0]).getPropertyValue(
 					'--primary-color',
 				) || (inputs.base_color.default as string);
 			let baseColorArgb: number;

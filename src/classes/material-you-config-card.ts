@@ -1,7 +1,7 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { inputs, services } from '../models/constants/inputs';
-import { THEME_NAME, THEME_TOKEN } from '../models/constants/theme';
+import { THEME, THEME_NAME, THEME_TOKEN } from '../models/constants/theme';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
 import { buildAlertBox, getEntityId } from '../utils/common';
@@ -14,6 +14,7 @@ import {
 	createInput,
 	deleteInput,
 	handleConfirmation,
+	updateEntityRegistryEntry,
 	updateInput,
 } from '../utils/panel';
 import { setupSubscriptions } from '../utils/subscriptions';
@@ -127,6 +128,10 @@ export class MaterialYouConfigCard extends LitElement {
 						break;
 				}
 				await this.hass.callService(domain, service, data);
+
+				await updateEntityRegistryEntry(this.hass, entityId, {
+					labels: [THEME],
+				});
 			}
 		}
 
