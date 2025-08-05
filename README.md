@@ -183,7 +183,7 @@ Note that changing image file by itself but not changing the name will not trigg
 
 #### CSS Path/URL
 
-You can choose to provide your own CSS styles in a file and then provide the local path or external URL in this input. This CSS file can be hosted on your Home Assistant server in the `config/www` folder or be from an external website. This is useful for applying more in depth custom themes created using [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/), or if you just want to override certain theme values.
+You can choose to provide your own CSS styles in a file and then provide the local path or external URL in this input. This CSS file can be hosted on your Home Assistant server in the `config/www` folder or be from an external website. This is useful for applying more in depth custom themes created using [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/), or if you just want to override certain theme custom attributes. For maximum coverage use the selector `:host, html, body` for maximum effectiveness across Home Assistant, iframes, and configuration panel settings cards.
 
 ## Theme Mode FAB
 
