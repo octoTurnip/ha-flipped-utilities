@@ -4,15 +4,22 @@ import {
 	Blend,
 	hexFromArgb,
 } from '@material/material-color-utilities';
-import { getEntityIdAndValue, getTargets } from '.';
+import {
+	applyStyles,
+	buildStylesString,
+	getEntityIdAndValue,
+	getTargets,
+} from '.';
 import { paletteColors, semanticColors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
-import { THEME_NAME } from '../../models/constants/theme';
+import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
 import { setPalette, unsetPalette } from './palettes';
+
+const STYLE_ID = `${THEME_TOKEN}-harmonized-colors`;
 
 /**
  * Harmonize semantic colors to be closer to the base color
@@ -51,6 +58,7 @@ export async function harmonize(args: IHandlerArguments) {
 				baseColorArgb = argbFromHex(baseColorHex);
 			}
 
+			const styles: Record<string, string> = {};
 			for (const color in semanticColors) {
 				const harmonizedColor = hexFromArgb(
 					Blend.harmonize(
@@ -60,15 +68,14 @@ export async function harmonize(args: IHandlerArguments) {
 				);
 
 				const token = getToken(color);
-				for (const target of targets) {
-					target.style.setProperty(
-						`--md-sys-color-${token}`,
-						harmonizedColor,
-					);
-				}
+				styles[`--md-sys-color-${token}`] = harmonizedColor;
 			}
 
-			await setPalette(paletteColors, targets);
+			for (const target of targets) {
+				applyStyles(target, STYLE_ID, buildStylesString(styles));
+			}
+
+			await setPalette(targets, paletteColors);
 
 			mdLog(targets[0], 'Semantic colors harmonized.', true);
 		} else {
@@ -83,20 +90,20 @@ export async function harmonize(args: IHandlerArguments) {
 
 async function dissonance(args: IHandlerArguments) {
 	const targets = args.targets ?? (await getTargets());
-	if (
-		targets.some((target) =>
-			target.style.getPropertyValue('--md-sys-color-red'),
-		)
-	) {
-		for (const color in semanticColors) {
-			for (const target of targets) {
-				const token = getToken(color);
-				target?.style.removeProperty(`--md-sys-color-${token}`);
-			}
+
+	let log = false;
+	for (const target0 of targets) {
+		const target = target0.shadowRoot || target0;
+		const style = target.querySelector(`#${STYLE_ID}`);
+		if (style) {
+			log = true;
+			target.removeChild(style);
 		}
+	}
 
-		await unsetPalette(paletteColors, targets);
-
+	if (log) {
 		mdLog(targets[0], 'Harmonized colors removed.', true);
 	}
+
+	await unsetPalette(targets);
 }

@@ -4,9 +4,9 @@ import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';
 import { harmonize } from './harmonize';
-import { loadStyles } from './styles';
+import { applyStyles, loadStyles } from './styles';
 
-const styleId = `${THEME_TOKEN}-user-styles`;
+const STYLE_ID = `${THEME_TOKEN}-user-styles`;
 
 export async function setCSSFromFile(args: IHandlerArguments) {
 	const hass = (document.querySelector('home-assistant') as HassElement).hass;
@@ -35,23 +35,8 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 			const styles = loadStyles(await r.text());
 
 			// Add style link to targets
-			for (const target0 of targets) {
-				const target = target0.shadowRoot || target0;
-
-				let hasStyleTag = true;
-				let style = target.querySelector(
-					`#${styleId}`,
-				) as HTMLStyleElement;
-				if (!style) {
-					hasStyleTag = false;
-					style = document.createElement('style');
-					style.id = styleId;
-				}
-
-				style.textContent = styles;
-				if (!hasStyleTag) {
-					target.appendChild(style);
-				}
+			for (const target of targets) {
+				applyStyles(target, STYLE_ID, styles);
 			}
 
 			// Harmonize if styles includes changes to primary color
@@ -76,7 +61,7 @@ async function unsetCSSFromFile(args: IHandlerArguments) {
 	let log = false;
 	for (const target0 of targets) {
 		const target = target0.shadowRoot || target0;
-		const style = target.querySelector(`#${styleId}`);
+		const style = target.querySelector(`#${STYLE_ID}`);
 		if (style) {
 			log = true;
 			target.removeChild(style);

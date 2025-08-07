@@ -4,9 +4,9 @@ import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';
-import { loadStyles } from './styles';
+import { applyStyles, loadStyles } from './styles';
 
-const styleId = `${THEME_TOKEN}-navbar`;
+const STYLE_ID = `${THEME_TOKEN}-navbar`;
 
 /** Hide the navigation bar */
 export async function hideNavbar(args: IHandlerArguments) {
@@ -22,13 +22,7 @@ export async function hideNavbar(args: IHandlerArguments) {
 			}
 
 			const html = document.querySelector('html') as HTMLElement;
-			let style = html.querySelector(`#${styleId}`);
-			if (!style) {
-				style = document.createElement('style');
-				style.id = styleId;
-				html.appendChild(style);
-			}
-			style.textContent = loadStyles(hideNavigationBar);
+			applyStyles(html, STYLE_ID, loadStyles(hideNavigationBar));
 
 			mdLog(html, 'Navigation bar hidden.', true);
 		} else {
@@ -43,7 +37,7 @@ export async function hideNavbar(args: IHandlerArguments) {
 
 async function showNavbar() {
 	const html = document.querySelector('html') as HTMLElement;
-	const style = html?.querySelector(`#${styleId}`);
+	const style = html?.querySelector(`#${STYLE_ID}`);
 	if (style) {
 		html?.removeChild(style);
 		mdLog(html, 'Navigation bar unhidden.', true);

@@ -8,10 +8,15 @@ import {
 } from '@material/material-color-utilities';
 
 import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
-import { getEntityIdAndValue, getTargets } from '.';
+import {
+	applyStyles,
+	buildStylesString,
+	getEntityIdAndValue,
+	getTargets,
+} from '.';
 import { materialDynamicColors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
-import { THEME_NAME } from '../../models/constants/theme';
+import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments, InputField } from '../../models/interfaces/Input';
 import { querySelectorAsync } from '../async';
@@ -19,6 +24,8 @@ import { getSchemeInfo, getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
 import { harmonize } from './harmonize';
 import { setPalette, unsetPalette } from './palettes';
+
+const STYLE_ID = `${THEME_TOKEN}-theme`;
 
 /* Generate and set theme colors based on user defined inputs */
 export async function setTheme(args: IHandlerArguments) {
@@ -61,6 +68,7 @@ export async function setTheme(args: IHandlerArguments) {
 
 				const schemeInfo = getSchemeInfo(values.scheme as string);
 
+				const styles: Record<string, string> = {};
 				for (const mode of ['light', 'dark']) {
 					const scheme = new schemeInfo.class(
 						Hct.fromInt(argbFromHex(values.base_color as string)),
@@ -77,15 +85,18 @@ export async function setTheme(args: IHandlerArguments) {
 							).getArgb(scheme),
 						);
 						const token = getToken(color);
-						for (const target of targets) {
-							target.style.setProperty(
-								`--md-sys-color-${token}-${mode}`,
-								hex,
-							);
-						}
+						styles[`--md-sys-color-${token}-${mode}`] = hex;
 					}
 
-					await setPalette(['primary'], targets);
+					for (const target of targets) {
+						applyStyles(
+							target,
+							STYLE_ID,
+							buildStylesString(styles),
+						);
+					}
+
+					await setPalette(targets, ['primary']);
 				}
 
 				mdLog(
@@ -132,5 +143,5 @@ async function unsetTheme(args: IHandlerArguments) {
 		mdLog(targets[0], 'Material design system colors removed.', true);
 	}
 
-	unsetPalette(['primary'], targets);
+	unsetPalette(targets);
 }

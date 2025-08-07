@@ -5,6 +5,7 @@ import { THEME, THEME_NAME, THEME_TOKEN } from '../models/constants/theme';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
 import { buildAlertBox, getEntityId } from '../utils/common';
+import { applyStyles, buildStylesString } from '../utils/handlers';
 import { setCardType } from '../utils/handlers/cards';
 import { setTheme } from '../utils/handlers/colors';
 import { setCSSFromFile } from '../utils/handlers/css';
@@ -23,14 +24,15 @@ if (!customElements.get('disk-color-picker')) {
 	require('disk-color-picker');
 }
 
-const styleId = `${THEME_TOKEN}-theme`;
-
 export class MaterialYouConfigCard extends LitElement {
 	@property() hass!: HomeAssistant;
 	@property() dataId?: string;
 
 	@state() tabBarIndex: number = 0;
 	tabs = ['theme', 'styles', 'other'];
+
+	THEME_ID = `${THEME_TOKEN}-theme`;
+	MODE_ID = `${THEME_TOKEN}-mode`;
 
 	personEntityId?: string;
 	darkMode?: boolean;
@@ -443,24 +445,16 @@ export class MaterialYouConfigCard extends LitElement {
 	applyThemeMode() {
 		if (this.darkMode != this.hass.themes?.darkMode) {
 			this.darkMode = this.hass.themes?.darkMode;
-
-			const style = this.shadowRoot?.getElementById(styleId);
-			if (style) {
-				const styles: string[] = [];
-				for (const [key, value] of Object.entries(
-					this.hass.themes?.themes[THEME_NAME].modes?.[
-						this.darkMode ? 'dark' : 'light'
-					] ?? {},
-				)) {
-					styles.push(`--${key}: ${value};`);
-				}
-
-				style.textContent = `
-					:host {
-						${styles.join('\n')}
-					}
-				`;
+			const mode =
+				this.hass.themes?.themes[THEME_NAME].modes?.[
+					this.darkMode ? 'dark' : 'light'
+				] ?? {};
+			const styles: Record<string, string> = {};
+			for (const [key, value] of Object.entries(mode)) {
+				styles[`--${key}`] = value as string;
 			}
+
+			applyStyles(this, this.MODE_ID, buildStylesString(styles));
 		}
 	}
 
@@ -532,7 +526,7 @@ export class MaterialYouConfigCard extends LitElement {
 						</div>`
 					: ''}
 			</ha-card>
-			<style id="${styleId}"></style>
+			<style id="${this.MODE_ID}"></style>
 		`;
 	}
 
@@ -543,9 +537,11 @@ export class MaterialYouConfigCard extends LitElement {
 			delete theme.modes;
 			const entries = Object.entries(theme);
 			if (entries.length) {
+				const styles: Record<string, string> = {};
 				for (const [key, value] of entries) {
-					this.style.setProperty(`--${key}`, value);
+					styles[`--${key}`] = value;
 				}
+				applyStyles(this, this.THEME_ID, buildStylesString(styles));
 				return;
 			}
 			setTimeout(() => applyTheme(), 100);
@@ -570,11 +566,15 @@ export class MaterialYouConfigCard extends LitElement {
 		this.applyThemeMode();
 
 		// Disk color picker style tweaks
-		const colorPicker = this.shadowRoot?.querySelector('disk-color-picker');
+		const styleId = `${THEME_TOKEN}-theme`;
+		const colorPicker = this.shadowRoot?.querySelector(
+			'disk-color-picker',
+		) as HTMLElement;
 		if (colorPicker && !colorPicker.shadowRoot?.getElementById(styleId)) {
-			const style = document.createElement('style');
-			style.id = styleId;
-			style.textContent = `
+			applyStyles(
+				colorPicker,
+				styleId,
+				`
 				/* Shift color picker down */
 				:host {
 					height: 248px;
@@ -593,8 +593,8 @@ export class MaterialYouConfigCard extends LitElement {
 				#wheelThumb {
 					-webkit-tap-highlight-color: transparent;
 				}
-			`;
-			colorPicker.shadowRoot?.appendChild(style);
+			`,
+			);
 		}
 	}
 

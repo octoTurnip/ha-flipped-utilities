@@ -68,20 +68,47 @@ export function loadStyles(styles: string): string {
 }
 
 /**
+ * Build styles tag textContent string from object
+ * @param {Record<string, string>} styles
+ * @returns {string}
+ */
+export function buildStylesString(styles: Record<string, string>): string {
+	return `:host,html,body{${loadStyles(
+		Object.entries(styles)
+			.map(([key, value]) => `${key}: ${value};`)
+			.join('\n'),
+	)}}`;
+}
+
+/**
  * Apply styles to custom elements
  * @param {HTMLElement} element
  */
-function applyStyles(element: HTMLElement) {
+function applyStylesToShadowRoot(element: HTMLElement) {
 	checkTheme();
 	const shadowRoot = element.shadowRoot;
 	if (shouldSetStyles && shadowRoot && !hasStyles(element)) {
-		const style = document.createElement('style');
-		style.id = THEME_TOKEN;
-		style.textContent = loadStyles(
-			elements[element.nodeName.toLowerCase()],
+		applyStyles(
+			shadowRoot,
+			THEME_TOKEN,
+			loadStyles(elements[element.nodeName.toLowerCase()]),
 		);
-		shadowRoot.appendChild(style);
 	}
+}
+
+export function applyStyles(
+	target: HTMLElement | ShadowRoot,
+	id: string,
+	styles: string,
+) {
+	target = (target as HTMLElement).shadowRoot || target;
+	let style = target.querySelector(`#${id}`);
+	if (!style) {
+		style = document.createElement('style');
+		style.id = id;
+		target.appendChild(style);
+	}
+	style.textContent = styles;
 }
 
 const observeAll = {
@@ -103,7 +130,7 @@ function observeThenApplyStyles(element: HTMLElement) {
 		} else if (element.shadowRoot) {
 			if (element.shadowRoot.children.length) {
 				// Shadow-root exists and is populated, apply styles
-				applyStyles(element);
+				applyStylesToShadowRoot(element);
 				observer.disconnect();
 			} else {
 				// Shadow-root exists but is empty, observe it
@@ -125,7 +152,7 @@ function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
 		if (element.shadowRoot?.children.length) {
 			// Apply styles if not present
 			if (!hasStyles(element)) {
-				applyStyles(element);
+				applyStylesToShadowRoot(element);
 			}
 			return;
 		}
@@ -155,9 +182,9 @@ async function applyExplicitStyles(ms: number = 10) {
 			haMain.shadowRoot as ShadowRoot,
 			'ha-drawer',
 		);
-		applyStyles(ha);
-		applyStyles(haMain);
-		applyStyles(haDrawer);
+		applyStylesToShadowRoot(ha);
+		applyStylesToShadowRoot(haMain);
+		applyStylesToShadowRoot(haDrawer);
 	}
 
 	// Quit if delay is more than 20 seconds

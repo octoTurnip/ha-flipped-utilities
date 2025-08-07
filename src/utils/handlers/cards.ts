@@ -4,9 +4,9 @@ import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';
-import { loadStyles } from './styles';
+import { applyStyles, loadStyles } from './styles';
 
-const styleId = `${THEME_TOKEN}-card-type`;
+const STYLE_ID = `${THEME_TOKEN}-card-type`;
 
 /** Change ha-card styles to match the selected card type */
 export async function setCardType(args: IHandlerArguments) {
@@ -23,21 +23,8 @@ export async function setCardType(args: IHandlerArguments) {
 				return;
 			}
 
-			for (const target0 of targets) {
-				const target = target0.shadowRoot || target0;
-
-				let hasStyleTag = true;
-				let style = target.querySelector(`#${styleId}`);
-				if (!style) {
-					hasStyleTag = false;
-					style = document.createElement('style');
-					style.id = styleId;
-				}
-
-				style.textContent = loadStyles(cardTypes[value]);
-				if (!hasStyleTag) {
-					target.appendChild(style);
-				}
+			for (const target of targets) {
+				applyStyles(target, STYLE_ID, loadStyles(cardTypes[value]));
 			}
 
 			mdLog(
@@ -60,7 +47,7 @@ async function unsetCardType(args: IHandlerArguments) {
 	let log = false;
 	for (const target0 of targets) {
 		const target = target0.shadowRoot || target0;
-		const style = target.querySelector(`#${styleId}`);
+		const style = target.querySelector(`#${STYLE_ID}`);
 		if (style) {
 			log = true;
 			target.removeChild(style);
