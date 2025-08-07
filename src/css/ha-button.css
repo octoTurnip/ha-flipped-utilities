@@ -1,7 +1,7 @@
 /* Fix success/error overflow button border radius */
 :host {
-	border-radius: var(--ha-button-border-radius);
-	overflow: hidden;
+	/* border-radius: var(--ha-button-border-radius);
+	overflow: hidden; */
 
 	--mdc-icon-size: 20px;
 }
@@ -22,12 +22,14 @@
 	margin-inline-start: 8px;
 }
 
-/* Redefine colors to tokens */
+/* Redefine colors to tokens, change border-radius on interaction */
 .button {
-	background-color: var(--button-background-color);
+	background-color: var(--ha-button-background-color);
+	border-radius: var(--ha-button-border-radius);
+	transition: border-radius var(--md-sys-motion-expressive-spatial-fast);
 }
 slot {
-	color: var(--button-text-color);
+	color: var(--ha-button-text-color);
 }
 
 /* State layer */
@@ -41,13 +43,21 @@ slot {
 	width: 100%;
 	z-index: 1;
 	opacity: 0;
-	transition: opacity var(--md-sys-motion-expressive-effects-default);
+	transition: opacity var(--md-sys-motion-expressive-effects-fast);
 	background-color: var(--state-layer-color);
+	border-radius: var(--ha-button-border-radius);
 }
 @media (hover: hover) {
+	.button:hover {
+		--ha-button-border-radius: var(--md-sys-shape-corner-small);
+	}
 	.button:hover::after {
 		opacity: 0.08;
 	}
+}
+.button.button:focus-visible,
+.button:active {
+	--ha-button-border-radius: var(--md-sys-shape-corner-small);
 }
 .button:focus-visible::after,
 .button:active::after {
@@ -56,22 +66,22 @@ slot {
 
 /* Accent -> Tonal */
 :host([appearance~='accent']) {
-	--button-background-color: var(--md-sys-color-secondary-container);
-	--button-text-color: var(--md-sys-color-on-secondary-container);
+	--ha-button-background-color: var(--md-sys-color-secondary-container);
+	--ha-button-text-color: var(--md-sys-color-on-secondary-container);
 	--state-layer-color: var(--md-sys-color-on-secondary-container);
 }
 
 /* Filled */
 :host([appearance~='filled']) {
-	--button-background-color: var(--md-sys-color-primary);
-	--button-text-color: var(--md-sys-color-on-primary);
+	--ha-button-background-color: var(--md-sys-color-primary);
+	--ha-button-text-color: var(--md-sys-color-on-primary);
 	--state-layer-color: var(--md-sys-color-on-primary);
 }
 
 /* Outlined */
 :host([appearance~='outlined']) {
-	--button-background-color: transparent;
-	--button-text-color: var(--md-sys-color-on-surface-variant);
+	--ha-button-background-color: transparent;
+	--ha-button-text-color: var(--md-sys-color-on-surface-variant);
 	--state-layer-color: var(--md-sys-color-on-surface-variant);
 }
 :host([appearance~='outlined']) .button {
@@ -82,8 +92,8 @@ slot {
 
 /* Plain -> Text */
 :host([appearance~='plain']) {
-	--button-background-color: transparent;
-	--button-text-color: var(--md-sys-color-primary);
+	--ha-button-background-color: transparent;
+	--ha-button-text-color: var(--md-sys-color-primary);
 	--state-layer-color: var(--md-sys-color-primary);
 }
 
