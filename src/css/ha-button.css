@@ -113,3 +113,23 @@ slot {
 :host([disabled]) .button:active::after {
 	opacity: 0;
 }
+
+/* Fix status variant colors */
+.success,
+:host([variant~='success']) {
+	--ha-button-background-color: var(--success-color);
+	--ha-button-text-color: var(--wa-color-on-loud);
+	--state-layer-color: var(--button-color-fill-loud-hover);
+}
+.warning,
+:host([variant~='warning']) {
+	--ha-button-background-color: var(--warning-color);
+	--ha-button-text-color: var(--wa-color-on-loud);
+	--state-layer-color: var(--button-color-fill-loud-hover);
+}
+.danger,
+:host([variant~='danger']) {
+	--ha-button-background-color: var(--error-color);
+	--ha-button-text-color: var(--on-error-color);
+	--state-layer-color: var(--on-error-color);
+}
