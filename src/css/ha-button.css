@@ -37,33 +37,33 @@ slot {
 }
 
 /* Accent -> Tonal */
-:host([appearance='accent']) {
+:host([appearance~='accent']) {
 	--button-background-color: var(--md-sys-color-secondary-container);
 	--button-text-color: var(--md-sys-color-on-secondary-container);
 	--state-layer-color: var(--md-sys-color-on-secondary-container);
 }
 
 /* Filled */
-:host([appearance='filled']) {
+:host([appearance~='filled']) {
 	--button-background-color: var(--md-sys-color-primary);
 	--button-text-color: var(--md-sys-color-on-primary);
 	--state-layer-color: var(--md-sys-color-on-primary);
 }
 
 /* Outlined */
-:host([appearance='outlined']) {
+:host([appearance~='outlined']) {
 	--button-background-color: transparent;
 	--button-text-color: var(--md-sys-color-on-surface-variant);
 	--state-layer-color: var(--md-sys-color-on-surface-variant);
 }
-:host([appearance='outlined']) .button {
+:host([appearance~='outlined']) .button {
 	border-color: var(--md-sys-color-outline-variant);
 	border-width: 1px;
 	border-style: solid;
 }
 
 /* Plain -> Text */
-:host([appearance='plain']) {
+:host([appearance~='plain']) {
 	--button-background-color: transparent;
 	--button-text-color: var(--md-sys-color-primary);
 	--state-layer-color: var(--md-sys-color-primary);
