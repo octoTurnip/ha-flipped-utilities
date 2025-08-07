@@ -1,9 +1,8 @@
-import { getEntityIdAndValue } from '.';
+import { getEntityIdAndValue, getTargets } from '.';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { debugToast, mdLog } from '../logging';
-import { getTargets } from './colors';
 import { harmonize } from './harmonize';
 import { loadStyles } from './styles';
 

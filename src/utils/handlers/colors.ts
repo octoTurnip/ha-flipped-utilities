@@ -8,16 +8,17 @@ import {
 } from '@material/material-color-utilities';
 
 import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
-import { getEntityIdAndValue } from '.';
+import { getEntityIdAndValue, getTargets } from '.';
 import { colors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
 import { THEME_NAME } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments, InputField } from '../../models/interfaces/Input';
 import { querySelectorAsync } from '../async';
-import { getHomeAssistantMainAsync, getSchemeInfo, getToken } from '../common';
+import { getSchemeInfo, getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
 import { harmonize } from './harmonize';
+import { setPalette, unsetPalette } from './palettes';
 
 /* Generate and set theme colors based on user defined inputs */
 export async function setTheme(args: IHandlerArguments) {
@@ -83,6 +84,8 @@ export async function setTheme(args: IHandlerArguments) {
 							);
 						}
 					}
+
+					setPalette('primary', targets);
 				}
 
 				mdLog(
@@ -111,26 +114,6 @@ export async function setTheme(args: IHandlerArguments) {
 	}
 }
 
-/**
- * Get targets to apply or remove theme colors to/from
- * @returns {HTMLElement[]} HTML Elements to apply/remove theme to/from
- */
-export async function getTargets(): Promise<HTMLElement[]> {
-	const targets: HTMLElement[] = [
-		(await querySelectorAsync(document, 'html')) as HTMLElement,
-	];
-
-	// Add-ons and HACS iframe
-	const ha = await getHomeAssistantMainAsync();
-	const iframe = ha.shadowRoot
-		?.querySelector('iframe')
-		?.contentWindow?.document?.querySelector('body');
-	if (iframe) {
-		targets.push(iframe);
-	}
-	return targets;
-}
-
 /* Remove theme colors */
 async function unsetTheme(args: IHandlerArguments) {
 	const targets = args.targets ?? (await getTargets());
@@ -148,4 +131,6 @@ async function unsetTheme(args: IHandlerArguments) {
 		}
 		mdLog(targets[0], 'Material design system colors removed.', true);
 	}
+
+	unsetPalette('primary', targets);
 }

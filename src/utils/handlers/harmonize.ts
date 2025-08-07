@@ -4,7 +4,7 @@ import {
 	Blend,
 	hexFromArgb,
 } from '@material/material-color-utilities';
-import { getEntityIdAndValue } from '.';
+import { getEntityIdAndValue, getTargets } from '.';
 import { semanticColors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
 import { THEME_NAME } from '../../models/constants/theme';
@@ -12,7 +12,6 @@ import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
-import { getTargets } from './colors';
 
 /**
  * Harmonize semantic colors to be closer to the base color
