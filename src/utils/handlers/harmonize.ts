@@ -5,13 +5,14 @@ import {
 	hexFromArgb,
 } from '@material/material-color-utilities';
 import { getEntityIdAndValue, getTargets } from '.';
-import { semanticColors } from '../../models/constants/colors';
+import { paletteColors, semanticColors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
 import { THEME_NAME } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
 import { getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
+import { setPalette, unsetPalette } from './palettes';
 
 /**
  * Harmonize semantic colors to be closer to the base color
@@ -67,6 +68,8 @@ export async function harmonize(args: IHandlerArguments) {
 				}
 			}
 
+			await setPalette(paletteColors, targets);
+
 			mdLog(targets[0], 'Semantic colors harmonized.', true);
 		} else {
 			await dissonance(args);
@@ -91,6 +94,9 @@ async function dissonance(args: IHandlerArguments) {
 				target?.style.removeProperty(`--md-sys-color-${token}`);
 			}
 		}
+
+		await unsetPalette(paletteColors, targets);
+
 		mdLog(targets[0], 'Harmonized colors removed.', true);
 	}
 }

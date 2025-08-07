@@ -12,7 +12,7 @@ import {
 } from '@material/material-color-utilities';
 import { IScheme } from '../interfaces/Scheme';
 
-export const colors: (keyof typeof MaterialDynamicColors)[] = [
+export const materialDynamicColors: (keyof typeof MaterialDynamicColors)[] = [
 	'primary',
 	'onPrimary',
 	'primaryContainer',
@@ -101,6 +101,13 @@ export const semanticColors: Record<string, string> = {
 	darkGrey: '#606060',
 	blueGrey: '#607d8b',
 };
+
+export const paletteColors: string[] = [
+	// 'neutral',
+	'orange',
+	'red',
+	'green',
+];
 
 export const schemes: IScheme[] = [
 	{
