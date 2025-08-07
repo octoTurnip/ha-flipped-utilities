@@ -1,13 +1,6 @@
-/* Fix success/error overflow button border radius */
-:host {
-	/* border-radius: var(--ha-button-border-radius);
-	overflow: hidden; */
-
-	--mdc-icon-size: 20px;
-}
-
 /* Label */
 .label {
+	font-family: var(--font-family);
 	font-size: var(--md-sys-typescale-label-large-size);
 	font-weight: var(--md-sys-typescale-label-large-weight);
 	line-height: var(--md-sys-typescale-label-large-line-height);
@@ -22,14 +15,16 @@
 	margin-inline-start: 8px;
 }
 
-/* Redefine colors to tokens, change border-radius on interaction */
+/* Redefine colors to tokens, change border-radius on interaction, icon size */
 .button {
 	background-color: var(--ha-button-background-color);
 	border-radius: var(--ha-button-border-radius);
 	transition: border-radius var(--md-sys-motion-expressive-spatial-fast);
+
+	--mdc-icon-size: 20px;
 }
 slot {
-	color: var(--ha-button-text-color);
+	color: var(--inherited-text-color, var(--ha-button-text-color));
 }
 
 /* State layer */
