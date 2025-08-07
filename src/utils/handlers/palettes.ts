@@ -3,7 +3,9 @@ import {
 	hexFromArgb,
 	TonalPalette,
 } from '@material/material-color-utilities';
+import { getTargets, unset } from '.';
 import { THEME_TOKEN } from '../../models/constants/theme';
+import { IHandlerArguments } from '../../models/interfaces/Input';
 import { getToken } from '../common';
 import { applyStyles, buildStylesString } from './styles';
 
@@ -11,7 +13,8 @@ const TONES = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95];
 const STYLE_ID = `${THEME_TOKEN}-palettes`;
 
 /* Set palette based on color */
-export async function setPalette(targets: HTMLElement[], colors: string[]) {
+export async function setPalette(args: IHandlerArguments, colors: string[]) {
+	const targets = args.targets ?? (await getTargets());
 	const style = getComputedStyle(targets[0]);
 
 	const styles: Record<string, string> = {};
@@ -33,12 +36,6 @@ export async function setPalette(targets: HTMLElement[], colors: string[]) {
 }
 
 /* Remove palette */
-export async function unsetPalette(targets: HTMLElement[]) {
-	for (const target0 of targets) {
-		const target = target0.shadowRoot || target0;
-		const style = target.querySelector(`#${STYLE_ID}`);
-		if (style) {
-			target.removeChild(style);
-		}
-	}
+export async function unsetPalette(args: IHandlerArguments) {
+	await unset(args, STYLE_ID);
 }

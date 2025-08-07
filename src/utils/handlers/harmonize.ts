@@ -9,6 +9,7 @@ import {
 	buildStylesString,
 	getEntityIdAndValue,
 	getTargets,
+	unset,
 } from '.';
 import { paletteColors, semanticColors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
@@ -75,7 +76,7 @@ export async function harmonize(args: IHandlerArguments) {
 				applyStyles(target, STYLE_ID, buildStylesString(styles));
 			}
 
-			await setPalette(targets, paletteColors);
+			await setPalette(args, paletteColors);
 
 			mdLog(targets[0], 'Semantic colors harmonized.', true);
 		} else {
@@ -89,21 +90,6 @@ export async function harmonize(args: IHandlerArguments) {
 }
 
 async function dissonance(args: IHandlerArguments) {
-	const targets = args.targets ?? (await getTargets());
-
-	let log = false;
-	for (const target0 of targets) {
-		const target = target0.shadowRoot || target0;
-		const style = target.querySelector(`#${STYLE_ID}`);
-		if (style) {
-			log = true;
-			target.removeChild(style);
-		}
-	}
-
-	if (log) {
-		mdLog(targets[0], 'Harmonized colors removed.', true);
-	}
-
-	await unsetPalette(targets);
+	await unset(args, STYLE_ID, 'Harmonized colors removed.');
+	await unsetPalette(args);
 }

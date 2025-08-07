@@ -1,7 +1,8 @@
 import { HassElement } from '../../models/interfaces';
-import { InputField } from '../../models/interfaces/Input';
+import { IHandlerArguments, InputField } from '../../models/interfaces/Input';
 import { querySelectorAsync } from '../async';
 import { getEntityId, getHomeAssistantMainAsync } from '../common';
+import { mdLog } from '../logging';
 
 export * from './cards';
 export * from './colors';
@@ -67,4 +68,25 @@ export async function getTargets(): Promise<HTMLElement[]> {
 		targets.push(iframe);
 	}
 	return targets;
+}
+
+/**
+ * Remove style tags from targets
+ * @param {IHandlerArguments} args Handler arguments with targets
+ * @param {string} id ID of the style tag to remove
+ */
+export async function unset(args: IHandlerArguments, id: string, log?: string) {
+	const targets = args.targets ?? (await getTargets());
+	let removed = false;
+	for (const target0 of targets) {
+		const target = target0.shadowRoot || target0;
+		const style = target.querySelector(`#${id}`);
+		if (style) {
+			removed = true;
+			target.removeChild(style);
+		}
+	}
+	if (removed && log) {
+		mdLog(targets[0], log, true);
+	}
 }

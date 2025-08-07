@@ -13,6 +13,7 @@ import {
 	buildStylesString,
 	getEntityIdAndValue,
 	getTargets,
+	unset,
 } from '.';
 import { materialDynamicColors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
@@ -96,7 +97,7 @@ export async function setTheme(args: IHandlerArguments) {
 						);
 					}
 
-					await setPalette(targets, ['primary']);
+					await setPalette(args, ['primary']);
 				}
 
 				mdLog(
@@ -127,21 +128,6 @@ export async function setTheme(args: IHandlerArguments) {
 
 /* Remove theme colors */
 async function unsetTheme(args: IHandlerArguments) {
-	const targets = args.targets ?? (await getTargets());
-	if (
-		targets.some((target) =>
-			target.style.getPropertyValue('--md-sys-color-primary-light'),
-		)
-	) {
-		for (const color of materialDynamicColors) {
-			for (const target of targets) {
-				const token = getToken(color);
-				target?.style.removeProperty(`--md-sys-color-${token}-light`);
-				target?.style.removeProperty(`--md-sys-color-${token}-dark`);
-			}
-		}
-		mdLog(targets[0], 'Material design system colors removed.', true);
-	}
-
-	unsetPalette(targets);
+	await unset(args, STYLE_ID, 'Material design system colors removed.');
+	await unsetPalette(args);
 }

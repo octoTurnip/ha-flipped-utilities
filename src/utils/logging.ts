@@ -8,13 +8,12 @@ export function mdLog(
 ) {
 	target =
 		target instanceof ShadowRoot ? (target.host as HTMLElement) : target;
+	const style = getComputedStyle(target);
 
 	const background =
-		target?.style?.getPropertyValue('--md-sys-color-primary-light') ||
-		'#4c5c92';
+		style?.getPropertyValue('--md-sys-color-primary-light') || '#4c5c92';
 	const color =
-		target?.style?.getPropertyValue('--md-sys-color-on-primary-light') ||
-		'#ffffff';
+		style?.getPropertyValue('--md-sys-color-on-primary-light') || '#ffffff';
 	const styles = `color: ${color}; background: ${background}; font-weight: bold; border-radius: 32px; padding: 0 8px;`;
 
 	console.info(`%c ${message} `, styles);

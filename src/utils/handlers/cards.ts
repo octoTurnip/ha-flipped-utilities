@@ -1,4 +1,4 @@
-import { getEntityIdAndValue, getTargets } from '.';
+import { getEntityIdAndValue, getTargets, unset } from '.';
 import { cardTypes } from '../../css';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
@@ -43,17 +43,5 @@ export async function setCardType(args: IHandlerArguments) {
 }
 
 async function unsetCardType(args: IHandlerArguments) {
-	const targets = args.targets ?? (await getTargets());
-	let log = false;
-	for (const target0 of targets) {
-		const target = target0.shadowRoot || target0;
-		const style = target.querySelector(`#${STYLE_ID}`);
-		if (style) {
-			log = true;
-			target.removeChild(style);
-		}
-	}
-	if (log) {
-		mdLog(targets[0], 'Material design card type unset.', true);
-	}
+	await unset(args, STYLE_ID, 'Material design card type unset.');
 }

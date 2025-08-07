@@ -1,8 +1,8 @@
-import { getEntityIdAndValue, getTargets } from '.';
+import { getEntityIdAndValue, getTargets, unset } from '.';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
-import { debugToast, mdLog } from '../logging';
+import { debugToast } from '../logging';
 import { harmonize } from './harmonize';
 import { applyStyles, loadStyles } from './styles';
 
@@ -57,18 +57,6 @@ export async function setCSSFromFile(args: IHandlerArguments) {
 }
 
 async function unsetCSSFromFile(args: IHandlerArguments) {
-	const targets = args.targets ?? (await getTargets());
-	let log = false;
-	for (const target0 of targets) {
-		const target = target0.shadowRoot || target0;
-		const style = target.querySelector(`#${STYLE_ID}`);
-		if (style) {
-			log = true;
-			target.removeChild(style);
-		}
-	}
-	if (log) {
-		mdLog(targets[0], 'CSS styles from file removed.', true);
-	}
-	harmonize(args);
+	await unset(args, STYLE_ID, 'CSS styles from file removed.');
+	await harmonize(args);
 }
