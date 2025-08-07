@@ -2,6 +2,24 @@
 :host {
 	border-radius: var(--ha-button-border-radius);
 	overflow: hidden;
+
+	--mdc-icon-size: 20px;
+}
+
+/* Label */
+.label {
+	font-size: var(--md-sys-typescale-label-large-size);
+	font-weight: var(--md-sys-typescale-label-large-weight);
+	line-height: var(--md-sys-typescale-label-large-line-height);
+	letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+
+/* Icons */
+.start::slotted(*) {
+	margin-inline-end: 8px;
+}
+.end::slotted(*) {
+	margin-inline-start: 8px;
 }
 
 /* Redefine colors to tokens */
