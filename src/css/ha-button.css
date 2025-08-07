@@ -5,7 +5,7 @@
 }
 
 /* Redefine colors to tokens */
-button {
+.button {
 	background-color: var(--button-background-color);
 }
 slot {
@@ -13,7 +13,7 @@ slot {
 }
 
 /* State layer */
-button::after {
+.button::after {
 	content: '';
 	position: absolute;
 	pointer-events: none;
@@ -27,12 +27,12 @@ button::after {
 	background-color: var(--state-layer-color);
 }
 @media (hover: hover) {
-	button:hover::after {
+	.button:hover::after {
 		opacity: 0.08;
 	}
 }
-button:focus-visible::after,
-button:active::after {
+.button:focus-visible::after,
+.button:active::after {
 	opacity: 0.18;
 }
 
@@ -56,7 +56,7 @@ button:active::after {
 	--button-text-color: var(--md-sys-color-on-surface-variant);
 	--state-layer-color: var(--md-sys-color-on-surface-variant);
 }
-:host([appearance='outlined']) button {
+:host([appearance='outlined']) .button {
 	border-color: var(--md-sys-color-outline-variant);
 	border-width: 1px;
 	border-style: solid;
@@ -70,18 +70,18 @@ button:active::after {
 }
 
 /* Disabled */
-:host([disabled]) button {
+:host([disabled]) .button {
 	background-color: rgba(from var(--md-sys-color-on-surface) r g b / 0.1);
 }
 :host([disabled]) slot {
 	color: rgba(from var(--md-sys-color-on-surface) r g b / 0.38);
 }
 @media (hover: hover) {
-	:host([disabled]) button:hover::after {
+	:host([disabled]) .button:hover::after {
 		opacity: 0;
 	}
 }
-:host([disabled]) button:focus-visible::after,
-:host([disabled]) button:active::after {
+:host([disabled]) .button:focus-visible::after,
+:host([disabled]) .button:active::after {
 	opacity: 0;
 }
