@@ -7,9 +7,9 @@ import { InputField } from '../models/interfaces/Input';
 import { buildAlertBox, getEntityId } from '../utils/common';
 import { applyStyles, buildStylesString } from '../utils/handlers';
 import { setCardType } from '../utils/handlers/cards';
-import { setTheme } from '../utils/handlers/colors';
 import { setCSSFromFile } from '../utils/handlers/css';
 import { setBaseColorFromImage } from '../utils/handlers/image';
+import { setTheme } from '../utils/handlers/theme';
 import { showToast } from '../utils/logging';
 import {
 	createInput,

@@ -96,17 +96,16 @@ export async function setTheme(args: IHandlerArguments) {
 							buildStylesString(styles),
 						);
 					}
-
-					await setPalette(args, ['primary']);
 				}
+
+				await setPalette(args, ['primary']);
+				await harmonize(args);
 
 				mdLog(
 					targets[0] as HTMLElement,
 					`Material design system colors updated.\nBase Color - ${values.base_color} | Scheme - ${schemeInfo.label} | Contrast Level - ${values.contrast} | Specification Version - ${values.spec} | Platform - ${(values.platform as string)[0].toUpperCase()}${(values.platform as string).slice(1)}`,
 					true,
 				);
-
-				harmonize(args);
 			} else {
 				await unsetTheme(args);
 			}

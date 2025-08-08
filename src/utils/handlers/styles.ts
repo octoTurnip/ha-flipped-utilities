@@ -73,7 +73,7 @@ export function loadStyles(styles: string): string {
  * @returns {string}
  */
 export function buildStylesString(styles: Record<string, string>): string {
-	return `:host,html,body{${loadStyles(
+	return `:host,html,body,ha-card{${loadStyles(
 		Object.entries(styles)
 			.map(([key, value]) => `${key}: ${value};`)
 			.join('\n'),

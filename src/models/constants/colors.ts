@@ -103,6 +103,7 @@ export const semanticColors: Record<string, string> = {
 };
 
 export const paletteColors: string[] = [
+	'primary',
 	// 'neutral',
 	'orange',
 	'red',

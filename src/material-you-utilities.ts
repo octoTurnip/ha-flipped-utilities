@@ -6,11 +6,11 @@ import { THEME_NAME, THEME_TOKEN } from './models/constants/theme';
 import { getAsync, querySelectorAsync } from './utils/async';
 import { getHomeAssistantMainAsync } from './utils/common';
 import { setCardType } from './utils/handlers/cards';
-import { setTheme } from './utils/handlers/colors';
 import { setCSSFromFile } from './utils/handlers/css';
 import { setBaseColorFromImage } from './utils/handlers/image';
 import { hideNavbar } from './utils/handlers/navbar';
 import { setStyles } from './utils/handlers/styles';
+import { setTheme } from './utils/handlers/theme';
 import { mdLog } from './utils/logging';
 import { setupSubscriptions } from './utils/subscriptions';
 
@@ -29,7 +29,7 @@ async function main() {
 		`${THEME_NAME} Utilities v${packageInfo.version}`,
 	);
 
-	// Apply colors and styles on iframe when it's added
+	// Call handlers on iframe when it's added
 	const haMain = await getHomeAssistantMainAsync();
 	const observer = new MutationObserver(async (mutations) => {
 		for (const mutation of mutations) {
@@ -65,7 +65,7 @@ async function main() {
 	customElements.define(`${THEME_TOKEN}-config-card`, MaterialYouConfigCard);
 	customElements.define(`${THEME_TOKEN}-panel`, MaterialYouPanel);
 
-	// Set user theme colors and card type
+	// Call handlers on first load
 	const setOnFirstLoad = async (ms: number) => {
 		if (ms > 10000) {
 			return;
@@ -95,6 +95,16 @@ async function main() {
 		}
 	};
 	setOnFirstLoad(100);
+
+	// Call handlers on visibility change
+	document.addEventListener('visibilitychange', async () => {
+		if (!document.hidden) {
+			const handlers = [setTheme, setCardType, setCSSFromFile];
+			for (const handler of handlers) {
+				await handler({});
+			}
+		}
+	});
 
 	setupSubscriptions({});
 

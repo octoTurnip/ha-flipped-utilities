@@ -1,9 +1,9 @@
 import { setCardType } from '../../utils/handlers/cards';
-import { setTheme } from '../../utils/handlers/colors';
 import { setCSSFromFile } from '../../utils/handlers/css';
 import { harmonize } from '../../utils/handlers/harmonize';
 import { setBaseColorFromImage } from '../../utils/handlers/image';
 import { hideNavbar } from '../../utils/handlers/navbar';
+import { setTheme } from '../../utils/handlers/theme';
 import { IInputInfo, InputDomain, InputField } from '../interfaces/Input';
 import { schemes } from './colors';
 

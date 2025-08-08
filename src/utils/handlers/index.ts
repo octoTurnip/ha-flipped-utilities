@@ -5,10 +5,10 @@ import { getEntityId, getHomeAssistantMainAsync } from '../common';
 import { mdLog } from '../logging';
 
 export * from './cards';
-export * from './colors';
 export * from './image';
 export * from './navbar';
 export * from './styles';
+export * from './theme';
 
 /**
  * Get the highest priority entity ID and its value for a given field
