@@ -97,7 +97,7 @@ async function main() {
 	setOnFirstLoad(100);
 
 	// Call handlers on visibility change
-	document.addEventListener('visibilitychange', async () => {
+	window.addEventListener('visibilitychange', async () => {
 		if (!document.hidden) {
 			const handlers = [setTheme, setCardType, setCSSFromFile];
 			for (const handler of handlers) {
