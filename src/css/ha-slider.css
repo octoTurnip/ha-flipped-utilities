@@ -12,6 +12,7 @@
 }
 
 /* Animation */
+/* :host(:not(:has(.hover)))
 .track::before,
 .track::after,
 .handleContainer {
@@ -19,7 +20,7 @@
 		clip-path var(--md-sys-motion-expressive-spatial-default),
 		inset-inline-start var(--md-sys-motion-expressive-spatial-default),
 		inline-size var(--md-sys-motion-expressive-spatial-default);
-}
+} */
 
 /* Space around handle */
 .handleNub {
