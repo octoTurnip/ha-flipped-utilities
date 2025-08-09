@@ -726,12 +726,15 @@ export class MaterialYouConfigCard extends LitElement {
 			.button::after {
 				content: '';
 				position: absolute;
-				height: var(--button-size);
-				border-radius: var(--md-sys-shape-corner-full, 9999px);
+				height: var(--ha-button-height, 40px);
+				border-radius: var(--ha-button-border-radius, 20px);
 				background-color: var(--color);
 				pointer-events: none;
 				opacity: 0;
-				transition: opacity 15ms linear;
+				transition: var(
+					--md-sys-motion-expressive-effects-fast,
+					opacity 15ms linear
+				);
 			}
 			@media (hover: hover) {
 				.button:hover::after {
@@ -748,33 +751,34 @@ export class MaterialYouConfigCard extends LitElement {
 				opacity: var(--mdc-ripple-hover-opacity, 0.04);
 			}
 			.reset {
-				height: var(--button-size);
-				width: var(--button-size);
+				height: var(--ha-button-height, 40px);
+				width: var(--ha-button-height, 40px);
 				margin: 10px;
 				--color: var(--secondary-text-color);
-				--button-size: 36px;
+				--ha-button-height, 40px: 36px;
 				--mdc-icon-size: 20px;
 			}
 			.more-info {
-				height: var(--button-size);
-				width: var(--button-size);
-				min-width: var(--button-size);
+				height: var(--ha-button-height, 40px);
+				width: var(--ha-button-height, 40px);
+				min-width: var(--ha-button-height, 40px);
 				margin: 8px 4px;
 				--color: var(--state-icon-color);
-				--button-size: 40px;
+				--ha-button-height, 40px: 40px;
 				--mdc-icon-size: 24px;
 			}
 			.more-info::after,
 			.reset::after {
-				width: var(--button-size);
+				width: var(--ha-button-height, 40px);
 			}
 			.create,
 			.delete {
 				margin: 0 8px;
-				height: var(--button-size);
+				height: var(--ha-button-height, 40px);
 				width: 100px;
-				border-radius: var(--md-sys-shape-corner-full, 9999px);
-				--button-size: 36px;
+				border-radius: var(--ha-button-border-radius);
+				transition: border-radius var(--md-sys-motion-expressive-spatial-fast)
+				--ha-button-height, 40px: 36px;
 			}
 			.create::after,
 			.delete::after {
@@ -785,6 +789,18 @@ export class MaterialYouConfigCard extends LitElement {
 			}
 			.delete {
 				--color: var(--error-color);
+			}
+			@media (hover: hover) {
+				.create:hover,
+				.delete:hover {
+					--ha-button-border-radius: var(--md-sys-shape-corner-small, 8px);
+				}
+			}
+			.create:focus-visible,
+			.delete:focus-visible,
+			.create:active,
+			.delete:active {
+				--ha-button-border-radius: var(--md-sys-shape-corner-small, 8px);
 			}
 
 			.description {

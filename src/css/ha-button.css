@@ -54,7 +54,7 @@ slot {
 		opacity: 0.08;
 	}
 }
-.button.button:focus-visible,
+.button:focus-visible,
 .button:active {
 	--ha-button-border-radius: var(--md-sys-shape-corner-small);
 }
