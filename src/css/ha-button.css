@@ -17,7 +17,10 @@
 
 /* Redefine colors to tokens, change border-radius on interaction, icon size */
 .button {
-	background-color: var(--ha-button-background-color);
+	background-color: var(
+		--inherited-background-color,
+		var(--ha-button-background-color)
+	);
 	border-radius: var(--ha-button-border-radius);
 	transition: border-radius var(--md-sys-motion-expressive-spatial-fast);
 	-webkit-tap-highlight-color: transparent;
