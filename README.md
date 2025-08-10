@@ -340,7 +340,7 @@ Uses on surface variant colors.
 
 Uses primary colors with no background or outline.
 
-<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/text-button.png" width="500"/>
+<img src="https://raw.githubusercontent.com/Nerwyn/material-you-utilities/expressive/assets/text-button.png" width="200"/>
 
 #### Notes
 
