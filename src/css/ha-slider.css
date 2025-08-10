@@ -12,8 +12,7 @@
 }
 
 /* Animation */
-/* :host(:not(:has(.hover)))
-.track::before,
+/* .track::before,
 .track::after,
 .handleContainer {
 	transition:

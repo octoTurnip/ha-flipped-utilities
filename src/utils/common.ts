@@ -1,3 +1,4 @@
+import { argbFromHex, argbFromRgb } from '@material/material-color-utilities';
 import { inputs } from '../models/constants/inputs';
 import { THEME } from '../models/constants/theme';
 import { HassElement } from '../models/interfaces';
@@ -81,4 +82,34 @@ export async function getTargets(): Promise<HTMLElement[]> {
 		targets.push(iframe);
 	}
 	return targets;
+}
+
+/**
+ * Retrieve color from styles and convert to ARGB number
+ * @param {string} property CSS property name
+ * @param {CSSStyleDeclaration} style computed CSS style
+ * @returns {number} ARGB color
+ */
+export function getARGBColor(
+	property: string,
+	style: CSSStyleDeclaration,
+): number {
+	const color = style.getPropertyValue(property);
+
+	if (color.startsWith('#')) {
+		return argbFromHex(color);
+	}
+
+	if (color.startsWith('rgb')) {
+		const [r, g, b] = color
+			.replace('rgb(', '')
+			.replace('rgba(', '')
+			.replace(')', '')
+			.replace(/ /g, ',')
+			.split(',')
+			.map((c) => parseInt(c));
+		return argbFromRgb(r, g, b);
+	}
+
+	return argbFromHex(inputs.base_color.default as string);
 }

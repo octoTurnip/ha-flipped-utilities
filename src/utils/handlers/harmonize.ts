@@ -1,16 +1,19 @@
 import {
 	argbFromHex,
-	argbFromRgb,
 	Blend,
 	hexFromArgb,
 } from '@material/material-color-utilities';
 import { applyStyles, buildStylesString, unset } from '.';
 import { paletteColors, semanticColors } from '../../models/constants/colors';
-import { inputs } from '../../models/constants/inputs';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
-import { getEntityIdAndValue, getTargets, getToken } from '../common';
+import {
+	getARGBColor,
+	getEntityIdAndValue,
+	getTargets,
+	getToken,
+} from '../common';
 import { debugToast, mdLog } from '../logging';
 import { setPalette, unsetPalette } from './palettes';
 
@@ -35,30 +38,16 @@ export async function harmonize(args: IHandlerArguments) {
 				return;
 			}
 
-			// Get base color
-			const baseColorHex =
-				getComputedStyle(targets[0]).getPropertyValue(
-					'--primary-color',
-				) || (inputs.base_color.default as string);
-			let baseColorArgb: number;
-			if (baseColorHex.startsWith('rgb')) {
-				const [r, g, b] = baseColorHex
-					.replace('rgb(', '')
-					.replace(')', '')
-					.replace(/ /g, ',')
-					.split(',')
-					.map((c) => parseInt(c));
-				baseColorArgb = argbFromRgb(r, g, b);
-			} else {
-				baseColorArgb = argbFromHex(baseColorHex);
-			}
-
+			const baseColor = getARGBColor(
+				'--primary-color',
+				getComputedStyle(document.querySelector('html') as HTMLElement),
+			);
 			const styles: Record<string, string> = {};
 			for (const color in semanticColors) {
 				const harmonizedColor = hexFromArgb(
 					Blend.harmonize(
 						argbFromHex(semanticColors[color]),
-						baseColorArgb,
+						baseColor,
 					),
 				);
 

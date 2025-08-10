@@ -1,12 +1,8 @@
-import {
-	argbFromHex,
-	hexFromArgb,
-	TonalPalette,
-} from '@material/material-color-utilities';
+import { hexFromArgb, TonalPalette } from '@material/material-color-utilities';
 import { unset } from '.';
 import { THEME_TOKEN } from '../../models/constants/theme';
 import { IHandlerArguments } from '../../models/interfaces/Input';
-import { getTargets, getToken } from '../common';
+import { getARGBColor, getTargets, getToken } from '../common';
 import { debugToast } from '../logging';
 import { applyStyles, buildStylesString } from './styles';
 
@@ -25,8 +21,8 @@ export async function setPalette(args: IHandlerArguments, colors: string[]) {
 		const styles: Record<string, string> = {};
 		for (const color of colors) {
 			let token = `--${getToken(color)}-color`;
-			const baseColor = style.getPropertyValue(token);
-			const palette = TonalPalette.fromInt(argbFromHex(baseColor));
+			const baseColor = getARGBColor(token, style);
+			const palette = TonalPalette.fromInt(baseColor);
 			token = `--md-sys-color-${getToken(color)}`;
 			for (const tone of TONES) {
 				const prop = `${token}-${tone.toString().padStart(2, '0')}`;
