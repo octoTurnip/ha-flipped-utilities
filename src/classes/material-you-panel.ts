@@ -5,8 +5,11 @@ import { HomeAssistant } from '../models/interfaces';
 import './material-you-config-card';
 
 import { THEME, THEME_NAME } from '../models/constants/theme';
-import { buildAlertBox } from '../utils/common';
-import { createLabelRegistryEntry, fetchLabelRegistry } from '../utils/panel';
+import {
+	buildAlertBox,
+	createLabelRegistryEntry,
+	fetchLabelRegistry,
+} from '../utils/panel';
 
 export class MaterialYouPanel extends LitElement {
 	@property() hass!: HomeAssistant;

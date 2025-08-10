@@ -3,8 +3,11 @@ import { MaterialYouConfigCard } from './classes/material-you-config-card';
 import { MaterialYouPanel } from './classes/material-you-panel';
 
 import { THEME_NAME, THEME_TOKEN } from './models/constants/theme';
-import { getAsync, querySelectorAsync } from './utils/async';
-import { getHomeAssistantMainAsync } from './utils/common';
+import {
+	getAsync,
+	getHomeAssistantMainAsync,
+	querySelectorAsync,
+} from './utils/async';
 import { setCardType } from './utils/handlers/cards';
 import { setCSSFromFile } from './utils/handlers/css';
 import { setBaseColorFromImage } from './utils/handlers/image';

@@ -8,20 +8,15 @@ import {
 } from '@material/material-color-utilities';
 
 import { SpecVersion } from '@material/material-color-utilities/dynamiccolor/color_spec';
-import {
-	applyStyles,
-	buildStylesString,
-	getEntityIdAndValue,
-	getTargets,
-	unset,
-} from '.';
-import { materialDynamicColors } from '../../models/constants/colors';
+import { applyStyles, buildStylesString, unset } from '.';
+import { materialDynamicColors, schemes } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments, InputField } from '../../models/interfaces/Input';
+import { IScheme } from '../../models/interfaces/Scheme';
 import { querySelectorAsync } from '../async';
-import { getSchemeInfo, getToken } from '../common';
+import { getEntityIdAndValue, getTargets, getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
 import { harmonize } from './harmonize';
 import { setPalette, unsetPalette } from './palettes';
@@ -67,7 +62,12 @@ export async function setTheme(args: IHandlerArguments) {
 						inputs[field as InputField].default;
 				}
 
-				const schemeInfo = getSchemeInfo(values.scheme as string);
+				// const schemeInfo = getSchemeInfo(values.scheme as string);
+				const schemeInfo =
+					schemes.find((scheme) => scheme.value == values.scheme) ||
+					(schemes.find(
+						(scheme) => scheme.value == inputs.scheme.default,
+					) as IScheme);
 
 				const styles: Record<string, string> = {};
 				for (const mode of ['light', 'dark']) {

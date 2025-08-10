@@ -4,7 +4,7 @@ import { inputs, services } from '../models/constants/inputs';
 import { THEME, THEME_NAME, THEME_TOKEN } from '../models/constants/theme';
 import { HomeAssistant } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
-import { buildAlertBox, getEntityId } from '../utils/common';
+import { getEntityId } from '../utils/common';
 import { applyStyles, buildStylesString } from '../utils/handlers';
 import { setCardType } from '../utils/handlers/cards';
 import { setCSSFromFile } from '../utils/handlers/css';
@@ -12,6 +12,7 @@ import { setBaseColorFromImage } from '../utils/handlers/image';
 import { setTheme } from '../utils/handlers/theme';
 import { showToast } from '../utils/logging';
 import {
+	buildAlertBox,
 	createInput,
 	deleteInput,
 	handleConfirmation,

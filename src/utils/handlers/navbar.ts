@@ -1,8 +1,8 @@
-import { getEntityIdAndValue } from '.';
 import { hideNavigationBar } from '../../css';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
+import { getEntityIdAndValue } from '../common';
 import { debugToast, mdLog } from '../logging';
 import { applyStyles, loadStyles } from './styles';
 

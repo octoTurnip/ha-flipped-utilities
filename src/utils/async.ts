@@ -1,3 +1,5 @@
+import { HassElement } from '../models/interfaces';
+
 /**
  * Asynchronous query selector
  * @param {ParentNode} parent Element to query
@@ -66,4 +68,20 @@ export async function getAsync(
 		await new Promise((resolve) => setTimeout(resolve, sleep));
 	}
 	return element[key as keyof object];
+}
+
+/**
+ * Wait for home-assistant-main shadow-root to load, then return home-assistant-main
+ * @returns {HassElement} home-assistant-main element
+ */
+export async function getHomeAssistantMainAsync(): Promise<HassElement> {
+	const ha = (await querySelectorAsync(
+		await getAsync(
+			await querySelectorAsync(document, 'home-assistant'),
+			'shadowRoot',
+		),
+		'home-assistant-main',
+	)) as HassElement;
+	await getAsync(ha, 'shadowRoot');
+	return ha;
 }

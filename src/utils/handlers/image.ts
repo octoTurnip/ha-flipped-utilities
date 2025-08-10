@@ -3,10 +3,10 @@ import {
 	QuantizerCelebi,
 	Score,
 } from '@material/material-color-utilities';
-import { getEntityIdAndValue } from '.';
 import { THEME_NAME } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
+import { getEntityIdAndValue } from '../common';
 import { debugToast } from '../logging';
 
 /**

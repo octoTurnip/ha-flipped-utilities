@@ -1,4 +1,5 @@
 import { Connection } from 'home-assistant-js-websocket';
+import { html } from 'lit';
 import { HomeAssistant, IConfirmation } from '../models/interfaces';
 import {
 	EntityRegistryEntryUpdateParams,
@@ -167,4 +168,11 @@ export async function handleConfirmation(
 		};
 		window.addEventListener('dialog-closed', confirmFalse);
 	});
+}
+
+export function buildAlertBox(
+	title: string,
+	type: 'info' | 'warning' | 'error' | 'success' = 'info',
+) {
+	return html`<ha-alert .title="${title}" .alertType="${type}"></ha-alert>`;
 }

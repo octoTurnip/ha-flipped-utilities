@@ -8,7 +8,8 @@ import {
 	InputField,
 	ISubscription,
 } from '../models/interfaces/Input';
-import { getEntityId, getHomeAssistantMainAsync } from './common';
+import { getHomeAssistantMainAsync } from './async';
+import { getEntityId } from './common';
 import { debugToast } from './logging';
 
 export async function setupSubscriptions(

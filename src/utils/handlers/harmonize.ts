@@ -4,19 +4,13 @@ import {
 	Blend,
 	hexFromArgb,
 } from '@material/material-color-utilities';
-import {
-	applyStyles,
-	buildStylesString,
-	getEntityIdAndValue,
-	getTargets,
-	unset,
-} from '.';
+import { applyStyles, buildStylesString, unset } from '.';
 import { paletteColors, semanticColors } from '../../models/constants/colors';
 import { inputs } from '../../models/constants/inputs';
 import { THEME_NAME, THEME_TOKEN } from '../../models/constants/theme';
 import { HassElement } from '../../models/interfaces';
 import { IHandlerArguments } from '../../models/interfaces/Input';
-import { getToken } from '../common';
+import { getEntityIdAndValue, getTargets, getToken } from '../common';
 import { debugToast, mdLog } from '../logging';
 import { setPalette, unsetPalette } from './palettes';
 

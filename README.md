@@ -164,7 +164,7 @@ The 2025 color specification has two platform options - `Phone` and `Watch`. Whi
 
 #### Style Upgrades
 
-If you want to disable the Material Design 3 component upgrades, toggle Style Upgrades off. Doing so will still allow you to set all other options. A refresh is required for this to apply.
+If you want to disable the Material Design 3 component upgrades, toggle Style Upgrades off. Doing so will still allow you to set most other options. A refresh is required for this to apply.
 
 #### Card Type
 
@@ -174,7 +174,7 @@ Some cards, like those found in the configuration pages, already have the attrib
 
 #### Show Navigation Bar
 
-You can choose to disable the navigation bar shown in views by toggling this setting off. This is useful if you want to use an alternate view navigation system such as [Navbar Card](https://github.com/joseluis9595/lovelace-navbar-card). Note that this does not disable navigation bar styles or restore the default view tabs, it hides them entirely.
+You can choose to disable the navigation bar shown in views by toggling this setting off. This is useful if you want to use an alternate view navigation system such as [Navbar Card](https://github.com/joseluis9595/lovelace-navbar-card). Note that this does not disable navigation bar styles or restore the default view tabs, it hides them entirely. Requires style upgrades to be enabled.
 
 ### Other
 

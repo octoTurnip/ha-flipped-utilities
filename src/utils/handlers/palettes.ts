@@ -3,10 +3,10 @@ import {
 	hexFromArgb,
 	TonalPalette,
 } from '@material/material-color-utilities';
-import { getTargets, unset } from '.';
+import { unset } from '.';
 import { THEME_TOKEN } from '../../models/constants/theme';
 import { IHandlerArguments } from '../../models/interfaces/Input';
-import { getToken } from '../common';
+import { getTargets, getToken } from '../common';
 import { debugToast } from '../logging';
 import { applyStyles, buildStylesString } from './styles';
 

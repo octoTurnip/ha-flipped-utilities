@@ -1,29 +1,57 @@
-import { html } from 'lit';
-import { schemes } from '../models/constants/colors';
 import { inputs } from '../models/constants/inputs';
 import { THEME } from '../models/constants/theme';
 import { HassElement } from '../models/interfaces';
 import { InputField } from '../models/interfaces/Input';
-import { IScheme } from '../models/interfaces/Scheme';
-import { getAsync, querySelectorAsync } from './async';
+import { getHomeAssistantMainAsync, querySelectorAsync } from './async';
 
+/**
+ *
+ * @param {InputField} field Field to get entity ID for
+ * @param {string} [id] Specific user or device ID to get entity ID for
+ * @returns {string}
+ */
 export function getEntityId(field: InputField, id?: string): string {
 	return `${inputs[field as InputField].domain}.${THEME}_${field}${id ? `_${id}` : ''}`;
 }
 
 /**
- * Get scheme class and name using user input name
- * @param {string} name user provided scheme name
- * @returns {IScheme} Scheme name and class
+ * Get the highest priority entity ID and its value for a given field
+ * @param {InputField} field
+ * @param {string} id
+ * @returns { entityId: string; value: string | number | boolean }
  */
-export function getSchemeInfo(
-	name: string = inputs.scheme.default as string,
-): IScheme {
-	name = name?.toLowerCase()?.replace(/ |-|_/g, '')?.trim();
-	return (
-		schemes.filter((scheme) => scheme.value == name)[0] ??
-		schemes.filter((scheme) => scheme.value == inputs.scheme.default)[0]
-	);
+export function getEntityIdAndValue(
+	field: InputField,
+	id?: string,
+): { entityId: string; value: string | number | boolean } {
+	const hass = (document.querySelector('home-assistant') as HassElement).hass;
+
+	const ids = [
+		id,
+		window.browser_mod?.browserID?.replace(/-/g, '_'),
+		hass.user?.id,
+		'',
+	];
+	const result = {
+		entityId: '',
+		value: '',
+	};
+	for (const id of ids) {
+		if (id == undefined) {
+			continue;
+		}
+
+		const entityId = getEntityId(field, id);
+		const value = hass.states[entityId]?.state?.trim();
+
+		if (value != undefined && value != 'unknown') {
+			result.entityId = entityId;
+			result.value = value;
+			break;
+		}
+	}
+
+	return result;
 }
 
 /**
@@ -36,24 +64,21 @@ export function getToken(color: string): string {
 }
 
 /**
- * Wait for home-assistant-main shadow-root to load, then return home-assistant-main
- * @returns {HassElement} home-assistant-main element
+ * Get targets to apply or remove theme colors to/from
+ * @returns {HTMLElement[]} HTML Elements to apply/remove theme to/from
  */
-export async function getHomeAssistantMainAsync(): Promise<HassElement> {
-	const ha = (await querySelectorAsync(
-		await getAsync(
-			await querySelectorAsync(document, 'home-assistant'),
-			'shadowRoot',
-		),
-		'home-assistant-main',
-	)) as HassElement;
-	await getAsync(ha, 'shadowRoot');
-	return ha;
-}
+export async function getTargets(): Promise<HTMLElement[]> {
+	const targets: HTMLElement[] = [
+		(await querySelectorAsync(document, 'html')) as HTMLElement,
+	];
 
-export function buildAlertBox(
-	title: string,
-	type: 'info' | 'warning' | 'error' | 'success' = 'info',
-) {
-	return html`<ha-alert .title="${title}" .alertType="${type}"></ha-alert>`;
+	// Add-ons and HACS iframe
+	const ha = await getHomeAssistantMainAsync();
+	const iframe = ha.shadowRoot
+		?.querySelector('iframe')
+		?.contentWindow?.document?.querySelector('body');
+	if (iframe) {
+		targets.push(iframe);
+	}
+	return targets;
 }
