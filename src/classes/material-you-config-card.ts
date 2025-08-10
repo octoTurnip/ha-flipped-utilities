@@ -538,11 +538,9 @@ export class MaterialYouConfigCard extends LitElement {
 			delete theme.modes;
 			const entries = Object.entries(theme);
 			if (entries.length) {
-				const styles: Record<string, string> = {};
 				for (const [key, value] of entries) {
-					styles[`--${key}`] = value;
+					this.style.setProperty(`--${key}`, value);
 				}
-				applyStyles(this, this.THEME_ID, buildStylesString(styles));
 				return;
 			}
 			setTimeout(() => applyTheme(), 100);

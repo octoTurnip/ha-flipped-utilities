@@ -14,10 +14,7 @@ export async function setPalette(args: IHandlerArguments, colors: string[]) {
 	const targets = args.targets ?? (await getTargets());
 
 	try {
-		const style = getComputedStyle(
-			document.querySelector('html') as HTMLElement,
-		);
-
+		const style = getComputedStyle(targets[0]);
 		const styles: Record<string, string> = {};
 		for (const color of colors) {
 			let token = `--${getToken(color)}-color`;

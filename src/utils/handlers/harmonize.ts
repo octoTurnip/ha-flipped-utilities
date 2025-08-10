@@ -40,7 +40,7 @@ export async function harmonize(args: IHandlerArguments) {
 
 			const baseColor = getARGBColor(
 				'--primary-color',
-				getComputedStyle(document.querySelector('html') as HTMLElement),
+				getComputedStyle(targets[0]),
 			);
 			const styles: Record<string, string> = {};
 			for (const color in semanticColors) {
