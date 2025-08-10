@@ -34,7 +34,10 @@ export async function setPalette(args: IHandlerArguments, colors: string[]) {
 	} catch (e) {
 		console.error(e);
 		debugToast(String(e));
-		await unsetPalette(args, colors.length == 1 && colors[0] == 'primary');
+		await unsetPalette(
+			args,
+			!(colors.length == 1 && colors[0] == 'primary'),
+		);
 	}
 }
 
