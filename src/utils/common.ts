@@ -94,7 +94,7 @@ export function getARGBColor(
 	property: string,
 	style: CSSStyleDeclaration,
 ): number {
-	const color = style.getPropertyValue(property);
+	const color = style.getPropertyValue(property).trim();
 
 	if (color.startsWith('#')) {
 		return argbFromHex(color);
