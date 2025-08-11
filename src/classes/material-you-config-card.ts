@@ -89,6 +89,7 @@ export class MaterialYouConfigCard extends LitElement {
 			name = ` ${this.hass.states[this.personEntityId ?? '']?.attributes?.friendly_name ?? this.personEntityId ?? this.dataId}`;
 		}
 
+		// Create inputs
 		for (const field in inputs) {
 			const entityId = getEntityId(field as InputField, this.dataId);
 			if (!this.hass.states[entityId]) {
@@ -104,6 +105,7 @@ export class MaterialYouConfigCard extends LitElement {
 			}
 		}
 
+		// Update inputs after creation
 		for (const field in inputs) {
 			const entityId = getEntityId(field as InputField, this.dataId);
 			const id = entityId.split('.')[1];
