@@ -32,7 +32,6 @@ export class MaterialYouConfigCard extends LitElement {
 	@state() tabBarIndex: number = 0;
 	tabs = ['theme', 'styles', 'other'];
 
-	THEME_ID = `${THEME_TOKEN}-theme`;
 	MODE_ID = `${THEME_TOKEN}-mode`;
 
 	personEntityId?: string;
