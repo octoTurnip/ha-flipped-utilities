@@ -32,6 +32,7 @@ export class MaterialYouConfigCard extends LitElement {
 	@state() tabBarIndex: number = 0;
 	tabs = ['theme', 'styles', 'other'];
 
+	THEME_ID = `${THEME_TOKEN}-theme`;
 	MODE_ID = `${THEME_TOKEN}-mode`;
 
 	personEntityId?: string;
@@ -89,7 +90,6 @@ export class MaterialYouConfigCard extends LitElement {
 			name = ` ${this.hass.states[this.personEntityId ?? '']?.attributes?.friendly_name ?? this.personEntityId ?? this.dataId}`;
 		}
 
-		// Create inputs
 		for (const field in inputs) {
 			const entityId = getEntityId(field as InputField, this.dataId);
 			if (!this.hass.states[entityId]) {
@@ -102,46 +102,40 @@ export class MaterialYouConfigCard extends LitElement {
 						...inputs[field as InputField].init.config,
 					},
 				);
-			}
-		}
+				await updateInput(
+					this.hass,
+					inputs[field as InputField].domain,
+					id,
+					{
+						name: `${THEME_NAME} ${inputs[field as InputField].name}${name}`,
+						...inputs[field as InputField].init.config,
+					},
+				);
+				const domain = inputs[field as InputField].domain;
+				let service = services[domain];
+				const data: Record<string, any> = {
+					entity_id: entityId,
+				};
+				switch (domain) {
+					case 'input_text':
+					case 'input_number':
+						data.value = inputs[field as InputField].default;
+						break;
+					case 'input_select':
+						data.option = inputs[field as InputField].default;
+						break;
+					case 'input_boolean':
+						service = `turn_${inputs[field as InputField].default}`;
+						break;
+					default:
+						break;
+				}
+				await this.hass.callService(domain, service, data);
 
-		// Update inputs after creation
-		for (const field in inputs) {
-			const entityId = getEntityId(field as InputField, this.dataId);
-			const id = entityId.split('.')[1];
-			await updateInput(
-				this.hass,
-				inputs[field as InputField].domain,
-				id,
-				{
-					name: `${THEME_NAME} ${inputs[field as InputField].name}${name}`,
-					...inputs[field as InputField].init.config,
-				},
-			);
-			const domain = inputs[field as InputField].domain;
-			let service = services[domain];
-			const data: Record<string, any> = {
-				entity_id: entityId,
-			};
-			switch (domain) {
-				case 'input_text':
-				case 'input_number':
-					data.value = inputs[field as InputField].default;
-					break;
-				case 'input_select':
-					data.option = inputs[field as InputField].default;
-					break;
-				case 'input_boolean':
-					service = `turn_${inputs[field as InputField].default}`;
-					break;
-				default:
-					break;
+				await updateEntityRegistryEntry(this.hass, entityId, {
+					labels: [THEME],
+				});
 			}
-			await this.hass.callService(domain, service, data);
-
-			await updateEntityRegistryEntry(this.hass, entityId, {
-				labels: [THEME],
-			});
 		}
 
 		let message = 'Global input entities created';

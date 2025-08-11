@@ -12,7 +12,7 @@ import { getHomeAssistantMainAsync, querySelectorAsync } from './async';
  * @returns {string}
  */
 export function getEntityId(field: InputField, id?: string): string {
-	return `${inputs[field as InputField].domain}.${THEME}_${field}${id ? `_${id}` : ''}`;
+	return `${inputs[field as InputField].domain}.${THEME}_${field}${id ? `_${id}` : ''}`.toLowerCase();
 }
 
 /**
