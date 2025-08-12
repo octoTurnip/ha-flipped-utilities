@@ -69,16 +69,15 @@ async function main() {
 	customElements.define(`${THEME_TOKEN}-panel`, MaterialYouPanel);
 
 	// Call handlers on first load
-	const setOnFirstLoad = async (ms: number) => {
-		if (ms > 10000) {
+	const setOnFirstLoad = async (ms: number = 10) => {
+		if (ms > 20000) {
 			return;
 		}
 
-		const theme = haMain.hass?.themes?.theme;
+		const hass = (await getHomeAssistantMainAsync()).hass;
+		const theme = hass?.themes?.theme;
 		if (!theme) {
-			setTimeout(() => {
-				setOnFirstLoad(ms);
-			}, 2 * ms);
+			setTimeout(() => setOnFirstLoad(ms * 2), ms);
 			return;
 		}
 
@@ -97,7 +96,7 @@ async function main() {
 			}
 		}
 	};
-	setOnFirstLoad(100);
+	setOnFirstLoad();
 
 	// Call handlers on visibility change
 	window.addEventListener('visibilitychange', async () => {
@@ -111,27 +110,28 @@ async function main() {
 
 	setupSubscriptions({});
 
-	const setupThemeChangeSubscriptions = async () => {
-		const hass = (await getHomeAssistantMainAsync()).hass;
-		const userId = hass.user?.id;
-
-		if (hass.connection.connected && userId) {
-			// Trigger on theme changed event
-			hass.connection.subscribeEvents(
-				() => setTheme({}),
-				'themes_updated',
-			);
-			if (hass.user?.is_admin) {
-				// Trigger on set theme service call
-				hass.connection.subscribeEvents((e: Record<string, any>) => {
-					if (e?.data?.service == 'set_theme') {
-						setTimeout(() => setTheme({}), 1000);
-					}
-				}, 'call_service');
-			}
+	const setupThemeChangeSubscriptions = async (ms: number = 10) => {
+		if (ms > 20000) {
 			return;
 		}
-		setTimeout(() => setupThemeChangeSubscriptions(), 100);
+
+		const hass = (await getHomeAssistantMainAsync()).hass;
+		const userId = hass.user?.id;
+		if (!hass.connection.connected || !userId) {
+			setTimeout(() => setupThemeChangeSubscriptions(ms * 2), ms);
+			return;
+		}
+
+		// Trigger on theme changed event
+		hass.connection.subscribeEvents(() => setTheme({}), 'themes_updated');
+		if (hass.user?.is_admin) {
+			// Trigger on set theme service call
+			hass.connection.subscribeEvents((e: Record<string, any>) => {
+				if (e?.data?.service == 'set_theme') {
+					setTimeout(() => setTheme({}), 1000);
+				}
+			}, 'call_service');
+		}
 	};
 	setupThemeChangeSubscriptions();
 }

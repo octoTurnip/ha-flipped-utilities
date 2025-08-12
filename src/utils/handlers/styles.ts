@@ -146,24 +146,16 @@ function observeThenApplyStyles(element: HTMLElement) {
  * @param {number} ms
  */
 function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
-	setTimeout(() => {
-		// If the shadow-root exists, exit
-		if (element.shadowRoot?.children.length) {
-			// Apply styles if not present
-			if (!hasStyles(element)) {
-				applyStylesToShadowRoot(element);
-			}
-			return;
-		}
+	if (ms > 20000) {
+		return;
+	}
 
-		// Quit if delay is more than 20 seconds
-		if (ms > 20000) {
-			return;
-		}
+	if (!element.shadowRoot?.children.length && !hasStyles(element)) {
+		setTimeout(() => applyStylesOnTimeout(element, ms * 2), ms);
+		return;
+	}
 
-		// Recall the function with a longer timeout
-		applyStylesOnTimeout(element, ms * 2);
-	}, ms);
+	applyStylesToShadowRoot(element);
 }
 
 /**
@@ -171,10 +163,19 @@ function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
  * @param {number} ms
  */
 async function applyExplicitStyles(ms: number = 10) {
+	if (ms > 20000) {
+		return;
+	}
+
 	checkTheme();
 
-	// Theme detected and should set styles
-	if (theme && shouldSetStyles) {
+	// Recall the function with a longer timeout
+	if (!theme) {
+		setTimeout(() => applyExplicitStyles(ms * 2), ms);
+		return;
+	}
+
+	if (shouldSetStyles) {
 		const haMain = await getHomeAssistantMainAsync();
 		const ha = await querySelectorAsync(document, 'home-assistant');
 		const haDrawer = await querySelectorAsync(
@@ -184,17 +185,6 @@ async function applyExplicitStyles(ms: number = 10) {
 		applyStylesToShadowRoot(ha);
 		applyStylesToShadowRoot(haMain);
 		applyStylesToShadowRoot(haDrawer);
-	}
-
-	// Quit if delay is more than 20 seconds
-	if (ms > 20000) {
-		return;
-	}
-
-	// Recall the function with a longer timeout
-	if (!theme) {
-		setTimeout(() => applyExplicitStyles(ms * 2), ms);
-		return;
 	}
 }
 
