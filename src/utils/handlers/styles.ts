@@ -150,7 +150,7 @@ function applyStylesOnTimeout(element: HTMLElement, ms: number = 10) {
 		return;
 	}
 
-	if (!element.shadowRoot?.children.length && !hasStyles(element)) {
+	if (!element.shadowRoot?.children.length) {
 		setTimeout(() => applyStylesOnTimeout(element, ms * 2), ms);
 		return;
 	}
