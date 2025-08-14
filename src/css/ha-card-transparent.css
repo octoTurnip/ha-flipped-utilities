@@ -2,7 +2,7 @@
 :host,
 body {
 	--ha-card-background: transparent;
-	--ha-card-box-shadow: none;
+	--ha-card-box-shadow: var(--md-sys-elevation-level0);
 	--ha-card-border-width: 0;
 	--ha-card-border-color: transparent;
 }
