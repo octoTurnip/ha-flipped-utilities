@@ -1,3 +1,8 @@
+/* Kiosk mode hide sidebar */
+:host {
+	width: var(--kiosk-sidebar-width, 100%);
+}
+
 /* Hide title but keep it tappable */
 .title {
 	color: transparent;
