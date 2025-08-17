@@ -37,6 +37,7 @@ import huiEntitiesCard from './hui-entities-card.css';
 import huiGridSection from './hui-grid-section.css';
 import huiRootHideSlTabGroup from './hui-root-hide-sl-tab-group.css';
 import huiRoot from './hui-root.css';
+import huiViewHeader from './hui-view-header.css';
 import huiViewVisibilityEditor from './hui-view-visibility-editor.css';
 
 /**
@@ -76,6 +77,7 @@ export const elements: Record<string, string> = {
 	'hui-entities-card-editor': huiEntitiesCardEditor,
 	'hui-grid-section': huiGridSection,
 	'hui-root': huiRoot,
+	'hui-view-header': huiViewHeader,
 	'hui-view-visibility-editor': huiViewVisibilityEditor,
 	'hue-like-light-card': hueLikeLightCard,
 	'home-assistant': homeAssistant,
