@@ -1,13 +1,13 @@
 /* Change drawer width */
 :host {
-	--mdc-drawer-width: 96px;
+	--mdc-drawer-width: var(--kiosk-sidebar-width, 96px);
 	--drawer-transition: all var(--md-sys-motion-expressive-spatial-default);
 }
 :host([expanded]) {
-	--mdc-drawer-width: 256px;
+	--mdc-drawer-width: var(--kiosk-sidebar-width, 256px);
 	--drawer-transition: all var(--md-sys-motion-expressive-spatial-fast);
 }
 :host([modal]) {
-	--mdc-drawer-width: unset;
+	--mdc-drawer-width: var(--kiosk-sidebar-width, unset);
 	--drawer-transition: all var(--md-sys-motion-expressive-spatial-fast);
 }
