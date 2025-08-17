@@ -229,6 +229,7 @@ Large, medium, and small headline titles and subtitles can be added using Home A
 - The headline is now only present for subviews and hidden for single view dashboards by default. The fonts for these titles has been updated.
 - Standard views no longer have a headline by default. This was added to this theme shortly before Home Assistant added its own more customizable view title system. Between the built in title option and the Material Expressive updates, I decided to remove this title in favor of user added titles instead. Home Assistants section view title system is more in line with the Material Expressive specification, and its fonts and colors have been updated to match.
 - If you place a subtitle right after a title, the margins between them will be reduced like in the screenshot above.
+- The margin above a view header area has been removed.
 
 ### [Navigation Bar](https://m3.material.io/components/navigation-bar/overview)
 
