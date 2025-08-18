@@ -6,6 +6,7 @@ import haCardOutlined from './ha-card-outlined.css';
 import haCardTransparent from './ha-card-transparent.css';
 import haCard from './ha-card.css';
 import haConfigInfo from './ha-config-info.css';
+import haConfigSectionUpdates from './ha-config-section-updates.css';
 import haDialog from './ha-dialog.css';
 import haDrawer from './ha-drawer.css';
 import haEntityToggle from './ha-entity-toggle.css';
@@ -73,6 +74,7 @@ export const elements: Record<string, string> = {
 	'ha-textfield': haTextfield,
 	'ha-toast': haToast,
 	'ha-user-badge': haUserBadge,
+	'ha-config-section-updates': haConfigSectionUpdates,
 	'hui-entities-card': huiEntitiesCard,
 	'hui-entities-card-editor': huiEntitiesCardEditor,
 	'hui-grid-section': huiGridSection,

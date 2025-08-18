@@ -1,0 +1,4 @@
+/* Overflow fix for updates card list */
+ha-card:has(ha-config-updates) {
+	overflow: hidden;
+}
