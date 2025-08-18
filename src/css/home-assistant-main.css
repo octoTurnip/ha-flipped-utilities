@@ -8,6 +8,6 @@
 	--drawer-transition: all var(--md-sys-motion-expressive-spatial-fast);
 }
 :host([modal]) {
-	--mdc-drawer-width: var(--kiosk-sidebar-width, unset);
+	--mdc-drawer-width: var(--kiosk-sidebar-width, 0px);
 	--drawer-transition: all var(--md-sys-motion-expressive-spatial-fast);
 }

@@ -68,6 +68,11 @@ ha-md-list-item {
 	--sidebar-item-display: block;
 }
 
+/* Modal sidebar item width */
+:host([narrow]) ha-md-list-item {
+	min-width: fit-content;
+}
+
 /* Fix collapsed rail selected text color */
 ha-md-list-item.selected {
 	--md-list-item-label-text-color: var(--sidebar-selected-text-color);
