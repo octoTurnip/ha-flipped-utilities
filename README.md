@@ -1,15 +1,8 @@
-[![GitHub Release](https://img.shields.io/github/release/Nerwyn/material-you-utilities.svg?style=for-the-badge)](https://github.com/nerwyn/material-you-utilities/releases)
-[![License](https://img.shields.io/github/license/Nerwyn/material-you-utilities.svg?style=for-the-badge)](LICENSE)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-blue.svg?style=for-the-badge)](https://github.com/hacs/default)
-[![Project Maintenance](https://img.shields.io/badge/maintainer-Nerwyn-blue.svg?style=for-the-badge)](https://github.com/Nerwyn)
-![Github](https://img.shields.io/github/followers/Nerwyn.svg?style=for-the-badge)
-[![GitHub Activity](https://img.shields.io/github/last-commit/Nerwyn/material-you-utilities?style=for-the-badge)](https://github.com/Nerwyn/material-you-utilities/commits/main)
-[![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge)](https://community.home-assistant.io/t/material-you-theme-a-fully-featured-implementation-of-material-design-3-for-home-assistant/623242)
-[![Buy Me A Coffee](https://img.shields.io/badge/donate-☕buy_me_a_coffee-yellow.svg?style=for-the-badge)](https://www.buymeacoffee.com/nerwyn)
+# UNDER CONSTRUCTION.
 
-[![My Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?repository=material-you-utilities&owner=Nerwyn&category=Plugin)
+Stay tuned...
 
-# Material Design 3 Color Theme Generation and Component Modification
+# Component Modification for HA-Flipped theme on Home Assistant
 
 Material Design 3 color theme generation and Home Assistant component modification. Redesign your Home Assistant frontend to look like any modern Material Expressive app.
 
