@@ -1,8 +1,8 @@
 {
-	"name": "Material You Utilities - Material Design 3 Color Theme Generation and Component Modification",
+	"name": "HA Flipped Utilities",
 	"content_in_root": false,
 	"homeassistant": "2025.8.0",
-	"filename": "material-you-utilities.min.js",
+	"filename": "ha-flipped-utilities.min.js",
 	"render_readme": true,
 	"hide_default_branch": true
 }

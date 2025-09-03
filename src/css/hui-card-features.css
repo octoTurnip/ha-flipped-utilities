@@ -1,0 +1,7 @@
+/* hui-card-features.css */
+/* Changes card features to match theme */
+:host {
+	--feature-color: var(--primary-color);
+	/* --feature-color: var(--state-icon-color); */
+	--feature-border-radius: var(--md-sys-shape-corner-extra-large);
+}

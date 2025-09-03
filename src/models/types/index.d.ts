@@ -12,7 +12,7 @@ declare global {
 				};
 			};
 		};
-		MaterialYouInit?: boolean;
+		haFlippedInit?: boolean;
 		browser_mod?: {
 			browserID?: string;
 			browsers?: Record<string, Record<string, any>>;

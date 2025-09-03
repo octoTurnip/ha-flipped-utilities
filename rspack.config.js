@@ -10,7 +10,7 @@ env = 'production';
 module.exports = {
 	mode: env,
 	entry: {
-		'material-you-utilities': './src/material-you-utilities.ts',
+		'ha-flipped-utilities': './src/ha-flipped-utilities.ts',
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),

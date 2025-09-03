@@ -1,0 +1,18 @@
+/* ha-combo-box-item.css */
+/* 
+This styles some of the pesky boxes
+in the automations field that want
+to stay as a box
+*/
+:host {
+	border-radius: var(--md-sys-shape-corner-large);
+	border-end-end-radius: var(--md-sys-shape-corner-large);
+	border-end-start-radius: var(--md-sys-shape-corner-large);
+	/* overflow: hidden; */
+}
+::after {
+	left: 10px;
+	right: 10px;
+	width: unset;
+	/* border-radius: var(--md-sys-shape-corner-large); */
+}

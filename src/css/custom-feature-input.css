@@ -1,0 +1,5 @@
+/* custom-feature-input.css */
+/* match theme styling */
+:host {
+	border-radius: var(--md-sys-shape-corner-large);
+}

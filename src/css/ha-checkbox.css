@@ -1,0 +1,5 @@
+/* ha-checkbox.css */
+/* Make checkboxes round-ish */
+.mdc-checkbox__background {
+	border-radius: var(--md-sys-shape-corner-small);
+}

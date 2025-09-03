@@ -1,0 +1,9 @@
+/* ha-expansion-panel.css */
+/* for the header of ha-form-expandable */
+.top {
+	border-radius: var(--md-sys-shape-corner-large);
+}
+.top.expanded {
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}

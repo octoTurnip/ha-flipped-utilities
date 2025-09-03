@@ -1,0 +1,14 @@
+/* ha-control-slider.css */
+/* Allign to look similar with other features */
+ha-control-slider {
+	--control-slider-background-opacity: 0.3;
+}
+.container {
+	--handle-margin: calc(var(--control-slider-thickness) / 3);
+}
+.slider .slider-track-bar {
+	border-radius: var(--md-sys-shape-corner-extra-large);
+	/* --slider-size: 120%; */
+}
+
+/* Slider had a gap at the end so make size 120%? */

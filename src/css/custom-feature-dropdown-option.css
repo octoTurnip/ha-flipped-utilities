@@ -1,0 +1,8 @@
+/* custom-feature-dropdown-option.css */
+/* Fix font */
+.content {
+	font-size: var(--md-sys-typescale-body-large-size);
+	font-weight: var(--md-sys-typescale-body-large-weight);
+	line-height: var(--md-sys-typescale-body-large-line-height);
+	letter-spacing: var(--md-sys-typescale-body-large-tracking);
+}

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo Building Material You Utilities JavaScript module...
+echo Building HA Flipped Utilities JavaScript module...
 npx lint-staged --allow-empty
 if [ $? -ne 0 ]
 then

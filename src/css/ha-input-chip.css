@@ -1,3 +1,4 @@
+/* ha-input-chip.css */
 /* Fix border radius */
 :host {
 	border-radius: var(--md-sys-shape-corner-small);

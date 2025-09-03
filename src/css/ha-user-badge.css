@@ -1,3 +1,4 @@
+/* ha-user-badge.css */
 /* Move user picture above navigation background */
 :host([slot='item-icon']) .initials,
 :host([slot='item-icon']) .picture {

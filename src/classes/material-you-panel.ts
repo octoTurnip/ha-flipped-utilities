@@ -38,8 +38,8 @@ export class MaterialYouPanel extends LitElement {
 				.narrow=${this.narrow}
 			></ha-menu-button>
 			<div class="versions">
-				<span class="version">Module v${moduleVersion}</span>
-				<span class="version">Theme v${themeVersion}</span>
+				<span class="version">Module: v${moduleVersion}</span>
+				<span class="version">Theme: v${themeVersion}</span>
 			</div>
 		</div>`;
 	}
@@ -181,20 +181,20 @@ export class MaterialYouPanel extends LitElement {
 									'This Device',
 									'Your settings for this device, prioritized over all other settings.',
 								)}
-								<material-you-config-card
+								<ha-flipped-config-card
 									.hass=${this.hass}
 									.dataId=${window.browser_mod?.browserID}
-								></material-you-config-card>
+								></ha-flipped-config-card>
 								${this.buildSectionHeader(
 									'Other Devices',
 									'Other devices registered with Browser Mod.',
 								)}
 								${this.devices.map(
 									(id) => html`
-										<material-you-config-card
+										<ha-flipped-config-card
 											.hass=${this.hass}
 											.dataId=${id}
-										></material-you-config-card>
+										></ha-flipped-config-card>
 									`,
 								)}`
 						: buildAlertBox(
@@ -209,20 +209,20 @@ export class MaterialYouPanel extends LitElement {
 						'Everyone!',
 						'Default settings for all users and devices.',
 					)}
-					<material-you-config-card
+					<ha-flipped-config-card
 						.hass=${this.hass}
-					></material-you-config-card>
+					></ha-flipped-config-card>
 					${this.buildSectionHeader(
 						'Everyone Else',
 						'Other users on this Home Assistant instance.',
 					)}
 					${this.people.map(
 						(id) => html`
-							<material-you-config-card
+							<ha-flipped-config-card
 								.hass=${this.hass}
 								.dataId=${this.hass.states[id].attributes
 									.user_id}
-							></material-you-config-card>
+							></ha-flipped-config-card>
 						`,
 					)}
 				`;
@@ -234,20 +234,20 @@ export class MaterialYouPanel extends LitElement {
 						'You!',
 						`Your personal ${THEME_NAME} settings.`,
 					)}
-					<material-you-config-card
+					<ha-flipped-config-card
 						.hass=${this.hass}
 						.dataId=${this.hass.user?.id}
-					></material-you-config-card>
+					></ha-flipped-config-card>
 					${window.browser_mod && !this.hass.user?.is_admin
 						? html`
 								${this.buildSectionHeader(
 									'This Device',
 									'Settings for this device.',
 								)}
-								<material-you-config-card
+								<ha-flipped-config-card
 									.hass=${this.hass}
 									.dataId=${window.browser_mod?.browserID}
-								></material-you-config-card>
+								></ha-flipped-config-card>
 							`
 						: ''}
 				`;

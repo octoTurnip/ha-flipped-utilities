@@ -11,7 +11,7 @@ export function mdLog(
 	const style = getComputedStyle(target);
 
 	const background =
-		style?.getPropertyValue('--md-sys-color-primary-light') || '#4c5c92';
+		style?.getPropertyValue('--md-sys-color-primary-light') || '#1D518F';
 	const color =
 		style?.getPropertyValue('--md-sys-color-on-primary-light') || '#ffffff';
 	const styles = `color: ${color}; background: ${background}; font-weight: bold; border-radius: 32px; padding: 0 8px;`;

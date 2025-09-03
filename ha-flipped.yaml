@@ -1,0 +1,864 @@
+########################
+#      HA Flipped      #
+#    By: octoTurnip    #
+# Material/Glass theme #
+########################
+
+# Shoutout to material-you-theme v4.0.9
+
+.CM-config: &card-m
+  card-mod-theme: HA Flipped
+  card-mod-root-yaml: |
+    .: |
+      @media (max-height: 400px) {
+        .header {
+          display: none;
+          # opacity: 0;
+        }
+        #view {
+          padding-top: 0 !important;
+          margin-top: 0 !important;
+          # height: calc(100vh - env(safe-area-inset-top)) !important;
+          # overflow-x: hidden;
+        }
+      }
+      :not(.edit-mode) > #view {
+        padding-bottom: 50px !important;
+      }
+
+  # card-mod-row-yaml: |
+  #   .: |
+  #     ha-slider {
+  #       --md-slider-handle-height: 10px !important;
+  #       --md-slider-handle-width: 20px !important;
+  #       # width: 500px;
+  #       # min-width: 100%
+  #     }
+
+  # card-mod-card-yaml: |
+
+  # card-mod-view-yaml: |
+
+.formatting: &formatting-vars # Elevation - box-shadow
+  md-sys-elevation-level0: none
+  md-sys-elevation-level1:
+    rgba(from var(--md-sys-color-shadow) r g b / 0.2) 0px 2px 1px -1px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.14) 0px 1px 1px 0px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.12) 0px 1px 3px 0px
+  md-sys-elevation-level2:
+    rgba(from var(--md-sys-color-shadow) r g b / 0.2) 0px 3px 3px -2px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.14) 0px 3px 4px 0px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.12) 0px 1px 8px 0px
+  md-sys-elevation-level3:
+    rgba(from var(--md-sys-color-shadow) r g b / 0.2) 0px 3px 5px -1px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.14) 0px 6px 10px 0px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.12) 0px 1px 18px 0px
+  md-sys-elevation-level4:
+    rgba(from var(--md-sys-color-shadow) r g b / 0.2) 0px 5px 5px -3px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.14) 0px 8px 10px 1px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.12) 0px 3px 14px 2px
+  md-sys-elevation-level5:
+    rgba(from var(--md-sys-color-shadow) r g b / 0.2) 0px 7px 8px -4px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.14) 0px 12px 17px 2px,
+    rgba(from var(--md-sys-color-shadow) r g b / 0.12) 0px 5px 22px 4px
+
+  # Motion physics system - transition duration and timing-function
+  md-sys-motion-expressive-spatial-fast: 350ms cubic-bezier(0.42, 1.67, 0.21, 0.90)
+  md-sys-motion-expressive-spatial-default: 500ms cubic-bezier(0.38, 1.21, 0.22, 1.00)
+  md-sys-motion-expressive-spatial-slow: 650ms cubic-bezier(0.39, 1.29, 0.35, 0.98)
+
+  md-sys-motion-expressive-effects-fast: 150ms cubic-bezier(0.31, 0.94, 0.34, 1.00)
+  md-sys-motion-expressive-effects-default: 200ms cubic-bezier(0.34, 0.80, 0.34, 1.00)
+  md-sys-motion-expressive-effects-slow: 300ms cubic-bezier(0.34, 0.88, 0.34, 1.00)
+
+  md-sys-motion-standard-spatial-fast: 350ms cubic-bezier(0.27, 1.06, 0.18, 1.00)
+  md-sys-motion-standard-spatial-default: 500ms cubic-bezier(0.27, 1.06, 0.18, 1.00)
+  md-sys-motion-standard-spatial-slow: 750ms cubic-bezier(0.27, 1.06, 0.18, 1.00)
+
+  md-sys-motion-standard-effects-fast: 150ms cubic-bezier(0.31, 0.94, 0.34, 1.00)
+  md-sys-motion-standard-effects-default: 200ms cubic-bezier(0.34, 0.80, 0.34, 1.00)
+  md-sys-motion-standard-effects-slow: 300ms cubic-bezier(0.34, 0.88, 0.34, 1.00)
+
+  # Easing - transition-timing-function (deprecated)
+  md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15)
+  md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1)
+
+  md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1)
+  md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1)
+  md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1)
+
+  md-sys-motion-easing-legacy: cubic-bezier(0.4, 0, 0.2, 1)
+  md-sys-motion-easing-legacy-accelerate: cubic-bezier(0.4, 0, 1, 1)
+  md-sys-motion-easing-legacy-decelerate: cubic-bezier(0, 0, 0.2, 1)
+
+  md-sys-motion-easing-linear: cubic-bezier(0, 0, 1, 1)
+
+  # Duration - transition-duration (deprecated)
+  md-sys-motion-duration-short1: 50ms
+  md-sys-motion-duration-short2: 100ms
+  md-sys-motion-duration-short3: 150ms
+  md-sys-motion-duration-short4: 200ms
+
+  md-sys-motion-duration-medium1: 250ms
+  md-sys-motion-duration-medium2: 300ms
+  md-sys-motion-duration-medium3: 350ms
+  md-sys-motion-duration-medium4: 400ms
+
+  md-sys-motion-duration-long1: 450ms
+  md-sys-motion-duration-long2: 500ms
+  md-sys-motion-duration-long3: 550ms
+  md-sys-motion-duration-long4: 600ms
+
+  md-sys-motion-duration-extra-long1: 700ms
+  md-sys-motion-duration-extra-long2: 800ms
+  md-sys-motion-duration-extra-long3: 900ms
+  md-sys-motion-duration-extra-long4: 1000ms
+
+  # Shapes - border-radius
+  md-sys-shape-corner-full: 9999px
+
+  md-sys-shape-corner-extra-large-top: 28px 28px 0 0
+  md-sys-shape-corner-extra-large: 28px
+
+  md-sys-shape-corner-large-top: 16px 16px 0 0
+  md-sys-shape-corner-large-end: 0 16px 16px 0
+  md-sys-shape-corner-large-start: 16px 0 0 16px
+  md-sys-shape-corner-large: 16px
+
+  md-sys-shape-corner-medium: 12px
+  md-sys-shape-corner-small: 8px
+
+  md-sys-shape-corner-extra-small-top: 4px 4px 0 0
+  md-sys-shape-corner-extra-small: 4px
+
+  md-sys-shape-corner-none: 0
+
+  # Typography - font-weight, font-size, letter-spacing, line-height
+  md-ref-typeface-weight-regular: 400
+  md-ref-typeface-weight-medium: 500
+  md-ref-typeface-weight-bold: 700
+
+  md-sys-typescale-display-large-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-display-large-size: 57px
+  md-sys-typescale-display-large-tracking: -0.25px
+  md-sys-typescale-display-large-line-height: 64px
+  md-sys-typescale-emphasized-display-large-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-display-large-size: 57px
+  md-sys-typescale-emphasized-display-large-tracking: -0.25px
+  md-sys-typescale-emphasized-display-large-line-height: 64px
+
+  md-sys-typescale-display-medium-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-display-medium-size: 45px
+  md-sys-typescale-display-medium-line-height: 52px
+  md-sys-typescale-display-medium-tracking: 0
+  md-sys-typescale-emphasized-display-medium-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-display-medium-size: 45px
+  md-sys-typescale-emphasized-display-medium-line-height: 52px
+  md-sys-typescale-emphasized-display-medium-tracking: 0
+
+  md-sys-typescale-display-small-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-display-small-size: 36px
+  md-sys-typescale-display-small-line-height: 44px
+  md-sys-typescale-display-small-tracking: 0
+  md-sys-typescale-emphasized-display-small-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-display-small-size: 36px
+  md-sys-typescale-emphasized-display-small-line-height: 44px
+  md-sys-typescale-emphasized-display-small-tracking: 0
+
+  md-sys-typescale-headline-large-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-headline-large-size: 32px
+  md-sys-typescale-headline-large-line-height: 40px
+  md-sys-typescale-headline-large-tracking: 0
+  md-sys-typescale-emphasized-headline-large-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-headline-large-size: 32px
+  md-sys-typescale-emphasized-headline-large-line-height: 40px
+  md-sys-typescale-emphasized-headline-large-tracking: 0
+
+  md-sys-typescale-headline-medium-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-headline-medium-size: 28px
+  md-sys-typescale-headline-medium-line-height: 36px
+  md-sys-typescale-headline-medium-tracking: 0
+  md-sys-typescale-emphasized-headline-medium-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-headline-medium-size: 28px
+  md-sys-typescale-emphasized-headline-medium-line-height: 36px
+  md-sys-typescale-emphasized-headline-medium-tracking: 0
+
+  md-sys-typescale-headline-small-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-headline-small-size: 24px
+  md-sys-typescale-headline-small-line-height: 32px
+  md-sys-typescale-headline-small-tracking: 0
+  md-sys-typescale-emphasized-headline-small-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-headline-small-size: 24px
+  md-sys-typescale-emphasized-headline-small-line-height: 32px
+  md-sys-typescale-emphasized-headline-small-tracking: 0
+
+  md-sys-typescale-title-large-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-title-large-size: 22px
+  md-sys-typescale-title-large-line-height: 28px
+  md-sys-typescale-title-large-tracking: 0
+  md-sys-typescale-emphasized-title-large-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-title-large-size: 22px
+  md-sys-typescale-emphasized-title-large-line-height: 28px
+  md-sys-typescale-emphasized-title-large-tracking: 0
+
+  md-sys-typescale-title-medium-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-title-medium-size: 16px
+  md-sys-typescale-title-medium-line-height: 24px
+  md-sys-typescale-title-medium-tracking: 0.15px
+  md-sys-typescale-emphasized-title-medium-weight: var(--md-ref-typeface-weight-bold)
+  md-sys-typescale-emphasized-title-medium-size: 16px
+  md-sys-typescale-emphasized-title-medium-line-height: 24px
+  md-sys-typescale-emphasized-title-medium-tracking: 0.15px
+
+  md-sys-typescale-title-small-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-title-small-size: 14px
+  md-sys-typescale-title-small-line-height: 20px
+  md-sys-typescale-title-small-tracking: 0.1px
+  md-sys-typescale-emphasized-title-small-weight: var(--md-ref-typeface-weight-bold)
+  md-sys-typescale-emphasized-title-small-size: 14px
+  md-sys-typescale-emphasized-title-small-line-height: 20px
+  md-sys-typescale-emphasized-title-small-tracking: 0.1px
+
+  md-sys-typescale-body-large-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-body-large-size: 16px
+  md-sys-typescale-body-large-line-height: 24px
+  md-sys-typescale-body-large-tracking: 0.5px
+  md-sys-typescale-emphasized-body-large-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-body-large-size: 16px
+  md-sys-typescale-emphasized-body-large-line-height: 24px
+  md-sys-typescale-emphasized-body-large-tracking: 0.5px
+
+  md-sys-typescale-body-medium-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-body-medium-size: 14px
+  md-sys-typescale-body-medium-line-height: 20px
+  md-sys-typescale-body-medium-tracking: 0.25px
+  md-sys-typescale-emphasized-body-medium-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-body-medium-size: 14px
+  md-sys-typescale-emphasized-body-medium-line-height: 20px
+  md-sys-typescale-emphasized-body-medium-tracking: 0.25px
+
+  md-sys-typescale-body-small-weight: var(--md-ref-typeface-weight-regular)
+  md-sys-typescale-body-small-size: 12px
+  md-sys-typescale-body-small-line-height: 16px
+  md-sys-typescale-body-small-tracking: 0.4px
+  md-sys-typescale-emphasized-body-small-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-emphasized-body-small-size: 12px
+  md-sys-typescale-emphasized-body-small-line-height: 16px
+  md-sys-typescale-emphasized-body-small-tracking: 0.4px
+
+  md-sys-typescale-label-large-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-label-large-weight-prominent: var(--md-ref-typeface-weight-bold)
+  md-sys-typescale-label-large-size: 14px
+  md-sys-typescale-label-large-line-height: 20px
+  md-sys-typescale-label-large-tracking: 0.1px
+  md-sys-typescale-emphasized-label-large-weight: var(--md-ref-typeface-weight-bold)
+  md-sys-typescale-emphasized-label-large-size: 14px
+  md-sys-typescale-emphasized-label-large-line-height: 20px
+  md-sys-typescale-emphasized-label-large-tracking: 0.1px
+
+  md-sys-typescale-label-medium-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-label-medium-weight-prominent: var(--md-ref-typeface-weight-bold)
+  md-sys-typescale-label-medium-size: 12px
+  md-sys-typescale-label-medium-line-height: 16px
+  md-sys-typescale-label-medium-tracking: 0.5px
+  md-sys-typescale-emphasized-label-medium-weight: var(--md-ref-typeface-weight-bold)
+  md-sys-typescale-emphasized-label-medium-size: 12px
+  md-sys-typescale-emphasized-label-medium-line-height: 16px
+  md-sys-typescale-emphasized-label-medium-tracking: 0.5px
+
+  md-sys-typescale-label-small-weight: var(--md-ref-typeface-weight-medium)
+  md-sys-typescale-label-small-size: 11px
+  md-sys-typescale-label-small-line-height: 16px
+  md-sys-typescale-label-small-tracking: 0.5px
+  md-sys-typescale-emphasized-label-small-weight: var(--md-ref-typeface-weight-bold)
+  md-sys-typescale-emphasized-label-small-size: 11px
+  md-sys-typescale-emphasized-label-small-line-height: 16px
+  md-sys-typescale-emphasized-label-small-tracking: 0.5px
+
+.dark-vars: &dark-vars
+  # disabled-color: 'var(--disabled-color-dark, #000000)'
+  # disabled-text-color: 'var(--disabled-text-color-dark, #ffffff80)'
+  # state-inactive-color: 'var(--state-inactive-color-dark, #484a4e)'
+  # md-sys-color-background: var(--md-sys-color-background-dark, rgb(17,19,24))
+  # md-sys-color-error-palette-key-color: "#92140C"
+  md-sys-color-error-container: var(--md-sys-color-error-container-dark, rgb(147,0,10))
+  md-sys-color-error: var(--md-sys-color-error-dark, rgb(255,180,171))
+  md-sys-color-inverse-on-surface: var(--md-sys-color-inverse-on-surface-dark, rgb(46,48,53))
+  md-sys-color-inverse-primary: var(--md-sys-color-inverse-primary-dark, rgb(62,95,144))
+  md-sys-color-inverse-surface: var(--md-sys-color-inverse-surface-dark, rgb(225,226,233))
+  # md-sys-color-neutral-palette-key-color: 'var(--md-sys-color-neutral-palette-key-color-dark, #ECF2F3)'
+  # md-sys-color-neutral-variant-palette-key-color: 'var(--md-sys-color-neutral-variant-palette-key-color-dark, #4B6268)'
+  # md-sys-color-on-background: var(--md-sys-color-on-background-dark, rgb(225,226,233))
+  md-sys-color-on-error-container: var(--md-sys-color-on-error-container-dark, rgb(255,218,214))
+  md-sys-color-on-error: var(--md-sys-color-on-error-dark, rgb(105,0,5))
+  md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-dark, rgb(213,227,255))
+  md-sys-color-on-primary-fixed-variant: var(--md-sys-color-on-primary-fixed-variant-dark, rgb(36,71,119))
+  md-sys-color-on-primary-fixed: var(--md-sys-color-on-primary-fixed-dark, rgb(0,27,59))
+  md-sys-color-on-primary: var(--md-sys-color-on-primary-dark, rgb(3,48,95))
+  md-sys-color-on-secondary-container: var(--md-sys-color-on-secondary-container-dark, rgb(217,227,248))
+  md-sys-color-on-secondary-fixed-variant: var(--md-sys-color-on-secondary-fixed-variant-dark, rgb(61,71,88))
+  md-sys-color-on-secondary-fixed: var(--md-sys-color-on-secondary-fixed-dark, rgb(18,28,43))
+  md-sys-color-on-secondary: var(--md-sys-color-on-secondary-dark, rgb(39,49,65))
+  md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-dark, rgb(196,198,207))
+  md-sys-color-on-surface: var(--md-sys-color-on-surface-dark, rgb(225,226,233))
+  md-sys-color-on-tertiary-container: var(--md-sys-color-on-tertiary-container-dark, rgb(248,216,254))
+  md-sys-color-on-tertiary-fixed-variant: var(--md-sys-color-on-tertiary-fixed-variant-dark, rgb(85,62,93))
+  md-sys-color-on-tertiary-fixed: var(--md-sys-color-on-tertiary-fixed-dark, rgb(39,19,47))
+  md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-dark, rgb(62,40,69))
+  md-sys-color-outline-variant: var(--md-sys-color-outline-variant-dark, rgb(67,71,78))
+  md-sys-color-outline: var(--md-sys-color-outline-dark, rgb(142,145,153))
+  md-sys-color-primary-palette-key-color: "var(--md-sys-color-primary-palette-key-color-dark, #3e5f90)"
+  md-sys-color-primary-container: var(--md-sys-color-primary-container-dark, rgb(36,71,119))
+  md-sys-color-primary-fixed-dim: var(--md-sys-color-primary-fixed-dim-dark, rgb(167,200,255))
+  md-sys-color-primary-fixed: var(--md-sys-color-primary-fixed-dark, rgb(213,227,255))
+  md-sys-color-primary: var(--md-sys-color-primary-dark, rgb(167,200,255))
+  md-sys-color-scrim: var(--md-sys-color-scrim-dark, rgb(0,0,0))
+  md-sys-color-secondary-palette-key-color: "var(--md-sys-color-secondary-palette-key-color-dark, #555f71)"
+  md-sys-color-secondary-container: var(--md-sys-color-secondary-container-dark, rgb(61,71,88))
+  md-sys-color-secondary-fixed-dim: var(--md-sys-color-secondary-fixed-dim-dark, rgb(189,199,220))
+  md-sys-color-secondary-fixed: var(--md-sys-color-secondary-fixed-dark, rgb(217,227,248))
+  md-sys-color-secondary: var(--md-sys-color-secondary-dark, rgb(189,199,220))
+  md-sys-color-shadow: var(--md-sys-color-shadow-dark, rgb(0,0,0))
+  md-sys-color-surface-bright: var(--md-sys-color-surface-bright-dark, rgb(55,57,62))
+  md-sys-color-surface-container-high: var(--md-sys-color-surface-container-high-dark, rgb(40,42,47))
+  md-sys-color-surface-container-highest: var(--md-sys-color-surface-container-highest-dark, rgb(50,53,58))
+  md-sys-color-surface-container-low: var(--md-sys-color-surface-container-low-dark, rgb(25,28,32))
+  md-sys-color-surface-container-lowest: var(--md-sys-color-surface-container-lowest-dark, rgb(12,14,19))
+  md-sys-color-surface-container: var(--md-sys-color-surface-container-dark, rgb(29,32,36))
+  md-sys-color-surface-dim: var(--md-sys-color-surface-dim-dark, rgb(17,19,24))
+  md-sys-color-surface-tint: var(--md-sys-color-surface-tint-dark, rgb(167,200,255))
+  md-sys-color-surface-variant: var(--md-sys-color-surface-variant-dark, rgb(67,71,78))
+  md-sys-color-surface: var(--md-sys-color-surface-dark, rgb(17,19,24))
+  md-sys-color-tertiary-palette-key-color: "var(--md-sys-color-tertiary-palette-key-color-dark, #6e5676)"
+  md-sys-color-tertiary-container: var(--md-sys-color-tertiary-container-dark, rgb(85,62,93))
+  md-sys-color-tertiary-fixed-dim: var(--md-sys-color-tertiary-fixed-dim-dark, rgb(219,189,226))
+  md-sys-color-tertiary-fixed: var(--md-sys-color-tertiary-fixed-dark, rgb(248,216,254))
+  md-sys-color-tertiary: var(--md-sys-color-tertiary-dark, rgb(219,189,226))
+  # primary-color: var(--md-sys-color-inverse-primary)
+  # mdc-theme-primary: var(--md-sys-color-inverse-primary)
+
+.light-vars: &light-vars
+  disabled-color: "var(--disabled-color-light, #000000)"
+  disabled-text-color: "var(--disabled-text-color-light, #ffffff80)"
+  state-inactive-color: "var(--state-inactive-color-light, #484a4e)"
+  # md-sys-color-error-palette-key-color: "#92140C"
+  md-sys-color-background: var(--md-sys-color-background-light,rgb(249,249,255))
+  md-sys-color-error-container: var(--md-sys-color-error-container-light,rgb(255,218,214))
+  md-sys-color-error: var(--md-sys-color-error-light,rgb(186,26,26))
+  md-sys-color-inverse-on-surface: var(--md-sys-color-inverse-on-surface-light,rgb(240,240,247))
+  md-sys-color-inverse-primary: var(--md-sys-color-inverse-primary-light,rgb(167,200,255))
+  md-sys-color-inverse-surface: var(--md-sys-color-inverse-surface-light,rgb(46,48,53))
+  # md-sys-color-neutral-palette-key-color: 'var(--md-sys-color-neutral-palette-key-color-light, #ECF2F3)'
+  # md-sys-color-neutral-variant-palette-key-color: 'var(--md-sys-color-neutral-variant-palette-key-color-light, #4B6268)'
+  md-sys-color-on-background: var(--md-sys-color-on-background-light,rgb(25,28,32))
+  md-sys-color-on-error-container: var(--md-sys-color-on-error-container-light,rgb(147,0,10))
+  md-sys-color-on-error: var(--md-sys-color-on-error-light,rgb(255,255,255))
+  md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-light,rgb(36,71,119))
+  md-sys-color-on-primary-fixed-variant: var(--md-sys-color-on-primary-fixed-variant-light,rgb(36,71,119))
+  md-sys-color-on-primary-fixed: var(--md-sys-color-on-primary-fixed-light,rgb(0,27,59))
+  md-sys-color-on-primary: var(--md-sys-color-on-primary-light,rgb(255,255,255))
+  md-sys-color-on-secondary-container: var(--md-sys-color-on-secondary-container-light,rgb(61,71,88))
+  md-sys-color-on-secondary-fixed-variant: var(--md-sys-color-on-secondary-fixed-variant-light,rgb(61,71,88))
+  md-sys-color-on-secondary-fixed: var(--md-sys-color-on-secondary-fixed-light,rgb(18,28,43))
+  md-sys-color-on-secondary: var(--md-sys-color-on-secondary-light,rgb(255,255,255))
+  md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-light,rgb(67,71,78))
+  md-sys-color-on-surface: var(--md-sys-color-on-surface-light,rgb(25,28,32))
+  md-sys-color-on-tertiary-container: var(--md-sys-color-on-tertiary-container-light,rgb(85,62,93))
+  md-sys-color-on-tertiary-fixed-variant: var(--md-sys-color-on-tertiary-fixed-variant-light,rgb(85,62,93))
+  md-sys-color-on-tertiary-fixed: var(--md-sys-color-on-tertiary-fixed-light,rgb(39,19,47))
+  md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-light,rgb(255,255,255))
+  md-sys-color-outline-variant: var(--md-sys-color-outline-variant-light,rgb(196,198,207))
+  md-sys-color-outline: var(--md-sys-color-outline-light,rgb(116,119,127))
+  md-sys-color-primary-palette-key-color: "var(--md-sys-color-primary-palette-key-color-light, #3e5f90)"
+  md-sys-color-primary-container: var(--md-sys-color-primary-container-light,rgb(213,227,255))
+  md-sys-color-primary-fixed-dim: var(--md-sys-color-primary-fixed-dim-light,rgb(167,200,255))
+  md-sys-color-primary-fixed: var(--md-sys-color-primary-fixed-light,rgb(213,227,255))
+  md-sys-color-primary: var(--md-sys-color-primary-light,rgb(62,95,144))
+  md-sys-color-scrim: var(--md-sys-color-scrim-light,rgb(0,0,0))
+  md-sys-color-secondary-palette-key-color: "var(--md-sys-color-secondary-palette-key-color-light, #555f71)"
+  md-sys-color-secondary-container: var(--md-sys-color-secondary-container-light,rgb(217,227,248))
+  md-sys-color-secondary-fixed-dim: var(--md-sys-color-secondary-fixed-dim-light,rgb(189,199,220))
+  md-sys-color-secondary-fixed: var(--md-sys-color-secondary-fixed-light,rgb(217,227,248))
+  md-sys-color-secondary: var(--md-sys-color-secondary-light,rgb(85,95,113))
+  md-sys-color-shadow: var(--md-sys-color-shadow-light,rgb(0,0,0))
+  md-sys-color-surface-bright: var(--md-sys-color-surface-bright-light,rgb(249,249,255))
+  md-sys-color-surface-container-high: var(--md-sys-color-surface-container-high-light,rgb(231,232,238))
+  md-sys-color-surface-container-highest: var(--md-sys-color-surface-container-highest-light,rgb(225,226,233))
+  md-sys-color-surface-container-low: var(--md-sys-color-surface-container-low-light,rgb(243,243,250))
+  md-sys-color-surface-container-lowest: var(--md-sys-color-surface-container-lowest-light,rgb(255,255,255))
+  md-sys-color-surface-container: var(--md-sys-color-surface-container-light,rgb(237,237,244))
+  md-sys-color-surface-dim: var(--md-sys-color-surface-dim-light,rgb(217,218,224))
+  md-sys-color-surface-tint: var(--md-sys-color-surface-tint-light,rgb(62,95,144))
+  md-sys-color-surface-variant: var(--md-sys-color-surface-variant-light,rgb(224,226,236))
+  md-sys-color-surface: var(--md-sys-color-surface-light,rgb(249,249,255))
+  md-sys-color-tertiary-palette-key-color: "var(--md-sys-color-tertiary-palette-key-color-light, #6e5676)"
+  md-sys-color-tertiary-container: var(--md-sys-color-tertiary-container-light,rgb(248,216,254))
+  md-sys-color-tertiary-fixed-dim: var(--md-sys-color-tertiary-fixed-dim-light,rgb(219,189,226))
+  md-sys-color-tertiary-fixed: var(--md-sys-color-tertiary-fixed-light,rgb(248,216,254))
+  md-sys-color-tertiary: var(--md-sys-color-tertiary-light,rgb(110,86,118))
+  # primary-color: var(--md-sys-color-primary)
+  # mdc-theme-primary: var(--md-sys-color-primary)
+
+.theme-options: &theme-vars
+  # Main colors #
+  # mdc-top-app-bar-width: calc(10% - var(--mdc-drawer-width));
+  primary-color: var(--md-sys-color-primary)
+  accent-color: var(--md-sys-color-secondary)
+  state-icon-color: var(--md-sys-color-secondary) # on-surface-variant
+  primary-text-color: var(--md-sys-color-on-surface)
+  secondary-text-color: var(--md-sys-color-on-surface-variant)
+  label-badge-text-color: var(--md-sys-color-on-surface-variant) ###Check this out! History Color?
+  secondary-background-color: var(--md-sys-color-secondary-container)
+  dark-primary-color: hsl(from var(--md-sys-color-primary) h s calc(l - 20))
+  light-primary-color: hsl(from var(--md-sys-color-primary) h s calc(l + 20))
+  divider-color: var(--md-sys-color-surface-container-high) # surface-container
+  scrollbar-thumb-color: var(--flip-blur) # "#2e3038" # come back to this
+  # state-active-color: var(--primary-color) # come back to this
+  # ----------- #
+  # feature-border-radius: 0px
+  # control-number-buttons-border-radius: 0px
+
+  # Automation trace colors
+  stroke-color: var(--md-sys-color-on-surface-variant)
+  active-color: var(--md-sys-color-tertiary)
+  track-color: var(--md-sys-color-inverse-primary)
+  hover-color: var(--md-sys-color-primary)
+
+  # Error #
+  error-color: var(--md-sys-color-error)
+  on-error-color: var(--md-sys-color-on-error)
+  warning-color: "var(--md-sys-color-warning, #ffa600)"
+  success-color: "var(--md-sys-color-success, #43a047)"
+  info-color: "var(--md-sys-color-info, #039be5)"
+  # ----- #
+
+  # Cards and footer #
+  primary-background-color: var(--lovelace-background) # var(--md-sys-color-surface-container) # mainly for user settings page
+  card-background-color: var(--md-sys-color-surface-container) # low
+  ha-card-background: var(--card-background-color) # surface-container-low
+  ha-card-border-radius: var(--md-sys-shape-corner-extra-large)
+  ha-card-box-shadow: var(--md-sys-elevation-level2) # level1
+  ha-card-border-color: none # "#00000000"
+  ha-card-border-width: 0px
+  ha-card-border-style: none
+  ha-card-border: var(--md-sys-color-outline-variant) # none, look at md-divider-color
+  ha-config-card-border-radius: var(--md-sys-shape-corner-large)
+  # ---------------- #
+
+  # Background and header/toolbar #
+  background-image: "center / cover no-repeat fixed
+    radial-gradient(
+    var(--md-sys-color-surface),
+    var(--md-sys-color-surface),
+    var(--md-sys-color-surface),
+    var(--md-sys-color-background),
+    var(--md-sys-color-surface-dim)
+    )"
+  lovelace-background: var(--md-sys-color-surface)
+  # view-background: var(--background-image) #var(--md-sys-color-surface) # dashboards
+  margin-title-ltr: 0
+  margin-title-rtl: 0
+  flip-blur: blur(10px)
+  app-header-background-color: rgba(from var(--md-sys-color-surface-container) r g b / 0.3) # surface, I added RGBA
+  app-header-backdrop-filter: var(--flip-blur)
+  app-header-text-color: var(--md-sys-color-on-surface)
+  app-header-edit-text-color: var(--md-sys-color-on-error-variant) # surface
+  # header-height: 64px # 64px, 45px mine
+  # footer-height: 80px # 82px
+  mdc-top-app-bar-fixed-box-shadow: none
+  app-header-edit-background-color: var(--md-sys-color-error-container) # surface
+  app-header-selection-bar-color: none
+  navbar-background: var(--md-sys-color-surface-container)
+  # ----------------------------- #
+
+  # Sidebar #
+  sidebar-selected-text-color: var(--md-sys-color-on-secondary-container)
+  sidebar-selected-icon-color: var(--md-sys-color-on-secondary-container)
+  sidebar-selected-background: var(--md-sys-color-secondary-container)
+  sidebar-icon-color: var(--md-sys-color-on-surface-variant)
+  sidebar-text-color: var(--md-sys-color-on-surface-variant)
+  sidebar-menu-button-text-color: var(--md-sys-color-on-surface-variant)
+  sidebar-state-pressed-background: var(--md-sys-color-on-secondary-container)
+  sidebar-background-color: var(--md-sys-color-surface-container)
+  md-list-item-hover-state-layer-color: var(--md-sys-color-on-surface)
+  md-list-item-pressed-state-layer-color: var(--md-sys-color-on-secondary-container)
+  md-list-item-hover-state-layer-opacity: 0.08
+  md-list-item-pressed-state-layer-opacity: 0.1
+  # ------- #
+
+  # Dialogs #
+  ha-dialog-surface-background: rgba(from var(--md-sys-color-surface-container-high) r g b / 0.8)
+  ha-dialog-border-radius: var(--md-sys-shape-corner-extra-large)
+  mdc-dialog-scrim-color: rgba(from var(--md-sys-color-scrim) r g b / 0.32)
+  dialog-content-overflow: hidden auto
+  dialog-backdrop-filter: blur(5px)
+
+  md-dialog-container-color: var(--ha-dialog-surface-background)
+
+  md-dialog-headline-size: var(--md-sys-typescale-headline-small-size)
+  md-dialog-headline-weight: var(--md-sys-typescale-headline-small-weight)
+  md-dialog-headline-line-height: var(--md-sys-typescale-headline-small-line-height)
+  md-dialog-headline-tracking: var(--md-sys-typescale-headline-small-tracking)
+
+  md-dialog-supporting-text-size: var(--md-sys-typescale-body-medium-size)
+  md-dialog-supporting-text-weight: var(--md-sys-typescale-body-medium-weight)
+  md-dialog-supporting-text-line-height: var(--md-sys-typescale-body-medium-line-height)
+  md-dialog-supporting-text-tracking: var(--md-sys-typescale-body-medium-tracking)
+
+  # ------- #
+
+  # Legacy mdc colors #
+  mdc-theme-primary: var(--md-sys-color-primary)
+  mdc-theme-secondary: var(--md-sys-color-secondary)
+  mdc-theme-surface: var(--md-sys-color-surface-container)
+  mdc-theme-on-primary: var(--md-sys-color-on-primary)
+  mdc-theme-on-secondary: var(--md-sys-color-on-secondary)
+  mdc-theme-on-surface: var(--md-sys-color-on-surface)
+  mdc-theme-error: var(--md-sys-color-error)
+  md-divider-color: var(--md-sys-color-outline-variant)
+  # ----------------- #
+
+  # Switches #
+  md-switch-checked-button-color: var(--md-sys-color-on-primary)
+  md-switch-unchecked-button-color: var(--md-sys-color-outline)
+  md-switch-checked-track-color: var(--md-sys-color-primary)
+  md-switch-unchecked-track-color: var(--md-sys-color-surface-container-highest)
+  md-switch-checked-icon-color: var(--md-sys-color-on-primary-container)
+  md-switch-unchecked-icon-color: var(--md-sys-color-surface-container-highest)
+  md-switch-checked-button-state-layer: var(--md-sys-color-primary-container)
+  md-switch-unchecked-button-state-layer: var(--md-sys-color-on-surface-variant)
+  md-switch-unchecked-track-state-layer: var(--md-sys-color-on-surface)
+
+  switch-checked-button-color: var(--md-switch-checked-button-color)
+  switch-unchecked-button-color: var(--md-switch-unchecked-button-color)
+  switch-checked-track-color: var(--md-switch-checked-track-color)
+  switch-unchecked-track-color: var(--md-switch-unchecked-track-color)
+  switch-checked-icon-color: var(--md-switch-checked-icon-color)
+  switch-unchecked-icon-color: var(--md-switch-unchecked-icon-color)
+  switch-checked-button-state-layer: var(--md-switch-checked-button-state-layer)
+  switch-unchecked-button-state-layer: var(--md-switch-unchecked-button-state-layer)
+  switch-unchecked-track-state-layer: var(--md-switch-unchecked-track-state-layer)
+  # -------- #
+
+  # Checkboxes #
+  checkbox-checked-border-color: var(--md-sys-color-primary)
+  checkbox-checked-icon-color: var(--md-sys-color-on-primary)
+  checkbox-unchecked-border-color: var(--md-sys-color-on-surface-variant)
+  checkbox-unchecked-icon-color: var(--md-sys-color-on-surface)
+
+  mdc-checkbox-checked-color: var(--checkbox-checked-border-color)
+  mdc-checkbox-ink-color: var(--checkbox-checked-icon-color)
+  mdc-checkbox-unchecked-color: var(--checkbox-unchecked-border-color)
+  # ---------- #
+
+  # Radio buttons
+  mdc-radio-unchecked-color: var(--md-sys-color-on-surface-variant) # select bubble in profile screen
+
+  # Sliders #
+  slider-color: var(--md-sys-color-inverse-primary) # maybe better if secondary
+  slider-secondary-color: var(--md-sys-color-primary) # maybe better if secondary
+
+  md-slider-handle-color: white
+  md-slider-handle-shadow-color: transparent
+  md-slider-hover-handle-color: var(--md-slider-handle-color)
+  md-slider-hover-state-layer-color: transparent
+  md-slider-hover-state-layer-opacity: 0
+  md-slider-pressed-handle-color: var(--md-slider-handle-color)
+  md-slider-pressed-state-layer-color: transparent
+  md-slider-pressed-state-layer-opacity: 0
+  md-slider-focus-handle-color: var(--md-slider-handle-color)
+  md-slider-active-track-height: 10px # 16px, 11px?
+  md-slider-inactive-track-height: var(--md-slider-active-track-height)
+  # md-slider-active-track-shape: 8px #######
+  # md-slider-inactive-track-shape: 8px #######
+  md-slider-active-track-color: var(--md-sys-color-primary)
+  md-slider-inactive-track-color: rgba(from var(--md-slider-active-track-color) r g b / 0.4)
+  md-slider-label-text-color: var(--md-sys-color-inverse-on-surface)
+  md-slider-label-container-color: var(--md-sys-inverse-surface)
+  # md-slider-label-container-height: 44px #######
+  # md-slider-label-container-width: 48px #######
+  md-slider-with-tick-marks-container-size: 4px
+  md-slider-with-tick-marks-active-container-color: var(--md-sys-color-on-priary)
+  md-slider-with-tick-marks-inactive-container-color: var(--md-sys-color-on-primary-container)
+  md-slider-disabled-handle-color: var(--md-sys-color-surface-container-low)
+  # ------- #
+
+  # Buttons #
+  button-height: 40px # check later #
+  ha-button-height: 40px # check later #
+  ha-button-border-radius: calc(var(--ha-button-height) / 2) # check later #
+  mdc-button-disabled-fill-color: rgba(from var(--md-sys-color-on-surface) r g b / 0.12)
+  mdc-button-disabled-ink-color: rgba(from var(--md-sys-color-on-surface) r g b / 0.38)
+  mdc-typography-button-font-size: var(--md-sys-typescale-label-large-size)
+  mdc-typography-button-line-height: var(--md-sys-typescale-label-large-line-height)
+  mdc-typography-button-letter-spacing: var(--md-sys-typescale-label-large-tracking)
+  mdc-typography-button-font-weight: var(--md-sys-typescale-label-large-weight)
+  mdc-typography-button-text-transform: capitalize
+  mdc-button-horizontal-padding: 12px
+  mdc-button-outline-color: var(--md-sys-color-outline) # Check on this later #
+
+  mdc-fab-box-shadow: var(--md-sys-elevation-level3) # Check on this later #
+  mdc-fab-extended-label-padding: 16px # Check on this later #
+
+  mdc-shape-small: var(--md-sys-shape-corner-small) # Check on this later #
+  mdc-shape-medium: var(--md-sys-shape-corner-medium) # Check on this later #
+  mdc-shape-large: var(--md-sys-shape-corner-large) # Check on this later #
+  # ------- #
+
+  # Chips #
+  ha-assist-chip-container-shape: var(--md-sys-shape-corner-small)
+  ha-assist-chip-filled-container-color: var(--md-sys-color-secondary-container)
+  md-assist-chip-outline-color: var(--md-sys-color-outline-variant)
+  md-assist-chip-leading-icon-color: var(--md-sys-color-on-secondary-container)
+  md-assist-chip-label-text-color: var(--md-sys-color-on-secondary-container)
+  md-assist-chip-hover-state-layer-color: var(--md-sys-color-on-secondary-container)
+  md-assist-chip-pressed-state-layer-color: var(--md-sys-color-on-surface-variant)
+  hacs-default-icon-color: var(--md-sys-color-primary)
+
+  md-input-chip-outline-color: var(--md-sys-color-outline-variant)
+  md-input-chip-focus-outline-color: var(--md-sys-color-on-surface-variant)
+  md-input-chip-disabled-outline-color: var(--md-sys-color-on-surface)
+  md-input-chip-disabled-outline-opacity: 0.12
+  md-input-chip-selected-outline-width: 0px
+
+  md-input-chip-disabled-selected-container-color: var(--md-sys-color-on-surface)
+  md-input-chip-disabled-selected-container-opacity: 0.12
+
+  md-input-chip-label-text-size: var(--md-sys-typescale-label-large-size)
+  md-input-chip-label-text-weight: var(--md-sys-typescale-label-large-weight)
+  md-input-chip-label-text-line-height: var(--md-sys-typescale-label-large-line-height)
+  md-input-chip-label-text-tracking: var(--md-sys-typescale-label-large-tracking)
+
+  md-input-chip-label-text-color: var(--md-sys-color-on-surface-variant)
+  md-input-chip-disabled-label-text-color: var(--md-sys-color-on-surface)
+  md-input-chip-disabled-label-text-opacity: 0.38
+  md-input-chip-selected-label-text-color: var(--md-sys-color-on-secondary-container)
+
+  md-input-chip-icon-size: 18px
+  md-input-chip-leading-icon-color: var(--md-sys-color-on-surface-variant)
+  md-input-chip-hover-leading-icon-color: var(--md-sys-color-primary)
+  md-input-chip-focus-leading-icon-color: var(--md-sys-color-primary)
+  md-input-chip-pressed-leading-icon-color: var(--md-sys-color-primary)
+  md-input-chip-selected-leading-icon-color: var(--md-sys-color-primary)
+  md-input-chip-disabled-leading-icon-color: var(--md-sys-color-on-surface)
+  md-input-chip-disabled-leading-icon-opacity: 0.38
+  md-input-chip-trailing-icon-color: var(--md-sys-color-on-surface-variant)
+  md-input-chip-selected-trailing-icon-color: var(--md-sys-color-on-secondary-container)
+  md-input-chip-disabled-trailing-icon-color: var(--md-sys-color-on-surface)
+  md-input-chip-disabled-trailing-icon-opacity: 0.38
+
+  md-input-chip-disabled-avatar-opacity: 0.38
+
+  md-input-chip-hover-state-layer-color: var(--md-sys-color-on-surface-variant)
+  md-input-chip-hover-state-layer-opacity: 0.08
+  md-input-chip-selected-hover-state-layer-color: var(--md-sys-color-on-secondary-container)
+  md-input-chip-selected-hover-state-layer-opacity: 0.08
+  md-input-chip-pressed-state-layer-color: var(--md-sys-color-on-surface-variant)
+  md-input-chip-pressed-state-layer-opacity: 0.1
+  md-input-chip-selected-pressed-state-layer-color: var(--md-sys-color-on-secondary-container)
+  md-input-chip-selected-pressed-state-layer-opacity: 0.1
+  # ----- #
+
+  # Spacings #
+  horizontal-stack-card-margin: 0px 4px
+  vertical-stack-card-margin: 4px 0px
+  ha-view-sections-row-gap: 18px
+  # -------- #
+
+  # Font #
+  ha-card-header-font-size: var(--md-sys-typescale-headline-small-size)
+  ha-heading-card-title-font-size: var(--md-sys-typescale-title-medium-size)
+  ha-heading-card-title-font-weight: var(--md-sys-typescale-title-medium-weight)
+  ha-heading-card-title-line-height: var(--md-sys-typescale-title-medium-line-height)
+  ha-heading-card-subtitle-font-size: var(--md-sys-typescale-title-small-size)
+  ha-heading-card-subtitle-font-weight: var(--md-sys-typescale-title-small-weight)
+  ha-heading-card-subtitle-line-height: var(--md-sys-typescale-title-small-line-height)
+
+  ha-font-family-body: var(--font-family)
+  ha-font-family-heading: var(--font-family)
+  ha-font-family-code: var(--font-family)
+  ha-font-family-longform: var(--font-family)
+  # ---- #
+
+  # Text #
+  text-primary-color: var(--md-sys-color-surface)
+  text-light-primary-color: hsl(from var(--md-sys-color-surface) h s calc(l + 20))
+  text-accent-color: var(--md-sys-color-on-secondary)
+  link-text-color: orange #var(--md-sys-color-primary) ###find out more
+  # ---- #
+
+  # Legacy mdc colors #
+  mdc-theme-background: var(--lovelace-background) #var(--md-sys-color-surface)
+  mdc-theme-text-disabled-on-light: var(--disabled-text-color)
+  mdc-theme-text-primary-on-background: var(--md-sys-color-on-surface)
+  mdc-theme-text-secondary-on-background: var(--md-sys-color-on-surface-variant)
+  mdc-theme-text-hint-on-background: var(--md-sys-color-on-surface-variant)
+  mdc-theme-text-icon-on-background: var(--md-sys-color-on-surface-variant)
+  # ----------------- #
+
+  # Text Fields and Dropdowns #
+  input-fill-color: var(--md-sys-color-surface-container-highest)
+  input-ink-color: var(--md-sys-color-on-surface)
+  input-disabled-fill-color: rgba(from var(--md-sys-color-surface-container-highest) r g b / 0.5)
+  input-disabled-ink-color: var(--disabled-text-color)
+  input-disabled-label-ink-color: var(--disabled-text-color)
+  input-idle-line-color: var(--md-sys-color-on-surface-variant)
+  input-hover-line-color: var(--md-sys-color-primary)
+  input-dropdown-icon-color: var(--md-sys-color-on-surface-variant)
+  input-label-ink-color: var(--md-sys-color-on-surface-variant)
+  #input-outlined-hover-border-color: orange
+  ###input-background-color: rgba(from var(--md-sys-color-tertiary-fixed) r g b / 0.15) # surface-container-highest
+
+  mdc-select-fill-color: var(--md-sys-color-surface-container-highest)
+  mdc-select-idle-line-color: var(--md-sys-color-on-surface-variant)
+  mdc-select-hover-line-color: var(--md-sys-color-primary)
+  mdc-select-ink-color: var(--primary-text-color)
+  # mdc-select-label-ink-color: rgba(from var(--md-sys-color-on-tertiary-container) r g b / 0.7) # NEW
+  mdc-text-field-fill-color: var(--mdc-select-fill-color)
+  mdc-text-field-idle-line-color: var(--mdc-select-idle-line-color)
+  mdc-text-field-hover-line-color: var(--mdc-select-hover-line-color)
+  # mdc-text-field-ink-color: var(--mdc-select-ink-color)
+  # mdc-text-field-label-ink-color: var(--mdc-select-label-ink-color)
+  # mdc-select--focused: var(--md-sys-color-tertiary)
+  # mdc-text--focused: var(--md-sys-color-tertiary)
+
+  md-menu-container-color: var(--md-sys-color-surface-container)
+  md-menu-item-label-text-size: var(--md-sys-typescale-body-large-size)
+  md-menu-item-label-text-line-height: var(--md-sys-typescale-body-large-line-height)
+  md-menu-item-label-text-weight: var(--md-sys-typescale-body-large-weight)
+  mdc-list-item-graphic-margin: 16px
+  mdc-menu-item-height: 56px
+  # ------------------------- #
+
+  # Editors #
+  code-editor-background-color: var(--md-sys-color-surface-container)
+  codemirror-meta: var(--md-sys-color-on-surface)
+  codemirror-property: var(--md-sys-color-primary)
+  codemirror-atom: var(--md-sys-color-primary)
+  # ------- #
+
+  # Bubble Card #
+  bubble-accent-color: var(--md-sys-color-inverse-primary)
+  # bubble-select-arrow-background-color: var(--md-sys-color-primary) # inverse-primary
+  bubble-select-list-item-accent-color: var(--md-sys-color-primary-container) # secondary-container
+  bubble-sub-button-light-background-color: var(--md-sys-color-primary-container) # secondary-container
+  bubble-main-background-color: var(--card-background-color) # var(--md-sys-color-surface-container-highest)
+  bubble-pop-up-main-background-color: var(--md-sys-color-surface-container-low)
+  bubble-secondary-background-color: var(--md-sys-color-surface-container-highest) # red
+  bubble-pop-up-border-radius: var(--md-sys-shape-corner-extra-large)
+  # bubble-pop-up-background-color: rgba(from var(--card-background-color) r g b / 0.5)
+  # bubble-backdrop-background-color: red
+  bubble-line-background-color: var(--md-sys-color-outline-variant)
+  # custom-popup-filter: blur(100px)
+  # ----------- #
+
+  ### Temp / Testing area ###
+  # ha-ripple-color: yellow
+  # md-ripple-pressed-color: yellow
+  # ha-ripple-pressed-color: yellow
+  # mdc-button-outline-color: yellow
+
+  md-orange: "#FFAB40"
+  md-green: "#66BB6A"
+  md-blue: "#448AFF"
+  md-brown: "#8D6E63"
+
+  ## custom:thermostat-card settings
+  md-thermostat-text-color: var(--primary-text-color)
+  md-thermostat-off-fill: var(--primary-background-color)
+  md-thermostat-cool-fill: var(--state-climate-cool-color) #'#007AF1'
+  md-thermostat-heat-fill: var(--state-climate-heat-color) #'#E36304'
+  md-thermostat-path-color: rgba(255,255,255, 0.2) #'#e5d7b9' #'var(--adc-wheat)'
+  #'rgba(255,255,255, 0.3)'
+  md-thermostat-path-active-color: rgba(255,255,255, 0.8)
+  md-thermostat-path-active-color-large: rgba(255,255,255, 1.0)
+  md-thermostat-path-heat-color: rgba(255,255,255,0.4)
+
+  # Theming for custom:simple-weather-card
+  # md-weather-day-color:   'var(--paper-card-background-color)'
+  # md-weather-night-color: 'var(--paper-card-background-color)'
+  # md-weather-text-color:  'var(--grey-lighten-50)'
+
+  # state-climate-auto-color: var(--primary-color)
+  # state-climate-eco-color: var(--md-green)
+  # state-climate-cool-color: var(--md-blue)
+  # state-climate-heat-color: var(--md-orange)
+  # state-climate-manual-color: var(--md-sys-color-tertiary)
+  # state-climate-off-color: var(--disabled-color)
+  # state-climate-fan_only-color: var(--md-brown)
+  # state-climate-dry-color: var(--accent-color)
+  # state-climate-idle-color: var(--md-sys-color-tertiary)
+
+  # New HA Semantic Colors
+  red-color: "var(--md-sys-color-red, #FF5252)"
+  pink-color: "var(--md-sys-color-pink, #FF4081)"
+  purple-color: "var(--md-sys-color-purple, #E040FB)"
+  deep-purple-color: "var(--md-sys-color-deep-purple, #7C4DFF)"
+  indigo-color: "var(--md-sys-color-indigo, #536DFE)"
+  blue-color: "var(--md-sys-color-blue, #448AFF)"
+  light-blue-color: "var(--md-sys-color-light-blue, #40C4FF)"
+  cyan-color: "var(--md-sys-color-cyan, #18FFFF)"
+  teal-color: "var(--md-sys-color-teal, #64FFDA)"
+  green-color: "var(--md-sys-color-green, #69F0AE)"
+  light-green-color: "var(--md-sys-color-light-green, #B2FF59)"
+  lime-color: "var(--md-sys-color-lime, #EEFF41)"
+  yellow-color: "var(--md-sys-color-yellow, #FFFF00)"
+  amber-color: "var(--md-sys-color-amber, #FFD740)"
+  orange-color: "var(--md-sys-color-orange, #FFAB40)"
+  deep-orange-color: "var(--md-sys-color-deep-orange, #FF6E40)"
+  brown-color: "var(--md-sys-color-brown, #8D6E63)"
+  light-grey-color: "var(--md-sys-color-light-grey, #E0E0E0)"
+  grey-color: "var(--md-sys-color-grey, #9E9E9E)"
+  dark-grey-color: "var(--md-sys-color-dark-grey, #616161)"
+  blue-grey-color: "var(--md-sys-color-blue-grey, #90A4AE)"
+
+  # Energy consumption colors
+  energy-grid-consumption-color: "var(--md-sys-color-energy-grid-consumption, var(--blue-color))"
+  energy-grid-return-color: "var(--md-sys-color-energy-grid-return, var(--deep-purple-color))"
+  energy-solar-color: "var(--md-sys-color-energy-solar, var(--orange-color))"
+  energy-non-fossil-color: "var(--md-sys-color-energy-non-fossil, var(--green-color))"
+  energy-battery-out-color: "var(--md-sys-color-energy-battery-out, var(--teal-color))"
+  energy-battery-in-color: "var(--md-sys-color-energy-battery-in, var(--pink-color))"
+  energy-gas-color: "var(--md-sys-color-energy-gas, #8e021b)"
+  energy-water-color: "var(--md-sys-color-energy-water, var(--light-blue-color))"
+
+HA Flipped:
+  version: 1.00
+  <<: *card-m
+  <<: *formatting-vars
+  modes:
+    dark: *dark-vars
+    light: *light-vars
+  <<: *theme-vars
+
+HA Flipped FLAT:
+  version: 1.00
+  card-mod-theme: HA Flipped
+  <<: *formatting-vars
+  modes:
+    dark: *dark-vars
+    light: *light-vars
+  <<: *theme-vars
+  divider-color: var(--md-sys-color-surface-container)
+  primary-background-color: var(--md-sys-color-surface-container)
+  # ha-card-border-radius: var(--md-sys-shape-corner-extra-large)
+  ha-card-box-shadow: none
+  ha-card-border-width: 3px
+  ha-card-border-color: var(--md-sys-color-outline-variant)
+
+HA Flipped NO-OPTIONS:
+  version: 1.00
+  modes:
+    dark: *dark-vars
+    light: *light-vars
+  mdc-top-app-bar-width: calc(10% - var(--mdc-drawer-width));
+  primary-color: var(--md-sys-color-primary)
+  accent-color: var(--md-sys-color-secondary)
+  state-icon-color: var(--md-sys-color-secondary)
+  primary-text-color: var(--md-sys-color-on-surface)
+  secondary-text-color: var(--md-sys-color-on-surface-variant)
+  label-badge-text-color: var(--md-sys-color-on-surface-variant)
+  secondary-background-color: var(--md-sys-color-secondary-container)
+  dark-primary-color: hsl(from var(--md-sys-color-primary) h s calc(l - 20))
+  light-primary-color: hsl(from var(--md-sys-color-primary) h s calc(l + 20))
+  divider-color: var(--md-sys-color-surface-container-high)

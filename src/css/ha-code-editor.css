@@ -1,0 +1,5 @@
+/* ha-code-editor.css */
+/* The box in automations or editors with a number in it */
+.ͼ5 .cm-gutters {
+	border-radius: var(--md-sys-shape-corner-small);
+}

@@ -1,3 +1,4 @@
+/* ha-toast.css */
 /* Move toast above footer */
 .mdc-snackbar {
 	bottom: calc(8px + var(--footer-height) + env(safe-area-inset-bottom));

@@ -1,0 +1,6 @@
+/* ha-list.css */
+/* Get rid of the top and bottom 
+whitespace on the dropdown list */
+.mdc-deprecated-list {
+	padding: 0px;
+}

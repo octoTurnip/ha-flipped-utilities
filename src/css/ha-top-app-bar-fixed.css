@@ -1,3 +1,4 @@
+/* x ha-top-app-bar-fixed.css */
 /* Add left padding and translate to header to help hide rail transition */
 .mdc-top-app-bar {
 	width: calc(var(--mdc-top-app-bar-width, 100%) + 128px);

@@ -1,0 +1,5 @@
+/* custom-feature-toggle.css */
+/* style checkboxs to allign with the theme */
+.checkbox {
+	border-radius: var(--md-sys-shape-corner-extra-large);
+}

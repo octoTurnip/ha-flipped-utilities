@@ -1,3 +1,4 @@
+/* ha-assist-chip.css */
 /* Fix label font family, weight, and letter spacing */
 .label {
 	font-family: var(--font-family);
@@ -21,10 +22,10 @@
 }
 
 /* State layer colors for outline chips */
-.outline ~ md-ripple {
+/* .outline ~ md-ripple {
 	--md-ripple-hover-color: var(--md-sys-color-on-surface);
 	--md-ripple-pressed-color: var(--md-sys-color-on-surface);
-}
+} */
 
 /* Fix filled container color, but not when given an explicit color */
 .filled {

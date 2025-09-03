@@ -1,11 +1,11 @@
 {
-	"name": "material-you-utilities",
-	"version": "2.0.9",
-	"description": "Material You Utilities - Material Design 3 Color Theme Generation and Component Modification",
-	"main": "dist/material-you-utilities.js",
+	"name": "ha-flipped-utilities",
+	"version": "0.1-2.0.9",
+	"description": "HA Flipped Utilities - Component Modification for HA-Flipped theme on Home Assistant",
+	"main": "dist/ha-flipped-utilities.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "npx rspack && gzip -fk dist/material-you-utilities.min.js",
+		"build": "npx rspack && gzip -fk dist/ha-flipped-utilities.min.js",
 		"prelint": "tsc --noemit",
 		"lint": "eslint --fix --config ./.eslintrc.config.cjs",
 		"setup": "git config --add core.hooksPath githooks && npm i"
@@ -15,14 +15,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Nerwyn/material-you-utilities.git"
+		"url": "git+https://github.com/octoTurnip/ha-flipped-utilities.git"
 	},
-	"author": "Nerwyn",
+	"author": "octoTurnip",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/Nerwyn/material-you-utilities/issues"
+		"url": "https://github.com/octoTurnip/ha-flipped-utilities/issues"
 	},
-	"homepage": "https://github.com/Nerwyn/material-you-utilities#readme",
+	"homepage": "https://github.com/octoTurnip/ha-flipped-utilities#readme",
 	"dependencies": {
 		"@material/material-color-utilities": "npm:@ktibow/material-color-utilities-nightly@latest",
 		"disk-color-picker": "latest",

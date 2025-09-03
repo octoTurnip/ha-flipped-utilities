@@ -18,7 +18,7 @@ export const inputs: Record<InputField, IInputInfo> = {
 	// Theme options
 	base_color: {
 		domain: 'input_text',
-		default: '#4C5C92',
+		default: '#1D518F',
 		name: 'Base Color',
 		description: `The color from which the theme is derived.
 It usually does not appear in the theme itself.`,
@@ -184,8 +184,7 @@ Does not apply to cards that are explicitly set to outlined like in settings.`,
 		domain: 'input_boolean',
 		default: 'on',
 		name: 'Show Navigation Bar',
-		description: `Show/hide the navigation bar at the bottom of views.
-Does not restore the default Home Assistant navigation bar.`,
+		description: `Show/hide the navigation bar.`,
 		init: {
 			config: {
 				icon: 'mdi:navigation',

@@ -41,6 +41,22 @@ import huiRoot from './hui-root.css';
 import huiViewHeader from './hui-view-header.css';
 import huiViewVisibilityEditor from './hui-view-visibility-editor.css';
 
+// My addons!
+import customFeatureDropdownOption from './custom-feature-dropdown-option.css';
+import customFeatureDropdown from './custom-feature-dropdown.css';
+import customFeatureinput from './custom-feature-input.css';
+import customFeatureToggle from './custom-feature-toggle.css';
+import haCheckbox from './ha-checkbox.css';
+import haCodeEditor from './ha-code-editor.css';
+import haComboBoxItem from './ha-combo-box-item.css';
+import haControlButton from './ha-control-button.css';
+import haControlSlider from './ha-control-slider.css';
+import haExpansionPanel from './ha-expansion-panel.css';
+import haFormExpandable from './ha-form-expandable.css';
+import haList from './ha-list.css';
+import haMenu from './ha-menu.css';
+import huiCardFeatures from './hui-card-features.css';
+
 /**
  * Home Assistant (and other) custom elements to patch and their corresponding styles
  */
@@ -84,6 +100,20 @@ export const elements: Record<string, string> = {
 	'hue-like-light-card': hueLikeLightCard,
 	'home-assistant': homeAssistant,
 	'home-assistant-main': homeAssistantMain,
+	'ha-checkbox': haCheckbox,
+	'ha-code-editor': haCodeEditor,
+	'ha-combo-box-item': haComboBoxItem,
+	'ha-control-button': haControlButton,
+	'ha-control-slider': haControlSlider,
+	'ha-list': haList,
+	'ha-menu': haMenu,
+	'hui-card-features': huiCardFeatures,
+	'custom-feature-dropdown-option': customFeatureDropdownOption,
+	'custom-feature-dropdown': customFeatureDropdown,
+	'custom-feature-input': customFeatureinput,
+	'custom-feature-toggle': customFeatureToggle,
+	'ha-expansion-panel': haExpansionPanel,
+	'ha-form-expandable': haFormExpandable,
 };
 
 /**

@@ -1,3 +1,4 @@
+/* x ha-card.css */
 /* Make sliders use card background color for handle and fix card-background-color */
 :host {
 	--md-slider-handle-color: var(--ha-card-background);

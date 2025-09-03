@@ -1,0 +1,8 @@
+/* ha-form-expandable.css */
+/* 
+* Targets the form style expandable sections you
+* you can usually see in the entity editor or automations
+*/
+ha-expansion-panel {
+	border-radius: var(--md-sys-shape-corner-large);
+}

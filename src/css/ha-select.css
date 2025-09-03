@@ -1,4 +1,13 @@
+/* x ha-select.css */
 /* Fix top corners */
-.mdc-select__anchor {
+/* .mdc-select__anchor {
 	border-radius: var(--md-sys-shape-corner-extra-small-top);
+} */
+
+/* The box itself */
+.mdc-select--filled .mdc-select__anchor {
+	border-top-left-radius: var(--md-sys-shape-corner-large);
+	border-top-right-radius: var(--md-sys-shape-corner-large);
+	border-bottom-right-radius: var(--md-sys-shape-corner-large);
+	border-bottom-left-radius: var(--md-sys-shape-corner-large);
 }

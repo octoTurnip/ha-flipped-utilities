@@ -1,3 +1,4 @@
+/* x ha-sidebar.css */
 /* Kiosk mode hide sidebar */
 :host {
 	width: var(--kiosk-sidebar-width, 100%);

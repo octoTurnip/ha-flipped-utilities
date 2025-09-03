@@ -1,0 +1,5 @@
+/* ha-control-button.css */
+/* Match shape roundness with the theme */
+:host {
+	--control-button-border-radius: var(--md-sys-shape-corner-large);
+}

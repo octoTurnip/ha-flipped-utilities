@@ -1,3 +1,4 @@
+/* home-assistant-main.css */
 /* Change drawer width */
 :host {
 	--mdc-drawer-width: var(--kiosk-sidebar-width, 96px);

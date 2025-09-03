@@ -1,3 +1,4 @@
+/* x ha-fab.css */
 /* Decrease border radius, increase height, use primary container colors */
 .mdc-fab {
 	inset-block-end: var(--footer-offset, 0);

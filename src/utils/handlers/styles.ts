@@ -14,7 +14,7 @@ const explicitlyStyledElements = [
 ];
 
 /**
- * Check if theme is a "Material You" variant and set should set styles flag
+ * Check if theme is a "HA Flipped" variant and set should set styles flag
  */
 function checkTheme() {
 	if (!theme) {

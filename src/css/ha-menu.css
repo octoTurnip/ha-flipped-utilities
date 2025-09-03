@@ -1,0 +1,6 @@
+/* ha-menu.css */
+/* Give emphasis to the select box and nice corners */
+.mdc-menu-surface {
+	box-shadow: var(--md-sys-elevation-level5);
+	border-radius: var(--md-sys-shape-corner-large);
+}

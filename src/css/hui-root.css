@@ -1,17 +1,18 @@
+/* x hui-root.css */
 /* Make non subview headers transparent */
-.header:not(:has(ha-icon-button-arrow-prev ~ .main-title)) {
+/* .header:not(:has(ha-icon-button-arrow-prev ~ .main-title)) {
 	background-color: transparent;
 	pointer-events: none;
-}
+} */
 
 /* Make subview headers match background until scrolled */
-.header:has(ha-icon-button-arrow-prev ~ .main-title) {
+/* .header:has(ha-icon-button-arrow-prev ~ .main-title) {
 	background-color: var(--md-sys-color-surface);
 	transition: background-color var(--md-sys-motion-expressive-effects-fast);
 }
 :host([scrolled]) .header:has(ha-icon-button-arrow-prev ~ .main-title) {
 	background-color: var(--md-sys-color-surface-container);
-}
+} */
 
 /* Hide single tab view dashboard title */
 ha-menu-button + .main-title {
@@ -26,7 +27,7 @@ ha-menu-button + .main-title {
 	letter-spacing: var(--md-sys-typescale-title-large-tracking);
 }
 
-/*
+/* --------------------
  * Move menu and action items buttons to header
  * User different color for header trailing icons
  * Reduce size of header buttons but increase margin and gap to keep same placement
@@ -36,6 +37,7 @@ ha-menu-button + .main-title {
 ha-menu-button,
 ha-icon-button-arrow-prev[slot='navigationIcon'] {
 	pointer-events: all;
+	z-index: 1;
 }
 ha-menu-button,
 .action-items {
@@ -43,7 +45,7 @@ ha-menu-button,
 }
 .action-items {
 	position: absolute;
-	inset-inline-end: 0;
+	inset-inline-end: -4px;
 	gap: 4px;
 	color: var(--app-header-edit-text-color);
 }
@@ -51,7 +53,8 @@ ha-menu-button,
 /* Add background to header buttons on scroll */
 ha-menu-button,
 ha-button-menu,
-ha-tooltip ha-icon-button {
+ha-tooltip ha-icon-button,
+ha-icon-button-arrow-prev {
 	border-radius: var(--md-sys-shape-corner-full);
 	transition:
 		background var(--md-sys-motion-expressive-effects-default),
@@ -60,23 +63,28 @@ ha-tooltip ha-icon-button {
 	--mdc-icon-button-size: 40px;
 }
 ha-button-menu,
-ha-tooltip ha-icon-button {
+ha-tooltip ha-icon-button,
+ha-icon-button-arrow-prev {
 	display: flex;
 	justify-content: center;
 	width: 32px;
 	margin: 0 4px;
 }
-:host([scrolled]) ha-menu-button {
+/* :host([scrolled]) ha-menu-button {
 	background: var(--md-sys-color-surface-container);
-}
+} */
+:host([scrolled]) ha-menu-button,
 :host([scrolled]) ha-button-menu,
-:host([scrolled]) ha-tooltip ha-icon-button {
-	background: var(--md-sys-color-secondary-container);
-	color: var(--md-sys-color-on-secondary-container);
+:host([scrolled]) ha-tooltip ha-icon-button,
+:host([scrolled]) ha-icon-button-arrow-prev {
+	/* Come back to this! it effects edit mode as well */
+	background: var(--md-sys-color-surface-container);
+	/* color: var(--md-sys-color-surface-container); */
+	box-shadow: var(--ha-card-box-shadow);
 }
 
 /* Remove background from subview header buttons on scroll */
-:host([scrolled])
+/* :host([scrolled])
 	ha-icon-button-arrow-prev
 	~ .main-title
 	~ .action-items
@@ -89,7 +97,7 @@ ha-tooltip ha-icon-button {
 	ha-icon-button {
 	background: unset;
 	color: var(--md-sys-color-on-surface-variant);
-}
+} */
 
 /* Remove toolbar padding */
 .toolbar {
@@ -102,35 +110,45 @@ ha-tooltip ha-icon-button {
 }
 
 /* Turn view tabs into a separate footer, fix rail transition gap */
-sl-tab-group {
-	width: calc(100vw - var(--mdc-drawer-width, 0px));
+:not(.edit-tab-bar) > sl-tab-group {
+	width: calc(100vw - var(--mdc-drawer-width, 0px) - 80px);
 	margin: 0;
 	margin-inline: 0;
 	pointer-events: all;
-	padding-inline-start: 128px;
-	translate: -128px 0;
+	/* padding-inline-start: 148px; */
+	padding-inline-start: 40px;
+	/* translate: -118px 0; */
+	@media (width > 870px) or (orientation: landscape) {
+		width: calc(100vw - var(--mdc-drawer-width, 0px) - 256px);
+		padding-inline-start: 123px;
+	}
 }
-sl-tab-group:dir(rtl) {
+/* sl-tab-group:dir(rtl) {
 	translate: 128px 0;
-}
-.edit-tab-bar,
+} */
+/* .edit-tab-bar, */
 .toolbar > sl-tab-group {
 	position: fixed;
-	top: unset;
-	bottom: 0;
-	height: var(--footer-height);
-	background: var(--navbar-background);
-	box-shadow: var(--md-sys-elevation-level2);
+	top: 0;
+	bottom: unset;
+	height: var(--header-height);
+	/* background: var(--navbar-background); */
+	/* box-shadow: var(--md-sys-elevation-level2); */
 	padding-bottom: env(safe-area-inset-bottom);
 	pointer-events: all;
 }
-
-/* Option to hide navigation bar when not in edit mode */
-:not(.edit-tab-bar) > sl-tab-group {
-	display: var(--navbar-display, initial);
+/* revert changes in edit-mode ----------*/
+.edit-tab-bar {
+	width: 100%;
+	padding-inline-start: 0px;
 }
 
-/* Make tabs full width*/
+/* Option to hide navigation bar when not in edit mode */
+/* :not(.edit-tab-bar) > sl-tab-group {
+	display: var(--navbar-display, initial);
+} */
+
+/* Make tabs full width */
 sl-tab-group::part(tabs) {
 	justify-content: space-evenly;
 }
@@ -138,11 +156,11 @@ sl-tab-group::part(tabs) {
 /* Display view tab contents vertically and calculate width to fill entire toolbar */
 sl-tab {
 	display: flex;
-	padding: 6px 0;
+	padding: 3px 0;
 	flex-direction: column;
 	flex: 1;
 	gap: 4px;
-	height: var(--footer-height);
+	height: var(--header-height);
 	box-sizing: border-box;
 	min-width: 56px;
 	max-width: 174px;
@@ -158,7 +176,7 @@ sl-tab::part(base) {
 	-webkit-tap-highlight-color: transparent;
 }
 
-/* Add background and color current view icon */
+/* Add background and color current view icon -----*/
 sl-tab ha-icon::before {
 	content: '';
 	position: absolute;
@@ -188,7 +206,7 @@ sl-tab[active] .edit-icon.view {
 	z-index: 1;
 }
 
-/* View icon display centering and inactive color */
+/* View icon display centering and inactive color -----*/
 ha-icon {
 	height: 32px;
 	width: 56px;
@@ -199,7 +217,7 @@ ha-icon {
 	color: var(--md-sys-color-on-surface-variant);
 }
 
-/* View icon state layers */
+/* View icon state layers -----*/
 sl-tab ha-icon::after {
 	content: '';
 	position: absolute;
@@ -227,7 +245,7 @@ sl-tab:not(:has(ha-icon))::part(base) {
 	line-height: 32px;
 }
 
-/* View label */
+/* View label -----*/
 sl-tab::after {
 	content: attr(aria-label);
 	text-transform: none;
@@ -238,31 +256,31 @@ sl-tab::after {
 	font-size: var(--md-sys-typescale-label-medium-size);
 	line-height: var(--md-sys-typescale-label-medium-line-height);
 	letter-spacing: var(--md-sys-typescale-label-small-tracking);
-	overflow: hidden;
+	/* overflow: hidden; */
 	height: 100%;
 	color: var(--md-sys-color-on-surface-variant);
 	display: flex;
 	align-items: flex-start;
 	z-index: 1;
 }
-
+/* ----------------------------------------------------- */
 /* Current view label color */
 sl-tab[active]::after {
 	color: var(--md-sys-color-secondary);
 }
 
-/* Make edit mode current view tab fit all buttons */
-.edit-mode sl-tab[active] {
+/* Make edit mode current view tab fit all buttons ----------*/
+/* .edit-mode sl-tab[active] {
 	min-width: fit-content;
-}
+} */
 
-/* Move edit mode action items back to header */
-.edit-mode .action-items {
+/* Move edit mode action items back to header ---------*/
+/* .edit-mode .action-items {
 	position: static;
-}
+} */
 
 /* Style add view button to look like a FAB */
-.edit-mode:has(hui-sections-view) {
+/* .edit-mode:has(hui-sections-view) {
 	--add-view-fab-bottom: 16px;
 }
 #add-view {
@@ -283,7 +301,7 @@ sl-tab[active]::after {
 	box-shadow: var(--mdc-fab-box-shadow);
 
 	--mdc-icon-button-size: 64px;
-}
+} */
 
 /* Restore main title margin in edit mode */
 .edit-mode .main-title {
@@ -299,7 +317,7 @@ sl-tab[active]::after {
 }
 
 /* Add bottom footer padding when present */
-div:has(sl-tab-group) {
+/* div:has(sl-tab-group) {
 	--footer-offset: calc(
 		var(--kiosk-header-height, var(--footer-height)) +
 			env(safe-area-inset-bottom)
@@ -307,7 +325,7 @@ div:has(sl-tab-group) {
 }
 .header:has(sl-tab-group) + #view {
 	padding-bottom: var(--footer-offset);
-}
+} */
 
 /* Fix edit mode view top padding */
 .edit-mode #view {
@@ -315,24 +333,24 @@ div:has(sl-tab-group) {
 }
 
 /* Header Cards pointer events fix */
-#headerCards {
+/* #headerCards {
 	pointer-events: all;
-}
+} */
 
 /* Large displays alternate navigation bar */
-@media (width > 870px) or (orientation: landscape) {
-	/* Center view tabs */
-	sl-tab-group::part(tabs) {
+/* @media (width > 870px) or (orientation: landscape) { */
+/* Center view tabs */
+/* sl-tab-group::part(tabs) {
 		justify-content: center;
-	}
+	} */
 
-	/* Show original label of view tab with no icon */
-	sl-tab:not(:has(ha-icon))::part(base) {
+/* Show original label of view tab with no icon */
+/* sl-tab:not(:has(ha-icon))::part(base) {
 		color: unset;
-	}
+	} */
 
-	/* Move label to right of icon and ensure that it can contain content */
-	sl-tab::part(base) {
+/* Move label to right of icon and ensure that it can contain content */
+/* sl-tab::part(base) {
 		justify-content: flex-start;
 		align-self: center;
 		width: fit-content;
@@ -343,28 +361,28 @@ div:has(sl-tab-group) {
 	}
 	.edit-mode sl-tab[active]::after {
 		translate: -120px 0;
-	}
+	} */
 
-	/* Remove vertical label */
-	sl-tab::after {
+/* Remove vertical label */
+/* sl-tab::after {
 		content: unset;
-	}
+	} */
 
-	/* Position and size of edit view icons */
-	.edit-icon.view {
+/* Position and size of edit view icons */
+/* .edit-icon.view {
 		padding: 0;
-	}
+	} */
 
-	/* Position icon on left of indicator */
-	sl-tab ha-icon {
+/* Position icon on left of indicator */
+/* sl-tab ha-icon {
 		justify-content: flex-start;
 		width: 100%;
 		position: relative;
 		inset-inline-start: 20px;
-	}
+	} */
 
-	/* Horizontal label, indicator, and state layers */
-	sl-tab ha-icon::before,
+/* Horizontal label, indicator, and state layers */
+/* sl-tab ha-icon::before,
 	sl-tab ha-icon::after {
 		content: attr(title);
 		display: flex;
@@ -413,11 +431,11 @@ div:has(sl-tab-group) {
 	sl-tab:active ha-icon::after {
 		--state-layer-opacity: 0.18;
 		opacity: 1;
-	}
+	} */
 
-	/* Fix edit mode horizontal item current item position */
-	.edit-mode sl-tab ha-icon {
+/* Fix edit mode horizontal item current item position */
+/* .edit-mode sl-tab ha-icon {
 		position: relative;
 		inset-inline-start: 20px;
-	}
-}
+	} */
+/* } */
